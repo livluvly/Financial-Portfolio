@@ -1,21 +1,25 @@
 package use_case.portfolio;
 
 import entity.Asset;
+import java.util.List;
 
 /**
  * Output Data for the Portfolio Use Case.
  */
 public class PortfolioOutputData {
 
-    private final Asset asset;
+    private final List<Asset> assets;
     private final boolean useCaseFail;
 
-    public PortfolioOutputData(Asset asset, boolean useCaseFail) {
-        this.asset = asset;
+    public PortfolioOutputData(List<Asset> assets, boolean useCaseFail) {
+        this.assets = assets;
         this.useCaseFail = useCaseFail;
     }
 
-    public Asset getAsset() {
-        return asset;
+    public List<Asset> getAssets() {
+        return assets;
+    }
+    public void addAssets(Asset asset) {
+        assets.add(asset);
     }
 }
