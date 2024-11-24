@@ -1,17 +1,17 @@
-package use_case.portfolio;
+package use_case.statistic;
 
 import entity.Asset;
 import java.util.List;
 
 /**
- * Output Data for the Portfolio Use Case.
+ * Output Data for the Statistic Use Case.
  */
-public class PortfolioOutputData {
+public class StatsOutputData {
 
     private final List<Asset> assets;
     private final boolean useCaseFail;
 
-    public PortfolioOutputData(List<Asset> assets, boolean useCaseFail) {
+    public StatsOutputData(List<Asset> assets, boolean useCaseFail) {
         this.assets = assets;
         this.useCaseFail = useCaseFail;
     }

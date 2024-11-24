@@ -1,4 +1,4 @@
-package use_case.portfolio;
+package use_case.statistic;
 
 /**
  * The Input Data for the Portfolio Use Case.
@@ -9,9 +9,9 @@ public class StatsInputData {
     private final String userId;
     /**
      * Initialize with a portfolio that is not setup.
-     * @param setup the setup of the portfolio view.
+     * @param userId the userId of the portfolio.
      */
-    public PortfolioInputData(String userId) {
+    public StatsInputData(String userId) {
         this.userId = userId;
     }
 
@@ -23,10 +23,10 @@ public class StatsInputData {
         return userId;
     }
 
-    /**
-     * Change setup status.
-     * @param state the state to which to set the setup.
-     */
+//    /**
+//     * Change setup status.
+//     * @param state the state to which to set the setup.
+//     */
 //    public void setSetup(boolean state) {
 //        this.setup = state;
 //    }
