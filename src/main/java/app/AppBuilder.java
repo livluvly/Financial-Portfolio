@@ -1,14 +1,15 @@
 package app;
 
-import java.awt.CardLayout;
+import java.awt.*;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 
+import data_access.AlphaVantageSearchDataAccessObject;
 import data_access.InMemoryUserDataAccessObject;
 import entity.CommonUserFactory;
 import entity.UserFactory;
+import interface_adapter.PortfolioViewModel;
+import interface_adapter.SearchAssetViewModel;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
@@ -18,6 +19,8 @@ import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
+import interface_adapter.search.SearchAssetController;
+import interface_adapter.search.SearchAssetPresenter;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
@@ -30,13 +33,12 @@ import use_case.login.LoginOutputBoundary;
 import use_case.logout.LogoutInputBoundary;
 import use_case.logout.LogoutInteractor;
 import use_case.logout.LogoutOutputBoundary;
+import use_case.search.SearchAssetInteractor;
+import use_case.search.SearchAssetOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
-import view.LoggedInView;
-import view.LoginView;
-import view.SignupView;
-import view.ViewManager;
+import view.*;
 
 /**
  * The AppBuilder class is responsible for putting together the pieces of
@@ -59,7 +61,12 @@ public class AppBuilder {
 
     // thought question: is the hard dependency below a problem?
     private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
-
+    private AlphaVantageSearchDataAccessObject searchDataAccessObject;
+    private PortfolioView portfolioView;
+    private PortfolioViewModel portfolioViewModel;
+    private SearchAssetView transactionsView;
+    private SearchAssetViewModel transactionsViewModel;
+    private SearchAssetController searchController;
     private SignupView signupView;
     private SignupViewModel signupViewModel;
     private LoginViewModel loginViewModel;
@@ -71,6 +78,44 @@ public class AppBuilder {
         cardPanel.setLayout(cardLayout);
     }
 
+    /**
+     * Adds the Portfolio View to the application.
+     * @return this builder
+     */
+    public AppBuilder addPortfolioView() {
+        portfolioViewModel = new PortfolioViewModel();
+        portfolioView = new PortfolioView(portfolioViewModel);
+        cardPanel.add(portfolioView, portfolioViewModel.getViewName());
+        return this;
+    }
+
+    /**
+     * Adds the Transactions (Search Assets) View to the application.
+     * @return this builder
+     */
+    public AppBuilder addTransactionsView() {
+        if (searchController == null) {
+            throw new IllegalStateException("SearchAssetController must be initialized before adding TransactionsView!");
+//            transactionsViewModel = new SearchAssetViewModel(searchController);
+        }
+        transactionsViewModel = new SearchAssetViewModel(searchController);
+        transactionsView = new SearchAssetView(transactionsViewModel);
+        cardPanel.add(transactionsView, transactionsViewModel.getViewName());
+        return this;
+    }
+
+    /**
+     * Adds the Search Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addSearchAssetUseCase() {
+        searchDataAccessObject = new AlphaVantageSearchDataAccessObject(); // DAO initialization
+        transactionsViewModel = new SearchAssetViewModel(searchController);
+        SearchAssetOutputBoundary searchPresenter = new SearchAssetPresenter(transactionsViewModel);
+        SearchAssetInteractor searchInteractor = new SearchAssetInteractor(searchDataAccessObject, searchPresenter);
+        searchController = new SearchAssetController(searchInteractor);
+        return this;
+    }
     /**
      * Adds the Signup View to the application.
      * @return this builder
@@ -172,13 +217,32 @@ public class AppBuilder {
      * @return the application
      */
     public JFrame build() {
-        final JFrame application = new JFrame("Login Example");
+        final JFrame application = new JFrame("Financial Portfolio App");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        application.add(cardPanel);
+        // Create navigation buttons
+        JPanel buttonPanel = new JPanel();
+        JButton portfolioButton = new JButton("Portfolio");
+        JButton transactionsButton = new JButton("Transactions");
 
-        viewManagerModel.setState(signupView.getViewName());
+        // Switch views when buttons are clicked
+        portfolioButton.addActionListener(e -> viewManagerModel.setState(portfolioViewModel.getViewName()));
+        transactionsButton.addActionListener(e -> viewManagerModel.setState(transactionsViewModel.getViewName()));
+
+        buttonPanel.add(portfolioButton);
+        buttonPanel.add(transactionsButton);
+
+        // Add panels to the frame
+        application.setLayout(new BorderLayout());
+        application.add(buttonPanel, BorderLayout.NORTH);
+        application.add(cardPanel, BorderLayout.CENTER);
+
+        // Set the initial state
+        viewManagerModel.setState(transactionsViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
+
+        application.setSize(800, 600);
+        application.setVisible(true);
 
         return application;
     }

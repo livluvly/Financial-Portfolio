@@ -1,11 +1,13 @@
 package view;
 
-import java.awt.CardLayout;
+import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.JPanel;
 
+import interface_adapter.PortfolioViewModel;
+import interface_adapter.SearchAssetViewModel;
 import interface_adapter.ViewManagerModel;
 
 /**
@@ -28,7 +30,11 @@ public class ViewManager implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("state")) {
             final String viewModelName = (String) evt.getNewValue();
-            cardLayout.show(views, viewModelName);
+            cardLayout.show(views, viewModelName);  // Switch the view based on the name
         }
+    }
+
+    public void updateView(String viewName) {
+        viewManagerModel.setState(viewName);  // Update the state to switch views
     }
 }
