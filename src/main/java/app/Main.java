@@ -1,13 +1,15 @@
 package app;
 
-import data_access.InMemoryPortfolioDataAcessObject;
-import interface_adapter.portfolio.PortfolioController;
-import interface_adapter.portfolio.PortfolioPresenter;
-import use_case.portfolio.PortfolioInteractor;
-import use_case.portfolio.PortfolioOutputData;
-import view.AssetsPageView;
+import interface_adapter.*;
+import interface_adapter.portfolio.*;
 
-import javax.swing.JFrame;
+import java.util.List;
+import entity.*;
+import view.*;
+import view.ViewManager;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * The Main class of our application.
@@ -18,30 +20,31 @@ public class Main {
      * @param args unused arguments
      */
     public static void main(String[] args) {
-//        final app.AppBuilder appBuilder = new app.AppBuilder();
-//        appBuilder.addLogoutUseCase();
+//        PortfolioViewModel portfolioViewModel = new PortfolioViewModel();
+//        SearchAssetViewModel searchAssetViewModel = new SearchAssetViewModel();
 //
-//        final JFrame application = appBuilder
-//                                            .addLoginView()
-//                                            .addSignupView()
-//                                            .addLoggedInView()
-//                                            .addSignupUseCase()
-//                                            .addLoginUseCase()
-//                                            .addLogoutUseCase()
-//                                            .addChangePasswordUseCase()
-//                                            .build();
+//        // Create ViewManagerModel
+//        ViewManagerModel viewManagerModel = new ViewManagerModel();
 //
-//        application.pack();
-//        application.setVisible(true);
-        // setup
-        InMemoryPortfolioDataAcessObject dataAccess = new InMemoryPortfolioDataAcessObject();
-        PortfolioPresenter presenter = new PortfolioPresenter();
-        PortfolioInteractor interactor = new PortfolioInteractor(dataAccess, presenter);
-        PortfolioController controller = new PortfolioController(interactor);
+//
+//        ViewManager viewManager = new ViewManager(viewManagerModel, portfolioViewModel, searchAssetViewModel);
+//
+//
+//        JFrame frame = new JFrame("CSC207 Financial Portfolio");
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setSize(800, 600);
+//        frame.setContentPane(viewManager);
+//        frame.setVisible(true);
+//
+//        portfolioViewModel.updatePortfolio(List.of(
+//                new Asset("AAPL", 100, 15000, 200),
+//                new Asset("GOOGL", 50, 10000, 100)
+//        ));
+        SwingUtilities.invokeLater(() -> {
+            MainFrame mainFrame = new MainFrame();
+            mainFrame.setVisible(true);
+        });
 
-        PortfolioOutputData outputData = controller.fetchAssets("alice");
-        presenter.prepareSuccessView(outputData);
 
-        new AssetsPageView(presenter.getPortfolioViewModel());
     }
 }
