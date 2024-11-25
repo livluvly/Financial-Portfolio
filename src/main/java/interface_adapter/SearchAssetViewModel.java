@@ -32,7 +32,6 @@ public class SearchAssetViewModel extends ViewModel<SearchAssetState> {
         SearchAssetOutputData output;
         if (searchController != null && query != null && !query.trim().isEmpty()) {
             output = searchController.search(query);
-            System.out.println("hi");
             this.updateSearchResults(output.getSearchResultList());
         }
     }

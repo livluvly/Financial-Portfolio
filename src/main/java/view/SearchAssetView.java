@@ -79,7 +79,7 @@ public class SearchAssetView extends JPanel {
      * Custom table model for displaying search results.
      */
     private static class SearchResultTableModel extends AbstractTableModel {
-        private final String[] columnNames = {"Symbol", "Name"};
+        private final String[] columnNames = {"Symbol", "Name", "Type", "Region"};
         private List<SearchResult> data = List.of();
 
         public void updateData(List<SearchResult> data) {
@@ -103,6 +103,8 @@ public class SearchAssetView extends JPanel {
             switch (columnIndex) {
                 case 0: return result.getSymbol();
                 case 1: return result.getName();
+                case 2: return result.getType();
+                case 3: return result.getRegion();
                 default: return null;
             }
         }

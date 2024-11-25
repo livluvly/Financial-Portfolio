@@ -37,7 +37,9 @@ public class AlphaVantageSearchDataAccessObject  implements ExternalSearchDataAc
                 JSONObject resultObject = resultArray.getJSONObject(i);
                 String symbol = resultObject.getString("1. symbol");
                 String name = resultObject.getString("2. name");
-                results.add(new SearchResult(name, symbol));
+                String type = resultObject.getString("3. type");
+                String region = resultObject.getString("4. region");
+                results.add(new SearchResult(symbol, name, type, region));
             }
         } catch (Exception e) {
             e.printStackTrace();
