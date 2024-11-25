@@ -4,6 +4,7 @@ import entity.Asset;
 import interface_adapter.PortfolioViewModel;
 import interface_adapter.SearchAssetViewModel;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.search.SearchAssetController;
 
 import java.util.List;
 import javax.swing.*;
@@ -23,15 +24,16 @@ public class MainFrame extends JFrame {
         viewManager = new ViewManager(viewsPanel, cardLayout, new ViewManagerModel());
 
         // Add the PortfolioView and SearchAssetView
+
         PortfolioViewModel portfolioViewModel = new PortfolioViewModel();
-        SearchAssetViewModel searchAssetViewModel = new SearchAssetViewModel();
+//        SearchAssetViewModel searchAssetViewModel = new SearchAssetViewModel(new SearchAssetController());
         PortfolioView portfolioView = new PortfolioView(portfolioViewModel);
-        SearchAssetView searchAssetView = new SearchAssetView(searchAssetViewModel);
+//        SearchAssetView searchAssetView = new SearchAssetView(searchAssetViewModel);
 
 
         // Add the views to the viewsPanel (with a unique name for each)
         viewsPanel.add(portfolioView, portfolioViewModel.getViewName());
-        viewsPanel.add(searchAssetView, searchAssetViewModel.getViewName());
+//        viewsPanel.add(searchAssetView, searchAssetViewModel.getViewName());
 
         // Set up navigation buttons
         JPanel buttonPanel = new JPanel();

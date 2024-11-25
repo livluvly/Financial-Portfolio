@@ -17,6 +17,7 @@ public class AlphaVantageSearchDataAccessObject  implements ExternalSearchDataAc
     @Override
     public List<SearchResult> searchByKeyword(String keyword) {
         List<SearchResult> results = new ArrayList<>();
+        System.out.println("hello");
         try {
             URL url = new URL(String.format(
                     "https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=%s&apikey=%s",

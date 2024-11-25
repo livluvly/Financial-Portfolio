@@ -13,4 +13,9 @@ public class SearchResult {
     public String getName() {
         return name;
     }
+
+    @Override
+    public String toString() {
+        return "SearchResult [symbol=" + symbol + ", name=" + name + "]";
+    }
 }

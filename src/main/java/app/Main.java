@@ -1,12 +1,12 @@
 package app;
 
+import data_access.AlphaVantageSearchDataAccessObject;
 import interface_adapter.*;
 import interface_adapter.portfolio.*;
 
 import java.util.List;
 import entity.*;
-import view.*;
-import view.ViewManager;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,31 +20,16 @@ public class Main {
      * @param args unused arguments
      */
     public static void main(String[] args) {
-//        PortfolioViewModel portfolioViewModel = new PortfolioViewModel();
-//        SearchAssetViewModel searchAssetViewModel = new SearchAssetViewModel();
-//
-//        // Create ViewManagerModel
-//        ViewManagerModel viewManagerModel = new ViewManagerModel();
-//
-//
-//        ViewManager viewManager = new ViewManager(viewManagerModel, portfolioViewModel, searchAssetViewModel);
-//
-//
-//        JFrame frame = new JFrame("CSC207 Financial Portfolio");
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.setSize(800, 600);
-//        frame.setContentPane(viewManager);
-//        frame.setVisible(true);
-//
-//        portfolioViewModel.updatePortfolio(List.of(
-//                new Asset("AAPL", 100, 15000, 200),
-//                new Asset("GOOGL", 50, 10000, 100)
-//        ));
-        SwingUtilities.invokeLater(() -> {
-            MainFrame mainFrame = new MainFrame();
-            mainFrame.setVisible(true);
-        });
-
-
+        AppBuilder appBuilder = new AppBuilder();
+        appBuilder
+                .addSignupView()
+                .addLoginView()
+                .addLoggedInView()
+                .addSearchAssetUseCase()
+                .addTransactionsView();// Add the search functionality
+        JFrame app = appBuilder.build();
+//   //      test search feature
+//        AlphaVantageSearchDataAccessObject dao = new AlphaVantageSearchDataAccessObject();
+//        System.out.println(dao.searchByKeyword("aza"));
     }
 }

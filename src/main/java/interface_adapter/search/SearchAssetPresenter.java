@@ -6,7 +6,7 @@ import interface_adapter.SearchAssetViewModel;
 import java.util.List;
 
 public class SearchAssetPresenter implements SearchAssetOutputBoundary {
-    private SearchAssetViewModel viewModel;
+    private final SearchAssetViewModel viewModel;
     public SearchAssetPresenter(SearchAssetViewModel viewModel) {
         this.viewModel = viewModel;
     }
