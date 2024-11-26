@@ -25,6 +25,8 @@ public class Main {
                 .addSignupView()
                 .addLoginView()
                 .addLoggedInView()
+                .addTransactionController()
+                .addPortfolioView()
                 .addSearchAssetUseCase()
                 .addTransactionsView();// Add the search functionality
         JFrame app = appBuilder.build();
