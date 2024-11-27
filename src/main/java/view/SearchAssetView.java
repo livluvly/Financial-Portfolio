@@ -83,7 +83,7 @@ public class SearchAssetView extends JPanel {
                     Double quantity = TransactionPopup.promptForQuantity(symbol);
                     if (quantity != null) {
                         // Post transaction to the controller
-                        Transaction transaction = new Transaction(symbol,quantity,new Date(),pricePerUnit,"BUY");
+                        Transaction transaction = new Transaction(symbol,quantity,new Date(),quantity*pricePerUnit,"BUY");
 
                         if (transactionController != null) {
                             transactionController.addTransaction(transaction);
