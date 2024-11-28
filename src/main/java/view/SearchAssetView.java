@@ -1,14 +1,19 @@
 package view;
 
+import entity.Transaction;
 import interface_adapter.SearchAssetViewModel;
 import interface_adapter.search.SearchAssetController;
 import entity.SearchResult;
+import interface_adapter.transaction.TransactionController;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,6 +26,7 @@ public class SearchAssetView extends JPanel {
     private final JButton searchButton;
     private final JTable resultTable;
     private final SearchResultTableModel tableModel;
+    private TransactionController transactionController;
 
     /**
      * Constructor for the SearchAssetView.
@@ -33,7 +39,7 @@ public class SearchAssetView extends JPanel {
         this.searchButton = new JButton("Search");
         this.tableModel = new SearchResultTableModel();
         this.resultTable = new JTable(tableModel);
-
+//        this.transactionController = new TransactionController(view);
         this.setLayout(new BorderLayout());
         this.initializeView();
         this.registerListeners();
@@ -66,6 +72,34 @@ public class SearchAssetView extends JPanel {
             }
         });
 
+        resultTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent evt) {
+                int row = resultTable.rowAtPoint(evt.getPoint());
+                if (row >= 0) {
+                    String symbol = (String) resultTable.getValueAt(row, 0); // Assuming column 0 is the symbol
+                    double pricePerUnit = 1; // Assuming unit price
+
+                    Double quantity = TransactionPopup.promptForQuantity(symbol);
+                    if (quantity != null) {
+                        // Post transaction to the controller
+                        Transaction transaction = new Transaction(symbol,quantity,new Date(),quantity*pricePerUnit,"BUY");
+
+                        if (transactionController != null) {
+                            transactionController.addTransaction(transaction);
+                        } else {
+                            JOptionPane.showMessageDialog(
+                                    null,
+                                    "Transaction controller is not initialized!",
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE
+                            );
+                        }
+                    }
+                }
+            }
+        });
+
         // Bind ViewModel changes to update the table
         viewModel.addPropertyChangeListener(evt -> {
             if ("state".equals(evt.getPropertyName())) {
@@ -73,6 +107,10 @@ public class SearchAssetView extends JPanel {
                 tableModel.updateData(results);
             }
         });
+    }
+
+    public void setTransactionController(TransactionController transactionController) {
+        this.transactionController = transactionController;
     }
 
     /**

@@ -6,7 +6,7 @@ public class Transaction {
     private Date date;
     private String symbol;
     private double quantity;
-    private double totalValue;
+    private double totalCost;
     private String type; // Either "BUY" or "SELL"
 
 
@@ -14,7 +14,7 @@ public class Transaction {
         this.date = date;
         this.symbol = symbol;
         this.quantity = quantity;
-        this.totalValue = totalValue;
+        this.totalCost = totalValue;
         this.type = type;
     }
 
@@ -42,12 +42,12 @@ public class Transaction {
         this.quantity = quantity;
     }
 
-    public double getTotalValue() {
-        return totalValue;
+    public double getTotalCost() {
+        return totalCost;
     }
 
-    public void setTotalValue(double totalValue) {
-        this.totalValue = totalValue;
+    public void setTotalCost(double totalCost) {
+        this.totalCost = totalCost;
     }
 
     public String getType() {

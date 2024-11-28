@@ -24,6 +24,7 @@ import interface_adapter.search.SearchAssetPresenter;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
+import interface_adapter.transaction.TransactionController;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
@@ -73,6 +74,7 @@ public class AppBuilder {
     private LoggedInViewModel loggedInViewModel;
     private LoggedInView loggedInView;
     private LoginView loginView;
+    private TransactionController transactionController;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -89,6 +91,14 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addTransactionController() {
+        transactionController = new TransactionController(portfolioViewModel);
+        if (transactionsView != null) {
+            transactionsView.setTransactionController(transactionController);
+        }
+        return this;
+    }
+
     /**
      * Adds the Transactions (Search Assets) View to the application.
      * @return this builder
@@ -96,10 +106,13 @@ public class AppBuilder {
     public AppBuilder addTransactionsView() {
         if (searchController == null) {
             throw new IllegalStateException("SearchAssetController must be initialized before adding TransactionsView!");
-//            transactionsViewModel = new SearchAssetViewModel(searchController);
+        }
+        if (transactionController == null) {
+            throw new IllegalStateException("TransactionController must be initialized before adding TransactionsView!");
         }
         transactionsViewModel = new SearchAssetViewModel(searchController);
         transactionsView = new SearchAssetView(transactionsViewModel);
+        transactionsView.setTransactionController(transactionController);
         cardPanel.add(transactionsView, transactionsViewModel.getViewName());
         return this;
     }
@@ -226,8 +239,10 @@ public class AppBuilder {
         JButton transactionsButton = new JButton("Transactions");
 
         // Switch views when buttons are clicked
-        portfolioButton.addActionListener(e -> viewManagerModel.setState(portfolioViewModel.getViewName()));
-        transactionsButton.addActionListener(e -> viewManagerModel.setState(transactionsViewModel.getViewName()));
+        portfolioButton.addActionListener(e -> {viewManagerModel.setState(portfolioViewModel.getViewName());
+            viewManagerModel.firePropertyChanged();});
+        transactionsButton.addActionListener(e -> {viewManagerModel.setState(transactionsViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();});
 
         buttonPanel.add(portfolioButton);
         buttonPanel.add(transactionsButton);

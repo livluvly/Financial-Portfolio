@@ -1,5 +1,6 @@
 package interface_adapter.search;
 
+import entity.SearchResult;
 import use_case.search.*;
 import interface_adapter.SearchAssetViewModel;
 

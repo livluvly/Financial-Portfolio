@@ -32,7 +32,13 @@ public class PortfolioView extends JPanel {
     }
 
     private static class PortfolioTableModel extends AbstractTableModel {
+        private final String[] columnNames = {"Symbol", "Quantity", "Total Value", "Daily Gain (%)"};
         private List<Asset> assets = List.of();
+
+        @Override
+        public String getColumnName(int column) {
+            return columnNames[column];
+        }
 
         @Override
         public int getRowCount() {
@@ -41,7 +47,7 @@ public class PortfolioView extends JPanel {
 
         @Override
         public int getColumnCount() {
-            return 5;  // Symbol, Quantity, Total Value, Daily Gain, Daily Gain %
+            return 4;  // Symbol, Quantity, Total Value, Daily Gain, Daily Gain %
         }
 
         @Override
@@ -51,8 +57,7 @@ public class PortfolioView extends JPanel {
                 case 0: return asset.getSymbol();
                 case 1: return asset.getQuantity();
                 case 2: return asset.getTotalValue();
-                case 3: return asset.getDailyGain();
-                case 4: return asset.getDailyGainPercentage();
+                case 3: return String.format("%n, (%n %)", asset.getDailyGain(),asset.getDailyGainPercentage());
                 default: return null;
             }
         }
