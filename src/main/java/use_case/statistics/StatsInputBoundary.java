@@ -1,4 +1,4 @@
-package use_case.portfolio;
+package use_case.statistics;
 
 /**
  * Input Boundary for actions which are related to setting up the portfolio, which should be only one that the application is running.
@@ -7,9 +7,8 @@ public interface StatsInputBoundary {
 
     /**
      * Executes the portfolio use case.
-     * @param portfolioInputData the input data
+     * @param statsInputData the input data
      */
-    PortfolioOutputData getAssets(PortfolioInputData inputData);
-    
-    void execute(PortfolioInputData portfolioInputData);
+    void execute(StatsInputData statsInputData);
+
 }
