@@ -134,4 +134,5 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
     public void setPortfolioController(PortfolioController portfolioController) {
         this.portfolioController = portfolioController;
     }
+
 }
