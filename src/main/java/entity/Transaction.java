@@ -1,28 +1,28 @@
 package entity;
 
-import java.util.Date;
-
 public class Transaction {
-    private Date date;
+    private final String date;
     private String symbol;
-    private double quantity;
+    private String name;
+    private int quantity;
     private double totalValue;
     private String type; // Either "BUY" or "SELL"
 
 
-    public Transaction(String symbol, double quantity, Date date, double totalValue, String type) {
-        this.date = date;
+    public Transaction(String symbol, String name, int quantity, String date, double totalValue, String type) {
+        this.date = date; // Format:  YYYY-MM-DD
         this.symbol = symbol;
+        this.name = name;
         this.quantity = quantity;
         this.totalValue = totalValue;
         this.type = type;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public Date setDate(Date date) {
+    public String setDate(String date) {
         return date;
     }
 
@@ -34,11 +34,17 @@ public class Transaction {
         this.symbol = symbol;
     }
 
-    public double getQuantity() {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) { this.name = name; }
+
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(double quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
