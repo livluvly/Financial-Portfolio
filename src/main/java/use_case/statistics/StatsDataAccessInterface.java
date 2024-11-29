@@ -10,5 +10,4 @@ import java.util.List;
 public interface StatsDataAccessInterface {
 
     List<Asset> getAssetsForUser(String userId);
-
 }

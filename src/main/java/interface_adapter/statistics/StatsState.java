@@ -22,5 +22,4 @@ public class StatsState {
     public void setStatsErrorMessage(String statsErrorMessage) {
         this.statsErrorMessage = statsErrorMessage;
     }
-
 }

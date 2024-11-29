@@ -30,5 +30,4 @@ public class StatsInputData {
 //    public void setSetup(boolean state) {
 //        this.setup = state;
 //    }
-
 }

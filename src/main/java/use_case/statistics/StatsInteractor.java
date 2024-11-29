@@ -80,4 +80,5 @@ public class StatsInteractor implements StatsInputBoundary {
         }
         return totalDailyPercentageGain;
     }
+
 }

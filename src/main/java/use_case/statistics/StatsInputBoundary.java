@@ -10,4 +10,5 @@ public interface StatsInputBoundary {
      * @param statsInputData the input data
      */
     void execute(StatsInputData statsInputData);
+
 }

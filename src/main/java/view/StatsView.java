@@ -62,5 +62,4 @@ public class StatsView extends JFrame {
         // Create a panel to display the chart
         return new ChartPanel(chart);
     }
-
 }

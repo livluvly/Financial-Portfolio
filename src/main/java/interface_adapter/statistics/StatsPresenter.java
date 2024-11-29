@@ -28,4 +28,5 @@ public class StatsPresenter implements StatsOutputBoundary {
         final StatsState statsState = statsViewModel.getState();
         statsState.setStatsErrorMessage(errorMessage);
     }
+
 }

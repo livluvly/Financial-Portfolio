@@ -49,5 +49,4 @@ public class StatsOutputData {
 //    public void addAssets(Asset asset) {
 //        assets.add(asset);
 //    }
-
 }
