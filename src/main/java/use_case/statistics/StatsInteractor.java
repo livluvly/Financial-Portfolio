@@ -1,44 +1,83 @@
-//package use_case.portfolio;
-//
-//import use_case.login.LoginInputData;
-//
-//import java.util.List;
-//import entity.Asset;
-//
-///**
-// * The Portfolio Interactor.
-// */
-//
-//public class PortfolioInteractor implements PortfolioInputBoundary {
-//    private final PortfolioDataAccessInterface portfolioDataAccess;
-//    private final PortfolioOutputBoundary portfolioOutputBoundary;
-//    // the output boundary is a layer that actually helps interactor to talk with the presenter.
-//
-//    public PortfolioInteractor(PortfolioDataAccessInterface assetDataAccess,
-//                               PortfolioOutputBoundary portfolioOutputBoundary) {
-//        this.portfolioDataAccess = assetDataAccess;
-//        this.portfolioOutputBoundary = portfolioOutputBoundary;
-//        // this.portfolioDataAccessInterface =
-//        // {"IBM": {"Name": "International Business Machine", "Amount": 100.0},
-//        // "AAPL": {"Name": "Apple Inc.", "Amount": 50.0};
-//    }
-//
-//    /**
-//     * Should be an override method from implementing PortfolioInputBoundary.
-//     * @param loginInputData should there be any input data for portfolio?
-//     */
-//
-//    @Override
-//    public void execute(PortfolioInputData portfolioInputData) {
-//
-//    }
-//
-//    @Override
-//    public PortfolioOutputData getAssets(PortfolioInputData inputData) {
-//        List<Asset> assets = portfolioDataAccess.getAssetsForUser(inputData.getUserId());
-//        PortfolioOutputData outputData = new PortfolioOutputData(assets, false);
-//        portfolioOutputBoundary.prepareSuccessView(outputData);
-//        return outputData;
-//    }
-//
-//}
+package use_case.statistics;
+
+import entity.Asset;
+
+import java.util.List;
+
+/**
+ * The Statistic Interactor.
+ */
+
+public class StatsInteractor implements StatsInputBoundary {
+    private final StatsDataAccessInterface statsDataAccess;
+    private final StatsOutputBoundary statsPresenter;
+
+    private List<Asset> assets;
+    private Double totalBalance;
+    private Double totalDailyGain;
+    private Double totalDailyPercentageGain;
+    // the output boundary is a layer that actually helps interactor to talk with the presenter.
+
+    public StatsInteractor(StatsDataAccessInterface assetDataAccess,
+                           StatsOutputBoundary statsPresenter) {
+        this.statsDataAccess = assetDataAccess;
+        this.statsPresenter = statsPresenter;
+        // this.portfolioDataAccessInterface =
+        // {"IBM": {"Name": "International Business Machine", "Amount": 100.0},
+        // "AAPL": {"Name": "Apple Inc.", "Amount": 50.0};
+    }
+
+    /**
+     * Should be an override method from implementing PortfolioInputBoundary.
+     * @param statsInputData should there be any input data for portfolio?
+     */
+
+    @Override
+    public void execute(StatsInputData statsInputData) {
+        this.assets = statsDataAccess.getAssetsForUser(statsInputData.getUserId());
+        this.totalBalance = retrieveTotalBalance();
+        this.totalDailyGain = retrieveTotalDailyGain();
+        this.totalDailyPercentageGain = retrieveTotalPercentageGain();
+        StatsOutputData outputData = new StatsOutputData(assets, totalBalance, totalDailyGain, totalDailyPercentageGain, true);
+        statsPresenter.prepareSuccessView(outputData);
+    }
+
+    public Double getTotalBalance() {
+        return totalBalance;
+    }
+
+    public Double getTotalDailyGain() {
+        return totalDailyGain;
+    }
+
+    public Double getTotalDailyPercentageGain() {
+        return totalDailyPercentageGain;
+    }
+
+    private Double retrieveTotalBalance() {
+        double totalBalance = 0.0;
+        for (Asset asset : assets) {
+            double totalValue = asset.getTotalValue();
+            totalBalance += totalValue;
+        }
+        return totalBalance;
+    }
+
+    private Double retrieveTotalDailyGain() {
+        double totalDailyGain = 0.0;
+        for (Asset asset : assets) {
+            double totalGain = asset.getDailyGain();
+            totalDailyGain += totalGain;
+        }
+        return totalDailyGain;
+    }
+
+    private Double retrieveTotalPercentageGain() {
+        double totalDailyPercentageGain = 0.0;
+        for (Asset asset : assets) {
+            double totalPercentageGain = asset.getDailyGainPercentage();
+            totalDailyPercentageGain += totalPercentageGain;
+        }
+        return totalDailyPercentageGain;
+    }
+}

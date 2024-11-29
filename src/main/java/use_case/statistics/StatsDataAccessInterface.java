@@ -1,14 +1,14 @@
-//package use_case.portfolio;
-//
-//import entity.Asset;
-//import entity.User;
-//
-//import java.util.List;
-//
-///**
-// * DAO for the Portfolio Use Case.
-// */
-//public interface PortfolioDataAccessInterface {
-//
-//    List<Asset> getAssetsForUser(String userId);
-//}
+package use_case.statistics;
+
+import entity.Asset;
+
+import java.util.List;
+
+/**
+ * DAO for the Statistic Use Case.
+ */
+public interface StatsDataAccessInterface {
+
+    List<Asset> getAssetsForUser(String userId);
+
+}
