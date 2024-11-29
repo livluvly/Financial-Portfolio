@@ -15,4 +15,7 @@ public class PortfolioController {
         PortfolioInputData inputData= new PortfolioInputData(userId);
         return portfolioInputBoundary.getAssets(inputData);
     }
+
+    public void execute(String username) {
+    }
 }
