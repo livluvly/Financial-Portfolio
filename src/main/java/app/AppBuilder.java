@@ -10,6 +10,7 @@ import entity.CommonUserFactory;
 import entity.UserFactory;
 import interface_adapter.PortfolioViewModel;
 import interface_adapter.SearchAssetViewModel;
+import interface_adapter.StatsViewModel;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
@@ -24,6 +25,7 @@ import interface_adapter.search.SearchAssetPresenter;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
+import interface_adapter.statistics.StatsController;
 import interface_adapter.transaction.TransactionController;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
@@ -65,6 +67,8 @@ public class AppBuilder {
     private AlphaVantageSearchDataAccessObject searchDataAccessObject;
     private PortfolioView portfolioView;
     private PortfolioViewModel portfolioViewModel;
+    private StatsView statsView;
+    private StatsViewModel statsViewModel;
     private SearchAssetView transactionsView;
     private SearchAssetViewModel transactionsViewModel;
     private SearchAssetController searchController;
@@ -88,6 +92,17 @@ public class AppBuilder {
         portfolioViewModel = new PortfolioViewModel();
         portfolioView = new PortfolioView(portfolioViewModel);
         cardPanel.add(portfolioView, portfolioViewModel.getViewName());
+        return this;
+    }
+
+    /**
+     * Adds the Stats View to the application.
+     * @return this builder
+     */
+    public AppBuilder addStatsView() {
+        statsViewModel = new StatsViewModel();
+        statsView = new StatsView(statsViewModel);
+        cardPanel.add(statsView, statsViewModel.getViewName());
         return this;
     }
 
@@ -129,6 +144,7 @@ public class AppBuilder {
         searchController = new SearchAssetController(searchInteractor);
         return this;
     }
+
     /**
      * Adds the Signup View to the application.
      * @return this builder
@@ -238,17 +254,22 @@ public class AppBuilder {
         JButton loginButton = new JButton("Login");
         JButton portfolioButton = new JButton("Portfolio");
         JButton transactionsButton = new JButton("Transactions");
+        JButton statsButton = new JButton("Statistics");
 
         // Switch views when buttons are clicked
         loginButton.addActionListener(e -> {viewManagerModel.setState(loginViewModel.getViewName());
             viewManagerModel.firePropertyChanged();});
         portfolioButton.addActionListener(e -> {viewManagerModel.setState(portfolioViewModel.getViewName());
             viewManagerModel.firePropertyChanged();});
+        statsButton.addActionListener(e -> {viewManagerModel.setState(statsViewModel.getViewName());
+            System.out.println("switching to view: " + statsViewModel.getViewName());
+            viewManagerModel.firePropertyChanged();});
         transactionsButton.addActionListener(e -> {viewManagerModel.setState(transactionsViewModel.getViewName());
-        viewManagerModel.firePropertyChanged();});
+            viewManagerModel.firePropertyChanged();});
 
         buttonPanel.add(loginButton);
         buttonPanel.add(portfolioButton);
+        buttonPanel.add(statsButton);
         buttonPanel.add(transactionsButton);
 
         // Add panels to the frame
@@ -257,7 +278,7 @@ public class AppBuilder {
         application.add(cardPanel, BorderLayout.CENTER);
 
         // Set the initial state
-        viewManagerModel.setState(transactionsViewModel.getViewName());
+        viewManagerModel.setState(loginViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
 
         application.setSize(800, 600);

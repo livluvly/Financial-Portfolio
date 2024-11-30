@@ -26,6 +26,7 @@ public class Main {
                 .addLoginView()
                 .addLoggedInView()
                 .addPortfolioView()
+                .addStatsView()
                 .addTransactionController()
                 .addSearchAssetUseCase()
                 .addTransactionsView();// Add the search functionality
