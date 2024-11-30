@@ -235,15 +235,19 @@ public class AppBuilder {
 
         // Create navigation buttons
         JPanel buttonPanel = new JPanel();
+        JButton loginButton = new JButton("Login");
         JButton portfolioButton = new JButton("Portfolio");
         JButton transactionsButton = new JButton("Transactions");
 
         // Switch views when buttons are clicked
+        loginButton.addActionListener(e -> {viewManagerModel.setState(loginViewModel.getViewName());
+            viewManagerModel.firePropertyChanged();});
         portfolioButton.addActionListener(e -> {viewManagerModel.setState(portfolioViewModel.getViewName());
             viewManagerModel.firePropertyChanged();});
         transactionsButton.addActionListener(e -> {viewManagerModel.setState(transactionsViewModel.getViewName());
         viewManagerModel.firePropertyChanged();});
 
+        buttonPanel.add(loginButton);
         buttonPanel.add(portfolioButton);
         buttonPanel.add(transactionsButton);
 
@@ -261,4 +265,5 @@ public class AppBuilder {
 
         return application;
     }
+
 }
