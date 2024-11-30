@@ -62,4 +62,5 @@ public class StatsView extends JPanel {
         // Create a panel to display the chart
         return new ChartPanel(chart);
     }
+
 }
