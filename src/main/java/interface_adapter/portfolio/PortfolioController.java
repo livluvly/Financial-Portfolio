@@ -19,4 +19,20 @@ public class PortfolioController {
     public void execute(String username) {
     }
 
+    public void savePortfolio(String username) {
+        portfolioInputBoundary.savePortfolio(new PortfolioInputData(username));
+    }
+
+    public void addTransaction(String username, String symbol, double quantity, double value, double gain) {
+        portfolioInputBoundary.addTransaction(new PortfolioInputData(username, symbol, quantity, value, gain));
+    }
+
+    public void updateAsset(String username, String symbol, double newQuantity) {
+        portfolioInputBoundary.updateAsset(new PortfolioInputData(username, symbol, newQuantity));
+    }
+
+    public void deleteAsset(String username, String symbol) {
+        portfolioInputBoundary.deleteAsset(new PortfolioInputData(username, symbol));
+    }
+
 }
