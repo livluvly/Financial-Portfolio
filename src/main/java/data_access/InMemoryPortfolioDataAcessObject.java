@@ -26,4 +26,40 @@ public class InMemoryPortfolioDataAcessObject implements PortfolioDataAccessInte
     public List<Asset> getAssetsForUser(String userId) {
         return database.getOrDefault(userId, Collections.emptyList());
     }
+
+    /**
+     * @param username
+     * @param portfolio
+     */
+    @Override
+    public void savePortfolio(String username, List<Asset> portfolio) {
+
+    }
+    
+    /**
+     * @param username
+     * @param asset
+     */
+    @Override
+    public void addTransaction(String username, Asset asset) {
+
+    }
+
+    /**
+     * @param username
+     * @param asset
+     */
+    @Override
+    public void updateAsset(String username, Asset asset) {
+
+    }
+
+    /**
+     * @param username
+     * @param symbol
+     */
+    @Override
+    public void deleteAsset(String username, String symbol) {
+
+    }
 }

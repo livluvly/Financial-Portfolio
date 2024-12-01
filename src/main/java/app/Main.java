@@ -1,7 +1,7 @@
 package app;
 
 import javax.swing.*;
-import java.awt.*;
+import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
@@ -10,20 +10,24 @@ public class Main {
             AppBuilder appBuilder = new AppBuilder();
 
             // Add all views and use cases
-            appBuilder
-//                    .addSignupUseCase()
-//                    .addLoginUseCase()
-//                    .addChangePasswordUseCase()
-//                    .addLogoutUseCase()
-                    .addSearchAssetUseCase()
-                    .addPortfolioUseCase()
-                    .addTransactionController() // Ensures transaction handling is set up
-                    .addSignupView()
-                    .addLoginView()
-                    .addLoggedInView()
-                    .addTransactionsView()
-                    .addPortfolioView()   // Add the PortfolioView
-                    .addStatsView();  // Add the StatisticsView (if implemented)
+            try {
+                appBuilder
+                        .addSignupView()
+                        .addLoginView()
+                        .addLoggedInView()
+                        .addSignupUseCase()
+                        .addLoginUseCase()
+                        .addChangePasswordUseCase()
+                        .addLogoutUseCase()
+                        .addSearchAssetUseCase()
+                        .addPortfolioUseCase()
+                        .addTransactionUseCase() // Ensures transaction handling is set up
+                        .addTransactionsView()
+                        .addPortfolioView()   // Add the PortfolioView
+                        .addStatsView();  // Add the StatisticsView (if implemented)
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
             // Build the application and create the frame
             JFrame application = appBuilder.build();
