@@ -10,12 +10,15 @@ import use_case.portfolio.PortfolioOutputData;
 
 public class PortfolioViewModel extends ViewModel<PortfolioState> {
 //    private final List<Asset> assets;
-    private final PortfolioController controller;
+    private PortfolioController controller;
 
-    public PortfolioViewModel(PortfolioController portfolioController) {
+    public PortfolioViewModel() {
         super("Portfolio");
-        this.controller = portfolioController;
         this.setState(new PortfolioState(List.of()));
+    }
+
+    public void setController(PortfolioController controller) {
+        this.controller = controller;
     }
     public void updatePortfolio(List<Asset> assets) {
         PortfolioState newState = new PortfolioState(assets);

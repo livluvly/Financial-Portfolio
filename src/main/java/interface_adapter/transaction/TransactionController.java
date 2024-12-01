@@ -26,9 +26,8 @@ public class TransactionController {
         if (existingAsset == null) {
             // Add a new asset to the portfolio
             Asset newAsset = new Asset(transaction.getSymbol(),
-                    transaction.getQuantity(),
-                    1, transaction.getTotalCost(),
-                    0);
+                    transaction.getQuantity(), transaction.getTotalCost(),
+                    0,0);
             assets.add(newAsset);
         } else {
             // Update the existing asset
@@ -42,6 +41,7 @@ public class TransactionController {
         }
 
         // Update the portfolio view model
+        portfolioViewModel.addTransaction("foobar",transaction.getSymbol(), transaction.getQuantity(), transaction.getTotalCost(), 0);
         portfolioViewModel.updatePortfolio(assets);
     }
 }

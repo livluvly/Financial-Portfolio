@@ -41,6 +41,7 @@ import use_case.logout.LogoutInteractor;
 import use_case.logout.LogoutOutputBoundary;
 import use_case.portfolio.PortfolioDataAccessInterface;
 import use_case.portfolio.PortfolioInteractor;
+import use_case.portfolio.PortfolioOutputBoundary;
 import use_case.search.SearchAssetInteractor;
 import use_case.search.SearchAssetOutputBoundary;
 import use_case.signup.SignupInputBoundary;
@@ -85,6 +86,7 @@ public class AppBuilder {
     private LoginView loginView;
     private TransactionController transactionController;
     private PortfolioController portfolioController;
+    private PortfolioPresenter portfolioPresenter;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -144,13 +146,12 @@ public class AppBuilder {
      */
     public AppBuilder addPortfolioUseCase() throws IOException {
         PortfolioDataAccessInterface portfolioDao = new FilePortfolioDataAccessObject("portfolio.csv");
-        PortfolioPresenter portfolioPresenter = new PortfolioPresenter(portfolioViewModel);
+        portfolioViewModel = new PortfolioViewModel();
+        portfolioPresenter = new PortfolioPresenter(portfolioViewModel);
         PortfolioInteractor portfolioInteractor = new PortfolioInteractor(portfolioDao, portfolioPresenter);
         portfolioController = new PortfolioController(portfolioInteractor);
-        portfolioViewModel = new PortfolioViewModel(portfolioController);
-
-//        PortfolioOutputBoundary portfolioPresenter = new PortfolioPresenter(portfolioViewModel);
-//        PortfolioInteractor portfolioInteractor = new PortfolioInteractor(portfolioPresenter);
+        portfolioViewModel.setController(portfolioController);
+//      PortfolioInteractor portfolioInteractor = new PortfolioInteractor(portfolioPresenter);
         return this;
     }
 
