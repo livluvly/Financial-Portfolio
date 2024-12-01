@@ -30,29 +30,29 @@ public class TransactionController {
                     transaction.getQuantity(), transaction.getTotalCost(),
                     0,0);
             assets.add(newAsset);
-//            portfolioViewModel.addTransaction(
-//                    username,
-//                    transaction.getSymbol(),
-//                    transaction.getQuantity() ,
-//                    transaction.getTotalCost(),
-//                    0);
+            portfolioViewModel.addTransaction(
+                    username,
+                    transaction.getSymbol(),
+                    transaction.getQuantity() ,
+                    transaction.getTotalCost(),
+                    0);
         } else {
             // Update the existing asset
             if (transaction.getType().equals("BUY")) {
                 existingAsset.setQuantity(existingAsset.getQuantity() + transaction.getQuantity());
                 existingAsset.setTotalValue(existingAsset.getTotalValue() + transaction.getTotalCost());
-//                portfolioViewModel.updateAsset(
-//                        username,
-//                        transaction.getSymbol(),
-//                        transaction.getQuantity() ,
-//                        transaction.getTotalCost());
+                portfolioViewModel.updateAsset(
+                        username,
+                        transaction.getSymbol(),
+                        transaction.getQuantity() ,
+                        transaction.getTotalCost());
             } else {
                 existingAsset.setQuantity(existingAsset.getQuantity() - transaction.getQuantity());
                 existingAsset.setTotalValue(existingAsset.getTotalValue() - transaction.getTotalCost());
                 if (existingAsset.getQuantity() <= 0) {
                     assets.remove(existingAsset);
                 }
-//                portfolioViewModel.deleteAsset(username, transaction.getSymbol());
+                portfolioViewModel.deleteAsset(username, transaction.getSymbol());
             }
         }
 

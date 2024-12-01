@@ -58,6 +58,7 @@ public class FilePortfolioDataAccessObject implements PortfolioDataAccessInterfa
     @Override
     public void savePortfolio(String username, List<Asset> portfolio) {
         List<String> rows = new ArrayList<>();
+        Map<String, Asset> assetMap = new HashMap<>();
 
         // Read all existing rows and filter out old portfolio data
         try (BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
@@ -67,9 +68,22 @@ public class FilePortfolioDataAccessObject implements PortfolioDataAccessInterfa
         } catch (IOException e) {
             throw new RuntimeException("Error reading portfolio file.", e);
         }
-
-        // Append new portfolio data
+        // Append new portfolio data // TODO: extract methods
+        // Update or add new assets
         for (Asset asset : portfolio) {
+            if (assetMap.containsKey(asset.getSymbol())) {
+                // If asset already exists, update quantity and totalValue
+                Asset existingAsset = assetMap.get(asset.getSymbol());
+                existingAsset.setQuantity(existingAsset.getQuantity() + asset.getQuantity());
+                existingAsset.setTotalValue(existingAsset.getTotalValue() + asset.getTotalValue());
+            } else {
+                // Otherwise, add new asset
+                assetMap.put(asset.getSymbol(), asset);
+            }
+        }
+
+        // Append the updated or new assets to rows
+        for (Asset asset : assetMap.values()) {
             rows.add(String.format("%s,%s,%.2f,%.2f,%.2f,%.2f",
                     username,
                     asset.getSymbol(),
@@ -78,10 +92,9 @@ public class FilePortfolioDataAccessObject implements PortfolioDataAccessInterfa
                     asset.getDailyGain(),
                     asset.getDailyGainPercentage()));
         }
-        // write!
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(csvFile))) {
-            writer.write(HEADER);
-            writer.newLine();
+//            writer.write(HEADER);
+//            writer.newLine();
             for (String row : rows) {
                 writer.write(row);
                 writer.newLine();
