@@ -7,12 +7,12 @@ public class Asset {
     private double dailyGain;
     private double dailyGainPercentage;
 
-    public Asset(String symbol, double i, double v, double v1) {
+    public Asset(String symbol, double quantity, double totalValue, double dailyGain) {
         this.symbol = symbol;
-        quantity = i;
-        totalValue = v;
-        dailyGain = v1;
-        dailyGainPercentage = v1/v;
+        this.quantity = quantity;
+        this.totalValue = totalValue;
+        this.dailyGain = dailyGain;
+        this.dailyGainPercentage = dailyGain/totalValue;
     }
 
     public double getQuantity() {
