@@ -4,18 +4,18 @@ public class Asset {
     private String symbol;
     private double quantity;
     private double totalValue;
-    private double valuePerUnit;
+//    private double valuePerUnit;
     private double dailyGain;
     private double dailyGainPercentage;
 
 
-    public Asset(String symbol, double quantity, double valuePerUnit, double v, double v1) {
+    public Asset(String symbol, double quantity, double totalValue, double dailyGain, double dailyGainPercentage) {
         this.symbol = symbol;
         this.quantity = quantity;
-        this.valuePerUnit = valuePerUnit;
-        this.totalValue = v;
-        this.dailyGain = v1;
-        this.dailyGainPercentage = v1/v;
+//        this.valuePerUnit = valuePerUnit;
+        this.totalValue = totalValue;
+        this.dailyGain = dailyGain;
+        this.dailyGainPercentage = dailyGainPercentage;
     }
 
     public double getQuantity() {
