@@ -58,5 +58,5 @@ public class Asset {
         this.symbol = symbol;
     }
 
-    public double getValuePerUnit() {return valuePerUnit;}
+//    public double getValuePerUnit() {return valuePerUnit;}
 }
