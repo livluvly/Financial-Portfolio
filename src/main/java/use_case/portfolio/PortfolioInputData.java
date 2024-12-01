@@ -1,33 +1,56 @@
 package use_case.portfolio;
 
 /**
- * The Input Data for the Portfolio Use Case.
+ * A data transfer object (DTO) for inputting data into the portfolio use case.
  */
 public class PortfolioInputData {
+    private String username;
+    private String symbol; // Optional, for transactions or asset-specific actions
+    private double quantity; // Optional, for adding or updating assets
+    private double totalValue; // Optional, for transactions
+    private double dailyGain; // Optional, for transactions
 
-//    private boolean setup;
-    private final String userId;
-    /**
-     * Initialize with a portfolio that is not setup.
-     * @param setup the setup of the portfolio view.
-     */
-    public PortfolioInputData(String userId) {
-        this.userId = userId;
+    // Constructor for general portfolio actions (e.g., fetch, save)
+    public PortfolioInputData(String username) {
+        this.username = username;
     }
 
-    /**
-     * Return the status of current portfolio setup.
-     * @return the status of current portfolio setup.
-     */
-    public String getUserId() {
-        return userId;
+    public PortfolioInputData(String username, String symbol) {
+        this.username = username;
+    }
+    // Constructor for transactions or asset-specific actions
+    public PortfolioInputData(String username, String symbol, double quantity) {
+        this.username = username;
+        this.symbol = symbol;
+        this.quantity = quantity;
     }
 
-    /**
-     * Change setup status.
-     * @param state the state to which to set the setup.
-     */
-//    public void setSetup(boolean state) {
-//        this.setup = state;
-//    }
+    // Constructor for transactions involving full details
+    public PortfolioInputData(String username, String symbol, double quantity, double totalValue, double dailyGain) {
+        this.username = username;
+        this.symbol = symbol;
+        this.quantity = quantity;
+        this.totalValue = totalValue;
+        this.dailyGain = dailyGain;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public double getQuantity() {
+        return quantity;
+    }
+
+    public double getTotalValue() {
+        return totalValue;
+    }
+
+    public double getDailyGain() {
+        return dailyGain;
+    }
 }

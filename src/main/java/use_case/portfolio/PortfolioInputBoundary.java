@@ -10,6 +10,14 @@ public interface PortfolioInputBoundary {
      * @param portfolioInputData the input data
      */
     PortfolioOutputData getAssets(PortfolioInputData inputData);
-    
+
+    void savePortfolio(PortfolioInputData inputData);
+
+    void addTransaction(PortfolioInputData inputData);
+
+    void updateAsset(PortfolioInputData inputData);
+
+    void deleteAsset(PortfolioInputData inputData);
+
     void execute(PortfolioInputData portfolioInputData);
 }
