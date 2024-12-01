@@ -13,9 +13,9 @@ public class InMemoryPortfolioDataAcessObject implements PortfolioDataAccessInte
     public InMemoryPortfolioDataAcessObject(){
         // test data
         database.put("alice", List.of(
-                new Asset("AAPL", 10, 1500.0, 1.5),
-                new Asset("GOOGL", 5, 1400.0, 0.8),
-                new Asset("AMZN", 2, 3200.0, -0.3)
+                new Asset("AAPL", 10, 1, 1500.0, 1.5),
+                new Asset("GOOGL", 5, 1, 1400.0, 0.8),
+                new Asset("AMZN", 2, 1, 3200.0, -0.3)
         ));
     }
     /**

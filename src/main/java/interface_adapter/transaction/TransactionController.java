@@ -27,7 +27,7 @@ public class TransactionController {
             // Add a new asset to the portfolio
             Asset newAsset = new Asset(transaction.getSymbol(),
                     transaction.getQuantity(),
-                    transaction.getTotalCost(),
+                    1, transaction.getTotalCost(),
                     0);
             assets.add(newAsset);
         } else {

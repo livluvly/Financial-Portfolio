@@ -89,8 +89,8 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addPortfolioView() {
-        portfolioViewModel = new PortfolioViewModel();
         portfolioView = new PortfolioView(portfolioViewModel);
+        portfolioView.setTransactionController(transactionController);
         cardPanel.add(portfolioView, portfolioViewModel.getViewName());
         return this;
     }
@@ -129,6 +129,30 @@ public class AppBuilder {
         transactionsView = new SearchAssetView(transactionsViewModel);
         transactionsView.setTransactionController(transactionController);
         cardPanel.add(transactionsView, transactionsViewModel.getViewName());
+        return this;
+    }
+
+    /**
+     * Adds the Portfolio Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addPortfolioUseCase() {
+        portfolioViewModel = new PortfolioViewModel();
+//        PortfolioOutputBoundary portfolioPresenter = new PortfolioPresenter(portfolioViewModel);
+//        PortfolioInteractor portfolioInteractor = new PortfolioInteractor(portfolioPresenter);
+        return this;
+    }
+
+    /**
+     * Adds the Transactions Use Case to the application.
+     * This handles both purchases and sales.
+     * @return this builder
+     */
+    public AppBuilder addTransactionUseCase() {
+//        transactionRepository = new InMemoryTransactionRepository(); // Initialize the repository
+//        TransactionOutputBoundary transactionPresenter = new TransactionPresenter(portfolioViewModel, transactionViewModel);
+//        TransactionInteractor transactionInteractor = new TransactionInteractor(transactionRepository, transactionPresenter);
+        transactionController = new TransactionController(portfolioViewModel);
         return this;
     }
 

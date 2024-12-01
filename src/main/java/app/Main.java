@@ -1,39 +1,38 @@
 package app;
 
-import data_access.AlphaVantageSearchDataAccessObject;
-import interface_adapter.*;
-import interface_adapter.portfolio.*;
-
-import java.util.List;
-import entity.*;
-
-
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * The Main class of our application.
- */
 public class Main {
-    /**
-     * Builds and runs the CA architecture of the application.
-     * @param args unused arguments
-     */
     public static void main(String[] args) {
-        AppBuilder appBuilder = new AppBuilder();
-        appBuilder
-                .addSignupView()
-                .addLoginView()
-                .addLoggedInView()
-                .addPortfolioView()
-                .addStatsView()
-                .addTransactionController()
-                .addSearchAssetUseCase()
-                .addTransactionsView();// Add the search functionality
-        JFrame app = appBuilder.build();
-//   //      test search feature
-//        AlphaVantageSearchDataAccessObject dao = new AlphaVantageSearchDataAccessObject();
-//        System.out.println(dao.searchByKeyword("aza"));
-    }
+        SwingUtilities.invokeLater(() -> {
+            // Initialize the AppBuilder
+            AppBuilder appBuilder = new AppBuilder();
 
+            // Add all views and use cases
+            appBuilder
+//                    .addSignupUseCase()
+//                    .addLoginUseCase()
+//                    .addChangePasswordUseCase()
+//                    .addLogoutUseCase()
+                    .addSearchAssetUseCase()
+                    .addPortfolioUseCase()
+                    .addTransactionController() // Ensures transaction handling is set up
+                    .addSignupView()
+                    .addLoginView()
+                    .addLoggedInView()
+                    .addTransactionsView()
+                    .addPortfolioView()   // Add the PortfolioView
+                    .addStatsView();  // Add the StatisticsView (if implemented)
+
+            // Build the application and create the frame
+            JFrame application = appBuilder.build();
+
+            try {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
 }
