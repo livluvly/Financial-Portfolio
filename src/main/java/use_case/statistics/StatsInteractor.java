@@ -63,7 +63,7 @@ public class StatsInteractor implements StatsInputBoundary {
     private Double retrieveTotalBalance() {
         double totalBalance = 0.0;
         for (Asset asset : assets) {
-            double totalValue = asset.getTotalValue();
+            double totalValue = asset.getPrice() * asset.getQuantity();
             totalBalance += totalValue;
         }
         return totalBalance;
@@ -72,20 +72,19 @@ public class StatsInteractor implements StatsInputBoundary {
     private Double retrieveTotalDailyGain() {
         double totalDailyGain = 0.0;
         for (Asset asset : assets) {
-            double totalGain = asset.getDailyGain();
+            double totalGain = asset.getDailyGain() * asset.getQuantity();
             totalDailyGain += totalGain;
         }
         return totalDailyGain;
     }
 
     private Double retrieveTotalPercentageGain() {
-        double totalDailyPercentageGain = 0.0;
-        double totalBalance = retrieveTotalBalance();
-        for (Asset asset : assets) {
-            double totalPercentageGain = (asset.getDailyGain() * asset.getDailyGain()) / totalBalance;
-            totalDailyPercentageGain += totalPercentageGain;
+        if (assets.isEmpty()) {
+            return 0.0;
         }
-        return totalDailyPercentageGain;
+        double totalBalance = retrieveTotalBalance();
+        double totalDailyGain = retrieveTotalDailyGain();
+        return totalDailyGain / totalBalance;
     }
 
 }

@@ -3,16 +3,16 @@ package entity;
 public class Asset {
     private String symbol;
     private double quantity;
-    private double totalValue;
+    private double price;
     private double dailyGain;
     private double dailyGainPercentage;
 
-    public Asset(String symbol, double quantity, double totalValue, double dailyGain) {
+    public Asset(String symbol, double quantity, double price, double dailyGain) {
         this.symbol = symbol;
         this.quantity = quantity;
-        this.totalValue = totalValue;
+        this.price = price;
         this.dailyGain = dailyGain;
-        this.dailyGainPercentage = dailyGain/totalValue;
+        this.dailyGainPercentage = dailyGain/price;
     }
 
     public double getQuantity() {
@@ -23,12 +23,12 @@ public class Asset {
         this.quantity = quantity;
     }
 
-    public double getTotalValue() {
-        return totalValue;
+    public double getPrice() {
+        return price;
     }
 
-    public void setTotalValue(double totalValue) {
-        this.totalValue = totalValue;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     public double getDailyGain() {

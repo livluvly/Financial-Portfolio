@@ -18,8 +18,8 @@ class StatsInteractorTest {
 
         // Populate the repository with assets for JohnDoe.
         List<Asset> assets = new ArrayList<>();
-        assets.add(new Asset("AAPL", 10, 1500.0, 1.1));
-        assets.add(new Asset("GOOGL", 5, 1400.0, 0.8));
+        assets.add(new Asset("AAPL", 10, 150.0, 5.0));
+        assets.add(new Asset("GOOGL", 5, 140.0, 7.0));
         statsRepository.saveAssetsForUser("alice", assets);
 
         StatsOutputBoundary successPresenter = new StatsOutputBoundary() {
@@ -27,9 +27,9 @@ class StatsInteractorTest {
             public void prepareSuccessView(StatsOutputData outputData) {
                 assertNotNull(outputData);
                 assertEquals(2, outputData.getAssets().size());
-                assertEquals(2900.0, outputData.getTotalBalance());
-                assertEquals(1.9, outputData.getTotalDailyGain(), 0.01);
-                assertEquals(0.01, outputData.getTotalDailyPercentageGain(), 0.01);
+                assertEquals(2200.0, outputData.getTotalBalance());
+                assertEquals(85.0, outputData.getTotalDailyGain(), 0.01);
+                assertEquals(0.038, outputData.getTotalDailyPercentageGain(), 0.01);
             }
 
             @Override
