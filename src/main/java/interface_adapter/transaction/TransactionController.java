@@ -32,8 +32,13 @@ public class TransactionController {
             assets.add(newAsset);
         } else {
             // Update the existing asset
-            existingAsset.setQuantity(existingAsset.getQuantity() + transaction.getQuantity());
-            existingAsset.setTotalValue(existingAsset.getTotalValue() + transaction.getTotalCost());
+            if (transaction.getType().equals("BUY")) {
+                existingAsset.setQuantity(existingAsset.getQuantity() + transaction.getQuantity());
+                existingAsset.setTotalValue(existingAsset.getTotalValue() + transaction.getTotalCost());
+            } else {
+                existingAsset.setQuantity(existingAsset.getQuantity() - transaction.getQuantity());
+                existingAsset.setTotalValue(existingAsset.getTotalValue() - transaction.getTotalCost());
+            }
         }
 
         // Update the portfolio view model
