@@ -1,7 +1,7 @@
 # Project: Financial Portfolio
 
 
-### Teammates & GitHub Usernames:
+## Teammates & GitHub Usernames:
 
     1. Olivia Ang (livluvly)
     2. Areesha Abidi (Areesha-Abidi)
@@ -9,38 +9,81 @@
     4. Jason Liu (jasonliuuu)
 
 
-### Project Summary
+## Project Summary
+This project is a financial portfolio management application built using the principles of Clean Architecture, emphasizing modularity, scalability, and testability. The application allows users to manage their investment portfolios efficiently while maintaining a clean separation of concerns across different architectural layers.
 
-#### Purpose & Scope:
-A Clean Architecture implementation for personal financial portfolio management system.
 
-#### Why was it made?
-#### What problem does it solve?
-#### User Stories:
+## Table of Contents
+<!-- TOC -->
+* [Project: Financial Portfolio](#project-financial-portfolio)
+  * [Teammates & GitHub Usernames:](#teammates--github-usernames)
+  * [Project Summary](#project-summary)
+  * [Table of Contents](#table-of-contents)
+  * [Purpose & Scope:](#purpose--scope)
+    * [Why was it made?](#why-was-it-made)
+    * [What problem does it solve?](#what-problem-does-it-solve)
+    * [User Stories:](#user-stories)
+  * [Features](#features)
+  * [Installation](#installation)
+    * [Prerequisites](#prerequisites)
+    * [Steps](#steps)
+    * [Common Issues](#common-issues)
+  * [Usage Guide](#usage-guide)
+  * [License](#license)
+  * [Feedback & Contribution](#feedback--contribution)
+<!-- TOC -->
+
+## Purpose & Scope:
+This project was designed to provide users with a robust and intuitive tool for managing investment portfolios while showcasing the application of Clean Architecture principles. By separating the core domain logic, application services, and user interfaces, the system ensures maintainability and extensibility, allowing future enhancements like additional asset types or advanced analytics with minimal impact on existing code.
+
+### Why was it made?
+### What problem does it solve?
+### User Stories:
 
     1. Olivia -
 
     2. Areesha -
 
-    3. Bradley -
+    3. Bradley - As an investor, I want to verify and check the aggregate performance of my portfoilo. This includes checking the total statistics of my portfolio, and also visually understanding how are my capitals allocated in different assets in a pie chart. This is helpful so that I can make better foward looking "next steps" decisions when I (re)allocate my capital.
 
     4. Ruizhen -
 
     5. Team - 
 
 
-### Table of Contents
-(should contain hyperlinks to all the heading1's below)
+## Features
+1. User Login:\
+Login functionality to access personalized portfolio data.
 
-### Features
+
+2. Portfolio Management:\
+View a detailed listing of assets in the user's portfolio, including real-time values updated using a financial API.\
+Access performance statistics such as:
+  - Total Balance 
+  - Total Daily Gain 
+  - Total Daily Percentage Gain 
+  - Visualize portfolio composition through a pie chart
+
+3. Transaction Management:\
+Perform buy and sell operations for assets within the portfolio.\
+Real-time updates to portfolio holdings and balances after each transaction.
 
 
-### Installation
+4. Transaction History:\
+View a chronological record of all past transactions, including details like date, type (buy/sell), asset, quantity, and price.
 
-#### Prerequisites
-#### Steps
-#### Common Issues
 
-### Usage Guide
+5. Real-Time Updates:\
+Asset values are dynamically updated using a financial API, ensuring accurate portfolio calculations and statistics.
 
-### How to give Feedback & Contribution
+## Installation
+
+### Prerequisites
+### Steps
+### Common Issues
+
+## Usage Guide
+
+## License
+
+## Feedback & Contribution
