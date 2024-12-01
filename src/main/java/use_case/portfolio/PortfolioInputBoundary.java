@@ -7,7 +7,9 @@ public interface PortfolioInputBoundary {
 
     /**
      * Executes the portfolio use case.
+     *
      * @param portfolioInputData the input data
+     * @return
      */
     PortfolioOutputData getAssets(PortfolioInputData inputData);
 

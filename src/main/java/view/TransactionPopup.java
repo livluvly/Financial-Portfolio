@@ -6,7 +6,7 @@ public class TransactionPopup {
     public static Double promptForQuantity(String symbol) {
         String input = JOptionPane.showInputDialog(
                 null,
-                "Enter the quantity to purchase for " + symbol + ":",
+                "Enter the quantity to purchase/sell for " + symbol + ":",
                 "Purchase Asset",
                 JOptionPane.QUESTION_MESSAGE
         );

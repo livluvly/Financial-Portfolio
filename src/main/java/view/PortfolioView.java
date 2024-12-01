@@ -89,7 +89,10 @@ public class PortfolioView extends JPanel {
                     quantityToSell, today.getTime(),
                     asset.getValuePerUnit()*quantityToSell,
                     "SELL");
-            transactionController.addTransaction(transaction);
+            
+            transactionController.addTransaction(
+                    this.viewModel.getState().getUsername(),
+                    transaction);
         }
     }
 

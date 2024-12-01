@@ -12,11 +12,11 @@ public class InMemoryPortfolioDataAcessObject implements PortfolioDataAccessInte
     private final Map<String, List<Asset>> database = new HashMap<>();
     public InMemoryPortfolioDataAcessObject(){
         // test data
-        database.put("alice", List.of(
-                new Asset("AAPL", 10, 1, 1500.0, 1.5),
-                new Asset("GOOGL", 5, 1, 1400.0, 0.8),
-                new Asset("AMZN", 2, 1, 3200.0, -0.3)
-        ));
+//        database.put("alice", List.of(
+//                new Asset("AAPL", 10, 1, 1500.0, 1.5),
+//                new Asset("GOOGL", 5, 1, 1400.0, 0.8),
+//                new Asset("AMZN", 2, 1, 3200.0, -0.3)
+//        ));
     }
     /**
      * @param userId 
@@ -27,13 +27,15 @@ public class InMemoryPortfolioDataAcessObject implements PortfolioDataAccessInte
         return database.getOrDefault(userId, Collections.emptyList());
     }
 
+
+
     /**
      * @param username
      * @param portfolio
      */
     @Override
     public void savePortfolio(String username, List<Asset> portfolio) {
-
+        database.put(username,portfolio);
     }
     
     /**

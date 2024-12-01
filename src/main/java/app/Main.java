@@ -10,20 +10,22 @@ public class Main {
             AppBuilder appBuilder = new AppBuilder();
 
             // Add all views and use cases
+            // warning: portfolioController needs to go first
             try {
                 appBuilder
+                        .addPortfolioUseCase()
+                        .addTransactionUseCase() // Ensures transaction handling is set up
                         .addSignupView()
                         .addLoginView()
                         .addLoggedInView()
+                        .addPortfolioView()   // Add the PortfolioView
                         .addSignupUseCase()
                         .addLoginUseCase()
                         .addChangePasswordUseCase()
                         .addLogoutUseCase()
                         .addSearchAssetUseCase()
                         .addPortfolioUseCase()
-                        .addTransactionUseCase() // Ensures transaction handling is set up
                         .addTransactionsView()
-                        .addPortfolioView()   // Add the PortfolioView
                         .addStatsView();  // Add the StatisticsView (if implemented)
             } catch (IOException e) {
                 throw new RuntimeException(e);

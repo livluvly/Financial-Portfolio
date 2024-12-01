@@ -35,7 +35,11 @@ public class PortfolioInteractor implements PortfolioInputBoundary {
     public PortfolioOutputData getAssets(PortfolioInputData inputData) {
         List<Asset> assets = dataAccess.getAssetsForUser(inputData.getUsername());
         PortfolioOutputData outputData = new PortfolioOutputData(assets, false);
-        portfolioOutputBoundary.prepareSuccessView(outputData);
+        if (!assets.isEmpty()) {
+            portfolioOutputBoundary.prepareSuccessView(outputData);
+        } else {
+            portfolioOutputBoundary.prepareFailView("No assets found for " + inputData.getUsername());
+        }
         return outputData;
     }
 
@@ -53,9 +57,11 @@ public class PortfolioInteractor implements PortfolioInputBoundary {
      */
     @Override
     public void addTransaction(PortfolioInputData inputData) {
+
         Asset newAsset = new Asset(inputData.getSymbol(), inputData.getQuantity(), inputData.getTotalValue(), inputData.getDailyGain(),0);
         dataAccess.addTransaction(inputData.getUsername(), newAsset);
     }
+    
 
     /**
      * @param inputData

@@ -86,7 +86,7 @@ public class SearchAssetView extends JPanel {
                         Transaction transaction = new Transaction(symbol,quantity,new Date(),quantity*pricePerUnit,"BUY");
 
                         if (transactionController != null) {
-                            transactionController.addTransaction(transaction);
+                            transactionController.addTransaction(viewModel.getState().getUsername(), transaction);
                         } else {
                             JOptionPane.showMessageDialog(
                                     null,

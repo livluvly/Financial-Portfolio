@@ -87,6 +87,7 @@ public class AppBuilder {
     private TransactionController transactionController;
     private PortfolioController portfolioController;
     private PortfolioPresenter portfolioPresenter;
+    private FilePortfolioDataAccessObject portfolioDAO;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -97,6 +98,9 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addPortfolioView() {
+        if (portfolioController == null) {
+            throw new IllegalStateException("PortfolioController must be initialized before adding the Portfolio View!");
+        }
         portfolioView = new PortfolioView(portfolioViewModel);
         portfolioView.setTransactionController(transactionController);
         cardPanel.add(portfolioView, portfolioViewModel.getViewName());
@@ -145,10 +149,10 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addPortfolioUseCase() throws IOException {
-        PortfolioDataAccessInterface portfolioDao = new FilePortfolioDataAccessObject("portfolio.csv");
+        portfolioDAO = new FilePortfolioDataAccessObject("portfolio.csv");
         portfolioViewModel = new PortfolioViewModel();
         portfolioPresenter = new PortfolioPresenter(portfolioViewModel);
-        PortfolioInteractor portfolioInteractor = new PortfolioInteractor(portfolioDao, portfolioPresenter);
+        PortfolioInteractor portfolioInteractor = new PortfolioInteractor(portfolioDAO, portfolioPresenter);
         portfolioController = new PortfolioController(portfolioInteractor);
         portfolioViewModel.setController(portfolioController);
 //      PortfolioInteractor portfolioInteractor = new PortfolioInteractor(portfolioPresenter);
@@ -227,8 +231,11 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addLoginUseCase() {
+        if (portfolioController == null) {
+            throw new IllegalStateException("PortfolioController must be initialized before adding the Login Use Case!");
+        }
         final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
-                loggedInViewModel, loginViewModel);
+                loggedInViewModel, loginViewModel,portfolioController);
         final LoginInputBoundary loginInteractor = new LoginInteractor(
                 userDataAccessObject, loginOutputBoundary);
 

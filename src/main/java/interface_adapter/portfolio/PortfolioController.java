@@ -1,5 +1,6 @@
 package interface_adapter.portfolio;
 
+import entity.User;
 import use_case.portfolio.PortfolioInputBoundary;
 import use_case.portfolio.PortfolioInputData;
 import use_case.portfolio.PortfolioOutputData;
@@ -11,8 +12,8 @@ public class PortfolioController {
         this.portfolioInputBoundary = portfolioInputBoundary;
     }
 
-    public PortfolioOutputData fetchAssets(String userId) {
-        PortfolioInputData inputData= new PortfolioInputData(userId);
+    public PortfolioOutputData fetchAssets(String username) {
+        PortfolioInputData inputData= new PortfolioInputData(username);
         return portfolioInputBoundary.getAssets(inputData);
     }
 
@@ -27,8 +28,8 @@ public class PortfolioController {
         portfolioInputBoundary.addTransaction(new PortfolioInputData(username, symbol, quantity, value, gain));
     }
 
-    public void updateAsset(String username, String symbol, double newQuantity) {
-        portfolioInputBoundary.updateAsset(new PortfolioInputData(username, symbol, newQuantity));
+    public void updateAsset(String username, String symbol, double quantity, double totalValue) {
+        portfolioInputBoundary.addTransaction(new PortfolioInputData(username,symbol,quantity,totalValue));
     }
 
     public void deleteAsset(String username, String symbol) {
