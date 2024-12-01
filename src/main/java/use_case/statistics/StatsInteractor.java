@@ -28,7 +28,7 @@ public class StatsInteractor implements StatsInputBoundary {
     }
 
     /**
-     * Should be an override method from implementing PortfolioInputBoundary.
+     * Should be an override method from implementing StatsInputBoundary.
      * @param statsInputData should there be any input data for portfolio?
      */
 

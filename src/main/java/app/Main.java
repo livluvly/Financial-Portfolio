@@ -26,6 +26,7 @@ public class Main {
                 .addLoginView()
                 .addLoggedInView()
                 .addPortfolioView()
+                .addStatsView()
                 .addTransactionController()
                 .addSearchAssetUseCase()
                 .addTransactionsView();// Add the search functionality
@@ -34,4 +35,5 @@ public class Main {
 //        AlphaVantageSearchDataAccessObject dao = new AlphaVantageSearchDataAccessObject();
 //        System.out.println(dao.searchByKeyword("aza"));
     }
+
 }

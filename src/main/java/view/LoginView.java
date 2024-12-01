@@ -70,7 +70,24 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
                 }
         );
 
-        cancel.addActionListener(this);
+        cancel.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(cancel)) {
+                            // Clear the username text field
+                            usernameInputField.setText("");
+
+                            // Optionally, clear any username errors displayed
+                            usernameErrorField.setText("");
+
+                            // Optionally, reset the state in the ViewModel
+                            final LoginState currentState = loginViewModel.getState();
+                            currentState.setUsername(""); // Reset the username in the state
+                            loginViewModel.setState(currentState);
+                        }
+                    }
+                }
+        );
 
         usernameInputField.getDocument().addDocumentListener(new DocumentListener() {
 
@@ -134,5 +151,4 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
     public void setPortfolioController(PortfolioController portfolioController) {
         this.portfolioController = portfolioController;
     }
-
 }
