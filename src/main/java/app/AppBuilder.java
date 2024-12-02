@@ -265,17 +265,17 @@ public class AppBuilder {
      * Adds the Logout Use Case to the application.
      * @return this builder
      */
-//    public AppBuilder addLogoutUseCase() {
-//        final LogoutOutputBoundary logoutOutputBoundary = new LogoutPresenter(viewManagerModel,
-//                loggedInViewModel, loginViewModel);
-//
-//        final LogoutInputBoundary logoutInteractor =
-//                new LogoutInteractor(userDataAccessObject, logoutOutputBoundary);
-//
-//        final LogoutController logoutController = new LogoutController(logoutInteractor);
-//        loggedInView.setLogoutController(logoutController);
-//        return this;
-//    }
+    public AppBuilder addLogoutUseCase() {
+        final LogoutOutputBoundary logoutOutputBoundary = new LogoutPresenter(viewManagerModel,
+                loggedInViewModel, loginViewModel);
+
+        final LogoutInputBoundary logoutInteractor =
+                new LogoutInteractor(userDataAccessObject, logoutOutputBoundary);
+
+        final LogoutController logoutController = new LogoutController(logoutInteractor);
+        loggedInView.setLogoutController(logoutController);
+        return this;
+    }
 
     /**
      * Creates the JFrame for the application and initially sets the SignupView to be displayed.
@@ -293,7 +293,6 @@ public class AppBuilder {
         JButton portfolioButton = new JButton("Portfolio");
         JButton transactionsButton = new JButton("Transactions");
         JButton statsButton = new JButton("Statistics");
-//        JButton changePasswordButton = new JButton("Change Password");
 
 
         // Switch views when buttons are clicked
@@ -301,8 +300,6 @@ public class AppBuilder {
             viewManagerModel.firePropertyChanged();});
         signupButton.addActionListener(e -> {viewManagerModel.setState(signupViewModel.getViewName());
             viewManagerModel.firePropertyChanged();});
-//        changePasswordButton.addActionListener(e -> {viewManagerModel.setState(changePassword.getViewName());
-//            viewManagerModel.firePropertyChanged();});
         portfolioButton.addActionListener(e -> {viewManagerModel.setState(portfolioViewModel.getViewName());
             viewManagerModel.firePropertyChanged();});
         statsButton.addActionListener(e -> {viewManagerModel.setState(statsViewModel.getViewName());

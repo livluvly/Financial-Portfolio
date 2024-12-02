@@ -34,7 +34,5 @@ public class ViewManager implements PropertyChangeListener {
         }
     }
 
-    public void updateView(String viewName) {
-        viewManagerModel.setState(viewName);  // Update the state to switch views
-    }
+
 }
