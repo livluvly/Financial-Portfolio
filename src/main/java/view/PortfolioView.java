@@ -10,12 +10,18 @@ import java.util.List;
 
 public class PortfolioView extends JPanel {
     private final PortfolioViewModel viewModel;
+    private final JComboBox sortOptions;
     private JTable portfolioTable;  // Declare the table here
 
     public PortfolioView(PortfolioViewModel viewModel) {
         this.viewModel = viewModel;
-        this.setLayout(new BorderLayout());
+        this.sortOptions = new JComboBox(new String[]{"Symbol", "Quantity", "Total Value", "Daily Gain"});
 
+        this.setLayout(new BorderLayout());
+        this.registerListener();
+
+        sortOptions.setBorder(BorderFactory.createTitledBorder("Sort Options"));
+        this.add(sortOptions, BorderLayout.NORTH);
         // Initialize table for displaying assets
         portfolioTable = new JTable();
         portfolioTable.setModel(new PortfolioTableModel());
@@ -24,6 +30,18 @@ public class PortfolioView extends JPanel {
         // Update view when the state changes
         viewModel.addPropertyChangeListener(evt -> updateView());
     }
+
+    private void registerListener() {
+        // Bind search button click to the ViewModel's controller
+        sortOptions.addItemListener(e -> {
+            String selectedSortOption = (String) sortOptions.getSelectedItem();
+            if (selectedSortOption != null) {
+                viewModel.sortAssets(selectedSortOption);
+
+            }
+        });
+        }
+
 
     private void updateView() {
         List<Asset> assets = viewModel.getAssets();
