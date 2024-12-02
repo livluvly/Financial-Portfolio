@@ -11,9 +11,7 @@ import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.time.LocalDate;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class PortfolioView extends JPanel {
@@ -71,8 +69,8 @@ public class PortfolioView extends JPanel {
             return;
         }
 
-        double price = AlphaVantageAssetPriceDataAccessObject.getLatestPrice(asset.getSymbol());
-        if (price == -1) {
+        double[] prices = AlphaVantageAssetPriceDataAccessObject.getLatestPrices(asset.getSymbol());
+        if (prices[0] == -1) {
             JOptionPane.showMessageDialog(
                     this,
                     "Failed to fetch the latest price for " + asset.getSymbol(),
@@ -82,7 +80,7 @@ public class PortfolioView extends JPanel {
             return;
         }
 
-        Double quantityToSell = TransactionPopup.promptForQuantity(asset.getSymbol(),price,"SELL");
+        Double quantityToSell = TransactionPopup.promptForQuantity(asset.getSymbol(),prices[0],"SELL");
         if (quantityToSell != null && quantityToSell > 0) {
             if (quantityToSell > asset.getQuantity()) {
                 JOptionPane.showMessageDialog(
@@ -99,7 +97,7 @@ public class PortfolioView extends JPanel {
             today.set(Calendar.HOUR_OF_DAY,0);
             Transaction transaction = new Transaction(asset.getSymbol(),
                     quantityToSell, today.getTime(),
-                    price*quantityToSell,
+                    prices[0]*quantityToSell,
                     "SELL");
             
             transactionController.addTransaction(

@@ -2,8 +2,7 @@ package interface_adapter;
 
 import entity.Asset;
 import java.util.List;
-
-import entity.User;
+import data_access.AlphaVantageAssetPriceDataAccessObject;
 import interface_adapter.portfolio.PortfolioController;
 import interface_adapter.portfolio.PortfolioState;
 
@@ -20,6 +19,19 @@ public class PortfolioViewModel extends ViewModel<PortfolioState> {
         this.controller = controller;
     }
     public void updatePortfolio(List<Asset> assets) {
+        for (Asset asset : assets) {
+            double[] dailyData = AlphaVantageAssetPriceDataAccessObject.getLatestPrices(asset.getSymbol());
+            if (dailyData[0] != -1 && dailyData[1] != -1) {
+                asset.setPrice(dailyData[0]);
+                asset.setDailyGain(asset.getQuantity()*(dailyData[0]-dailyData[1]));
+                asset.setDailyGainPercentage(
+                        (dailyData[0]-dailyData[1])*100/dailyData[1]
+                );
+                asset.setTotalValue(asset.getQuantity()*dailyData[0]);
+            } else {
+                System.out.println("Error fetching data for asset: " + asset.getSymbol());
+            }
+        }
         PortfolioState newState = new PortfolioState(assets, "foobar");
         this.setState(newState);
         this.firePropertyChanged();
