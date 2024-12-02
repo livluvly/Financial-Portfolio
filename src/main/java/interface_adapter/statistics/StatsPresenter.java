@@ -24,9 +24,8 @@ public class StatsPresenter implements StatsOutputBoundary {
      */
     @Override
     public void prepareFailView(String errorMessage) {
-        statsViewModel.updateStats(null);
+        statsViewModel.updateStats(new StatsOutputData(null, 0.0, 0.0, 0.0, true));
         final StatsState statsState = statsViewModel.getState();
         statsState.setStatsErrorMessage(errorMessage);
     }
-
 }

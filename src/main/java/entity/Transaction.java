@@ -3,14 +3,21 @@ package entity;
 import java.util.Date;
 
 public class Transaction {
-    private Date date;
-    private String symbol;
-    private double quantity;
-    private double totalCost;
-    private String type; // Either "BUY" or "SELL"
+    private final Date date;
+    private final String symbol;
+    private final double quantity;
+    private final double totalCost;
+    private final String type;
 
-
-    public Transaction(String symbol, double quantity, Date date, double totalValue, String type) {
+    /**
+     * Constructor for Transaction Class.
+     * @param symbol The stock symbol.
+     * @param quantity The number of units.
+     * @param date The date of the transaction.
+     * @param totalCost The total cost of the transaction.
+     * @param type The type of transaction: "BUY" or "SELL".
+     */
+    public Transaction(String symbol, double quantity, Date date, double totalCost, String type) {
         this.date = date;
         this.symbol = symbol;
         this.quantity = quantity;
@@ -18,44 +25,44 @@ public class Transaction {
         this.type = type; // "BUY" or "SELL"
     }
 
+    /**
+     * Getter for the transaction date.
+     * @return the date of the transaction.
+     */
     public Date getDate() {
         return date;
     }
 
-    public Date setDate(Date date) {
-        return date;
-    }
-
+    /**
+     * Getter for the stock symbol.
+     * @return the stock symbol.
+     */
     public String getSymbol() {
         return symbol;
     }
 
-    public void setSymbol(String symbol) {
-        this.symbol = symbol;
-    }
-
+    /**
+     * Getter for the quantity of units.
+     * @return the number of units.
+     */
     public double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(double quantity) {
-        this.quantity = quantity;
-    }
-
+    /**
+     * Getter for the total cost of the transaction.
+     * @return the total cost.
+     */
     public double getTotalCost() {
         return totalCost;
     }
 
-    public void setTotalCost(double totalCost) {
-        this.totalCost = totalCost;
-    }
-
+    /**
+     * Getter for the transaction type.
+     * @return the type of transaction ("BUY" or "SELL").
+     */
     public String getType() {
         return type;
-    }
-
-    public void setTotalValue(String type) {
-        this.type = type;
     }
 
 }

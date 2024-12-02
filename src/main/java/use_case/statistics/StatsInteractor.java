@@ -34,12 +34,18 @@ public class StatsInteractor implements StatsInputBoundary {
 
     @Override
     public void execute(StatsInputData statsInputData) {
-        this.assets = statsDataAccess.getAssetsForUser(statsInputData.getUserId());
-        this.totalBalance = retrieveTotalBalance();
-        this.totalDailyGain = retrieveTotalDailyGain();
-        this.totalDailyPercentageGain = retrieveTotalPercentageGain();
-        StatsOutputData outputData = new StatsOutputData(assets, totalBalance, totalDailyGain, totalDailyPercentageGain, true);
-        statsPresenter.prepareSuccessView(outputData);
+        final String userId = statsInputData.getUserId();
+        if (!statsDataAccess.existsByName(userId)) {
+            statsPresenter.prepareFailView(userId + ": Account does not exist");
+        }
+        else {
+            this.assets = statsDataAccess.getAssetsForUser(statsInputData.getUserId());
+            this.totalBalance = retrieveTotalBalance();
+            this.totalDailyGain = retrieveTotalDailyGain();
+            this.totalDailyPercentageGain = retrieveTotalPercentageGain();
+            StatsOutputData outputData = new StatsOutputData(assets, totalBalance, totalDailyGain, totalDailyPercentageGain, true);
+            statsPresenter.prepareSuccessView(outputData);
+        }
     }
 
     public Double getTotalBalance() {
@@ -57,7 +63,7 @@ public class StatsInteractor implements StatsInputBoundary {
     private Double retrieveTotalBalance() {
         double totalBalance = 0.0;
         for (Asset asset : assets) {
-            double totalValue = asset.getTotalValue();
+            double totalValue = asset.getPrice() * asset.getQuantity();
             totalBalance += totalValue;
         }
         return totalBalance;
@@ -66,19 +72,19 @@ public class StatsInteractor implements StatsInputBoundary {
     private Double retrieveTotalDailyGain() {
         double totalDailyGain = 0.0;
         for (Asset asset : assets) {
-            double totalGain = asset.getDailyGain();
+            double totalGain = asset.getDailyGain() * asset.getQuantity();
             totalDailyGain += totalGain;
         }
         return totalDailyGain;
     }
 
     private Double retrieveTotalPercentageGain() {
-        double totalDailyPercentageGain = 0.0;
-        for (Asset asset : assets) {
-            double totalPercentageGain = asset.getDailyGainPercentage();
-            totalDailyPercentageGain += totalPercentageGain;
+        if (assets.isEmpty()) {
+            return 0.0;
         }
-        return totalDailyPercentageGain;
+        double totalBalance = retrieveTotalBalance();
+        double totalDailyGain = retrieveTotalDailyGain();
+        return totalDailyGain / totalBalance;
     }
 
 }
