@@ -22,7 +22,7 @@ public class Transaction {
         this.symbol = symbol;
         this.quantity = quantity;
         this.totalCost = totalCost;
-        this.type = type;
+        this.type = type; // "BUY" or "SELL"
     }
 
     /**

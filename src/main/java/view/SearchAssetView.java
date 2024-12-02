@@ -5,12 +5,11 @@ import interface_adapter.SearchAssetViewModel;
 import interface_adapter.search.SearchAssetController;
 import entity.SearchResult;
 import interface_adapter.transaction.TransactionController;
+import data_access.AlphaVantageAssetPriceDataAccessObject;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Date;
@@ -39,7 +38,7 @@ public class SearchAssetView extends JPanel {
         this.searchButton = new JButton("Search");
         this.tableModel = new SearchResultTableModel();
         this.resultTable = new JTable(tableModel);
-//        this.transactionController = new TransactionController(view);
+
         this.setLayout(new BorderLayout());
         this.initializeView();
         this.registerListeners();
@@ -78,15 +77,28 @@ public class SearchAssetView extends JPanel {
                 int row = resultTable.rowAtPoint(evt.getPoint());
                 if (row >= 0) {
                     String symbol = (String) resultTable.getValueAt(row, 0); // Assuming column 0 is the symbol
-                    double pricePerUnit = 1; // Assuming unit price
 
-                    Double quantity = TransactionPopup.promptForQuantity(symbol);
+                    // Fetch the current price
+//                    double pricePerUnit = AlphaVantageAssetPriceDataAccessObject.getLatestPrice(symbol);
+                    double pricePerUnit = 200;
+                    if (pricePerUnit == -1) {
+                        JOptionPane.showMessageDialog(
+                                null,
+                                "Failed to fetch the price for " + symbol + ". Please try again later.",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE
+                        );
+                        return; // Abort the transaction
+                    }
+
+                    // Prompt for quantity
+                    Double quantity = TransactionPopup.promptForQuantity(symbol, pricePerUnit, "BUY");
                     if (quantity != null) {
                         // Post transaction to the controller
-                        Transaction transaction = new Transaction(symbol,quantity,new Date(),quantity*pricePerUnit,"BUY");
+                        Transaction transaction = new Transaction(symbol, quantity, new Date(), quantity * pricePerUnit, "BUY");
 
                         if (transactionController != null) {
-                            transactionController.addTransaction(transaction);
+                            transactionController.addTransaction(viewModel.getState().getUsername(), transaction);
                         } else {
                             JOptionPane.showMessageDialog(
                                     null,
