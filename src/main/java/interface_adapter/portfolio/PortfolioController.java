@@ -28,8 +28,8 @@ public class PortfolioController {
         portfolioInputBoundary.addTransaction(new PortfolioInputData(username, symbol, quantity, value, gain));
     }
 
-    public void updateAsset(String username, String symbol, double quantity, double totalValue) {
-        portfolioInputBoundary.addTransaction(new PortfolioInputData(username,symbol,quantity,totalValue));
+    public void updateAsset(String username, String symbol, double quantity) {
+        portfolioInputBoundary.addTransaction(new PortfolioInputData(username,symbol,quantity));
     }
 
     public void deleteAsset(String username, String symbol) {

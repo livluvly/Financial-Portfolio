@@ -72,7 +72,7 @@ public class AppBuilder {
 
     // thought question: is the hard dependency below a problem?
     private final FileUserDataAccessObject userDataAccessObject;;
-    private AlphaVantageSearchDataAccessObject searchDataAccessObject;
+    private final AlphaVantageSearchDataAccessObject searchDataAccessObject;
     private PortfolioView portfolioView;
     private PortfolioViewModel portfolioViewModel;
     private StatsView statsView;
@@ -97,6 +97,7 @@ public class AppBuilder {
         // Initialize FileUserDataAccessObject
         String userDataFilePath = "users.csv";
         userDataAccessObject = new FileUserDataAccessObject(userDataFilePath, userFactory);
+        searchDataAccessObject = new AlphaVantageSearchDataAccessObject();
     }
 
     /**
@@ -143,8 +144,8 @@ public class AppBuilder {
         if (transactionController == null) {
             throw new IllegalStateException("TransactionController must be initialized before adding TransactionsView!");
         }
-        transactionsViewModel = new SearchAssetViewModel(searchController);
         transactionsView = new SearchAssetView(transactionsViewModel);
+        transactionsViewModel.setSearchController(searchController);
         transactionsView.setTransactionController(transactionController);
         cardPanel.add(transactionsView, transactionsViewModel.getViewName());
         return this;
@@ -156,7 +157,7 @@ public class AppBuilder {
      */
     public AppBuilder addPortfolioUseCase() throws IOException {
         portfolioDAO = new FilePortfolioDataAccessObject("portfolio.csv");
-        portfolioViewModel = new PortfolioViewModel();
+        portfolioViewModel = new PortfolioViewModel(userDataAccessObject.getCurrentUsername());
         portfolioPresenter = new PortfolioPresenter(portfolioViewModel);
         PortfolioInteractor portfolioInteractor = new PortfolioInteractor(portfolioDAO, portfolioPresenter);
         portfolioController = new PortfolioController(portfolioInteractor);
@@ -170,8 +171,7 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addSearchAssetUseCase() {
-        searchDataAccessObject = new AlphaVantageSearchDataAccessObject(); // DAO initialization
-        transactionsViewModel = new SearchAssetViewModel(searchController);
+        transactionsViewModel = new SearchAssetViewModel(searchController,userDataAccessObject.getCurrentUsername());
         SearchAssetOutputBoundary searchPresenter = new SearchAssetPresenter(transactionsViewModel);
         SearchAssetInteractor searchInteractor = new SearchAssetInteractor(searchDataAccessObject, searchPresenter);
         searchController = new SearchAssetController(searchInteractor);

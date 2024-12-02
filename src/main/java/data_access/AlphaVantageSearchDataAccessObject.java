@@ -8,8 +8,8 @@ import org.json.*;
 import java.util.List;
 
 public class AlphaVantageSearchDataAccessObject  implements ExternalSearchDataAccessInterface {
-    private static final String API_KEY = "OFZTKRAPDVNFE1PX";
-
+    private static final String API_KEY = "demo";
+    
     /**
      * @param keyword 
      * @return

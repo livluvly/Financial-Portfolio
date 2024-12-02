@@ -10,10 +10,11 @@ public class PortfolioViewModel extends ViewModel<PortfolioState> {
 //    private final List<Asset> assets;
     private PortfolioController controller;
 
-    public PortfolioViewModel() {
+    public PortfolioViewModel(String username) {
         super("Portfolio");
-        this.setState(new PortfolioState(List.of(), "foobar"));
+        this.setState(new PortfolioState(List.of(), username));
     }
+
 
     public void setController(PortfolioController controller) {
         this.controller = controller;
@@ -32,7 +33,7 @@ public class PortfolioViewModel extends ViewModel<PortfolioState> {
                 System.out.println("Error fetching data for asset: " + asset.getSymbol());
             }
         }
-        PortfolioState newState = new PortfolioState(assets, "foobar");
+        PortfolioState newState = new PortfolioState(assets, this.getState().getUsername());
         this.setState(newState);
         this.firePropertyChanged();
     }
@@ -51,8 +52,8 @@ public class PortfolioViewModel extends ViewModel<PortfolioState> {
         updatePortfolio(controller.fetchAssets(username).getAssets());
     }
 
-    public void updateAsset(String username, String symbol, double newQuantity, double newValue) {
-        controller.updateAsset(username, symbol, newQuantity, newValue);
+    public void updateAsset(String username, String symbol, double newQuantity) {
+        controller.updateAsset(username, symbol, newQuantity);
         updatePortfolio(controller.fetchAssets(username).getAssets());
     }
 

@@ -1,6 +1,8 @@
 package interface_adapter;
 
 import java.util.List;
+
+import entity.User;
 import interface_adapter.search.*;
 import entity.SearchResult;
 import interface_adapter.search.SearchAssetState;
@@ -10,11 +12,16 @@ import use_case.search.SearchAssetOutputData;
  * The ViewModel for SearchAsset functionality.
  */
 public class SearchAssetViewModel extends ViewModel<SearchAssetState> {
-    private final SearchAssetController searchController;
 
-    public SearchAssetViewModel(SearchAssetController searchController) {
+    private SearchAssetController searchController;
+
+    public SearchAssetViewModel(SearchAssetController searchController, String username) {
         super("Transactions");
-        this.setState(new SearchAssetState(List.of(), "foobar"));
+        this.setState(new SearchAssetState(List.of(), username));
+        this.searchController = searchController;
+    }
+
+    public void setSearchController(SearchAssetController searchController) {
         this.searchController = searchController;
     }
 
@@ -24,7 +31,7 @@ public class SearchAssetViewModel extends ViewModel<SearchAssetState> {
      * @param searchResults new list of search results
      */
     public void updateSearchResults(List<SearchResult> searchResults) {
-        SearchAssetState newState = new SearchAssetState(searchResults, "foobar");
+        SearchAssetState newState = new SearchAssetState(searchResults, this.getState().getUsername());
         this.setState(newState);
         this.firePropertyChanged();
     }

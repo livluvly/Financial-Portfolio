@@ -23,7 +23,7 @@ public class Main {
                         .addSignupView()
                         .addLoginView()
                         .addLoggedInView()
-                        .addPortfolioView()   // Add the PortfolioView
+                        .addPortfolioView()
                         .addSignupUseCase()
                         .addLoginUseCase()
                         .addChangePasswordUseCase()

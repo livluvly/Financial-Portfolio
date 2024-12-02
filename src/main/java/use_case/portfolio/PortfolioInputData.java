@@ -34,12 +34,10 @@ public class PortfolioInputData {
         this.username = username;
     }
     // Constructor for transactions or asset-specific actions
-    public PortfolioInputData(String username, String symbol, double quantity, double  totalValue) {
+    public PortfolioInputData(String username, String symbol, double quantity) {
         this.username = username;
         this.symbol = symbol;
         this.quantity = quantity;
-        this.totalValue = totalValue;
-        this.valuePerUnit = totalValue / quantity;
     }
 
     // Constructor for transactions involving full details
