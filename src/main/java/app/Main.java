@@ -23,14 +23,15 @@ public class Main {
                         .addSignupView()
                         .addLoginView()
                         .addLoggedInView()
-                        .addPortfolioView()   // Add the PortfolioView
+                        .addPortfolioView()
                         .addSignupUseCase()
                         .addLoginUseCase()
+                        .addLogoutUseCase()
                         .addChangePasswordUseCase()
-//                        .addLogoutUseCase()
                         .addSearchAssetUseCase()
                         .addPortfolioUseCase()
                         .addTransactionsView()
+                        .addTransactionHistoryView()
                         .addStatsView();  // Add the StatisticsView (if implemented)
             } catch (IOException e) {
                 throw new RuntimeException(e);

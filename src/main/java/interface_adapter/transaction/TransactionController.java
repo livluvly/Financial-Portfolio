@@ -27,8 +27,11 @@ public class TransactionController {
         if (existingAsset == null) {
             // Add a new asset to the portfolio
             Asset newAsset = new Asset(transaction.getSymbol(),
-                    transaction.getQuantity(), transaction.getTotalCost(),
-                    0,0);
+                    transaction.getQuantity(),
+                    transaction.getTotalCost()/ transaction.getQuantity(),
+                    transaction.getTotalCost(),
+                    0,
+                    0);
             assets.add(newAsset);
             portfolioViewModel.addTransaction(
                     username,
@@ -40,15 +43,12 @@ public class TransactionController {
             // Update the existing asset
             if (transaction.getType().equals("BUY")) {
                 existingAsset.setQuantity(existingAsset.getQuantity() + transaction.getQuantity());
-                existingAsset.setTotalValue(existingAsset.getTotalValue() + transaction.getTotalCost());
                 portfolioViewModel.updateAsset(
                         username,
                         transaction.getSymbol(),
-                        transaction.getQuantity() ,
-                        transaction.getTotalCost());
+                        transaction.getQuantity());
             } else {
                 existingAsset.setQuantity(existingAsset.getQuantity() - transaction.getQuantity());
-                existingAsset.setTotalValue(existingAsset.getTotalValue() - transaction.getTotalCost());
                 if (existingAsset.getQuantity() <= 0) {
                     assets.remove(existingAsset);
                 }

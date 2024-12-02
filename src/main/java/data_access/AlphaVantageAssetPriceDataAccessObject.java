@@ -6,11 +6,16 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+
 public class AlphaVantageAssetPriceDataAccessObject {
     private static final String API_KEY = "demo";
     private static final String BASE_URL = "https://www.alphavantage.co/query";
 
-    public static double getLatestPrice(String symbol) {
+    public static double[] getLatestPrices(String symbol) {
         try {
             String urlStr = String.format("%s?function=TIME_SERIES_DAILY&symbol=%s&apikey=%s",
                     BASE_URL, symbol, API_KEY);
@@ -30,13 +35,23 @@ public class AlphaVantageAssetPriceDataAccessObject {
             // Parse the JSON to extract the latest price
             JSONObject json = new JSONObject(response.toString());
             JSONObject timeSeries = json.getJSONObject("Time Series (Daily)");
-            String latestDate = timeSeries.keys().next(); // Get the most recent date
-            JSONObject latestData = timeSeries.getJSONObject(latestDate);
 
-            return latestData.getDouble("4. close"); // Fetch the closing price
+            List<String> dates = new ArrayList<>();
+            timeSeries.keys().forEachRemaining(dates::add);
+            Collections.sort(dates, Collections.reverseOrder());
+
+            System.out.println(dates);
+            String latestDate = dates.get(0);
+            String previousDate = dates.get(1);
+            JSONObject latestData = timeSeries.getJSONObject(latestDate);
+            JSONObject previousData = timeSeries.getJSONObject(previousDate);
+            double latestClose = latestData.getDouble("4. close");
+            double previousClose = previousData.getDouble("4. close");
+
+            return new double[]{latestClose, previousClose}; // Fetch the closing price
         } catch (Exception e) {
             e.printStackTrace();
-            return -1; // Return -1 to indicate an error
+            return new double[]{-1,-1}; // Return -1 to indicate an error
         }
     }
 }

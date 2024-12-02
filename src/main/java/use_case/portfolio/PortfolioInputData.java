@@ -11,6 +11,7 @@ public class PortfolioInputData {
     private String symbol; // Optional, for transactions or asset-specific actions
     private double quantity; // Optional, for adding or updating assets
     private double totalValue; // Optional, for transactions
+    private double valuePerUnit;
     private double dailyGain; // Optional, for transactions
 
     public PortfolioInputData(User user, String symbol){
@@ -33,11 +34,10 @@ public class PortfolioInputData {
         this.username = username;
     }
     // Constructor for transactions or asset-specific actions
-    public PortfolioInputData(String username, String symbol, double quantity, double  totalValue) {
+    public PortfolioInputData(String username, String symbol, double quantity) {
         this.username = username;
         this.symbol = symbol;
         this.quantity = quantity;
-        this.totalValue = totalValue;
     }
 
     // Constructor for transactions involving full details
@@ -46,6 +46,7 @@ public class PortfolioInputData {
         this.symbol = symbol;
         this.quantity = quantity;
         this.totalValue = totalValue;
+        this.valuePerUnit = totalValue / quantity;
         this.dailyGain = dailyGain;
     }
 
@@ -59,6 +60,10 @@ public class PortfolioInputData {
 
     public double getQuantity() {
         return quantity;
+    }
+
+    public double getValuePerUnit() {
+        return valuePerUnit;
     }
 
     public double getTotalValue() {
