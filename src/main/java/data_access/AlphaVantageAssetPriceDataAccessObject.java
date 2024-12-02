@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 public class AlphaVantageAssetPriceDataAccessObject {
-    private static final String API_KEY = "OFZTKRAPDVNFE1PX";
+    private static final String API_KEY = "demo";
     private static final String BASE_URL = "https://www.alphavantage.co/query";
 
     public static double getLatestPrice(String symbol) {

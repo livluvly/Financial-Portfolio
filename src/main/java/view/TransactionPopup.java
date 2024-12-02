@@ -3,11 +3,13 @@ package view;
 import javax.swing.*;
 
 public class TransactionPopup {
-    public static Double promptForQuantity(String symbol) {
+    public static Double promptForQuantity(String symbol, double price, String type) {
+        String message = String.format("Current price for %s: $%.2f\nEnter the quantity:", symbol, price);
         String input = JOptionPane.showInputDialog(
                 null,
-                "Enter the quantity to purchase/sell for " + symbol + ":",
-                "Purchase Asset",
+//                "Enter the quantity to purchase/sell for " + symbol + ":",
+                message,
+                type.equals("BUY") ? "Purchase Asset" : "Sell Asset",
                 JOptionPane.QUESTION_MESSAGE
         );
 
