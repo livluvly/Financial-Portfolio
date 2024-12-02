@@ -7,9 +7,19 @@ public interface PortfolioInputBoundary {
 
     /**
      * Executes the portfolio use case.
+     *
      * @param portfolioInputData the input data
+     * @return
      */
     PortfolioOutputData getAssets(PortfolioInputData inputData);
-    
+
+    void savePortfolio(PortfolioInputData inputData);
+
+    void addTransaction(PortfolioInputData inputData);
+
+    void updateAsset(PortfolioInputData inputData);
+
+    void deleteAsset(PortfolioInputData inputData);
+
     void execute(PortfolioInputData portfolioInputData);
 }

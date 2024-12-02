@@ -14,7 +14,7 @@ public class SearchAssetViewModel extends ViewModel<SearchAssetState> {
 
     public SearchAssetViewModel(SearchAssetController searchController) {
         super("Transactions");
-        this.setState(new SearchAssetState(List.of()));
+        this.setState(new SearchAssetState(List.of(), "foobar"));
         this.searchController = searchController;
     }
 
@@ -24,7 +24,7 @@ public class SearchAssetViewModel extends ViewModel<SearchAssetState> {
      * @param searchResults new list of search results
      */
     public void updateSearchResults(List<SearchResult> searchResults) {
-        SearchAssetState newState = new SearchAssetState(searchResults);
+        SearchAssetState newState = new SearchAssetState(searchResults, "foobar");
         this.setState(newState);
         this.firePropertyChanged();
     }
@@ -43,4 +43,5 @@ public class SearchAssetViewModel extends ViewModel<SearchAssetState> {
     public List<SearchResult> getSearchResults() {
         return this.getState().getSearchResults();
     }
+
 }

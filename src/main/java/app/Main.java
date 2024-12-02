@@ -1,42 +1,49 @@
 package app;
 
-import data_access.AlphaVantageSearchDataAccessObject;
-import interface_adapter.*;
-import interface_adapter.portfolio.*;
-
-import java.util.List;
-import entity.*;
-
-
 import javax.swing.*;
-import java.awt.*;
+import java.io.IOException;
 
-/**
- * The Main class of our application.
- */
 public class Main {
-    /**
-     * Builds and runs the CA architecture of the application.
-     * @param args unused arguments
-     */
     public static void main(String[] args) {
-        AppBuilder appBuilder = new AppBuilder();
-        appBuilder
-                .addSignupView()
-                .addLoginView()
-                .addLoggedInView()
-                .addPortfolioView()
-                .addStatsView()
-                .addTransactionController()
-                .addSearchAssetUseCase()
-                .addTransactionsView() // Add the search functionality
-                .addTransactionController()
-                .addTransactionHistoryView()
-                .addTransactionHistoryUseCase();
-        JFrame app = appBuilder.build();
-//   //      test search feature
-//        AlphaVantageSearchDataAccessObject dao = new AlphaVantageSearchDataAccessObject();
-//        System.out.println(dao.searchByKeyword("aza"));
-    }
 
+        SwingUtilities.invokeLater(() -> {
+            // Initialize the AppBuilder
+            AppBuilder appBuilder = null;
+            try {
+                appBuilder = new AppBuilder();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            // Add all views and use cases
+            // warning: portfolioController needs to go first
+            try {
+                appBuilder
+                        .addPortfolioUseCase()
+                        .addTransactionUseCase() // Ensures transaction handling is set up
+                        .addSignupView()
+                        .addLoginView()
+                        .addLoggedInView()
+                        .addPortfolioView()   // Add the PortfolioView
+                        .addSignupUseCase()
+                        .addLoginUseCase()
+                        .addChangePasswordUseCase()
+//                        .addLogoutUseCase()
+                        .addSearchAssetUseCase()
+                        .addPortfolioUseCase()
+                        .addTransactionsView()
+                        .addStatsView();  // Add the StatisticsView (if implemented)
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            // Build the application and create the frame
+            JFrame application = appBuilder.build();
+
+            try {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
 }
