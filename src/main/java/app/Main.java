@@ -29,7 +29,10 @@ public class Main {
                 .addStatsView()
                 .addTransactionController()
                 .addSearchAssetUseCase()
-                .addTransactionsView();// Add the search functionality
+                .addTransactionsView() // Add the search functionality
+                .addTransactionController()
+                .addTransactionHistoryView()
+                .addTransactionHistoryUseCase();
         JFrame app = appBuilder.build();
 //   //      test search feature
 //        AlphaVantageSearchDataAccessObject dao = new AlphaVantageSearchDataAccessObject();
