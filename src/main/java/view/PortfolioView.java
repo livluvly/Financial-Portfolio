@@ -69,18 +69,18 @@ public class PortfolioView extends JPanel {
             return;
         }
 
-        double[] prices = AlphaVantageAssetPriceDataAccessObject.getLatestPrices(asset.getSymbol());
-        if (prices[0] == -1) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Failed to fetch the latest price for " + asset.getSymbol(),
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE
-            );
-            return;
-        }
+//        double[] prices = AlphaVantageAssetPriceDataAccessObject.getLatestPrices(asset.getSymbol());
+//        if (prices[0] == -1) {
+//            JOptionPane.showMessageDialog(
+//                    this,
+//                    "Failed to fetch the latest price for " + asset.getSymbol(),
+//                    "Error",
+//                    JOptionPane.ERROR_MESSAGE
+//            );
+//            return;
+//        }
 
-        Double quantityToSell = TransactionPopup.promptForQuantity(asset.getSymbol(),prices[0],"SELL");
+        Double quantityToSell = TransactionPopup.promptForQuantity(asset.getSymbol(),asset.getPrice(),"SELL");
         if (quantityToSell != null && quantityToSell > 0) {
             if (quantityToSell > asset.getQuantity()) {
                 JOptionPane.showMessageDialog(
@@ -97,7 +97,7 @@ public class PortfolioView extends JPanel {
             today.set(Calendar.HOUR_OF_DAY,0);
             Transaction transaction = new Transaction(asset.getSymbol(),
                     quantityToSell, today.getTime(),
-                    prices[0]*quantityToSell,
+                    asset.getPrice()*quantityToSell,
                     "SELL");
             
             transactionController.addTransaction(

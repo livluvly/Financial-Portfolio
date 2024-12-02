@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -37,6 +38,8 @@ public class AlphaVantageAssetPriceDataAccessObject {
 
             List<String> dates = new ArrayList<>();
             timeSeries.keys().forEachRemaining(dates::add);
+            Collections.sort(dates, Collections.reverseOrder());
+
             System.out.println(dates);
             String latestDate = dates.get(0);
             String previousDate = dates.get(1);
