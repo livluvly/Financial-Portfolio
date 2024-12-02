@@ -79,7 +79,8 @@ public class SearchAssetView extends JPanel {
                     String symbol = (String) resultTable.getValueAt(row, 0); // Assuming column 0 is the symbol
 
                     // Fetch the current price
-                    double pricePerUnit = AlphaVantageAssetPriceDataAccessObject.getLatestPrice(symbol);
+//                    double pricePerUnit = AlphaVantageAssetPriceDataAccessObject.getLatestPrice(symbol);
+                    double pricePerUnit = 200;
                     if (pricePerUnit == -1) {
                         JOptionPane.showMessageDialog(
                                 null,

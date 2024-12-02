@@ -7,6 +7,7 @@ import javax.swing.*;
 
 import data_access.AlphaVantageSearchDataAccessObject;
 import data_access.FilePortfolioDataAccessObject;
+import data_access.FileUserDataAccessObject;
 import data_access.InMemoryUserDataAccessObject;
 import entity.CommonUserFactory;
 import entity.UserFactory;
@@ -39,6 +40,7 @@ import use_case.login.LoginOutputBoundary;
 import use_case.logout.LogoutInputBoundary;
 import use_case.logout.LogoutInteractor;
 import use_case.logout.LogoutOutputBoundary;
+import use_case.logout.LogoutUserDataAccessInterface;
 import use_case.portfolio.PortfolioDataAccessInterface;
 import use_case.portfolio.PortfolioInteractor;
 import use_case.portfolio.PortfolioOutputBoundary;
@@ -69,7 +71,7 @@ public class AppBuilder {
     private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
     // thought question: is the hard dependency below a problem?
-    private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
+    private final FileUserDataAccessObject userDataAccessObject;;
     private AlphaVantageSearchDataAccessObject searchDataAccessObject;
     private PortfolioView portfolioView;
     private PortfolioViewModel portfolioViewModel;
@@ -89,8 +91,12 @@ public class AppBuilder {
     private PortfolioPresenter portfolioPresenter;
     private FilePortfolioDataAccessObject portfolioDAO;
 
-    public AppBuilder() {
+    public AppBuilder() throws IOException {
         cardPanel.setLayout(cardLayout);
+
+        // Initialize FileUserDataAccessObject
+        String userDataFilePath = "users.csv";
+        userDataAccessObject = new FileUserDataAccessObject(userDataFilePath, userFactory);
     }
 
     /**
@@ -158,12 +164,6 @@ public class AppBuilder {
 //      PortfolioInteractor portfolioInteractor = new PortfolioInteractor(portfolioPresenter);
         return this;
     }
-
-    /**
-     * Adds the Transactions Use Case to the application.
-     * This handles both purchases and sales.
-     * @return this builder
-     */
 
     /**
      * Adds the Search Case to the application.
@@ -265,17 +265,17 @@ public class AppBuilder {
      * Adds the Logout Use Case to the application.
      * @return this builder
      */
-    public AppBuilder addLogoutUseCase() {
-        final LogoutOutputBoundary logoutOutputBoundary = new LogoutPresenter(viewManagerModel,
-                loggedInViewModel, loginViewModel);
-
-        final LogoutInputBoundary logoutInteractor =
-                new LogoutInteractor(userDataAccessObject, logoutOutputBoundary);
-
-        final LogoutController logoutController = new LogoutController(logoutInteractor);
-        loggedInView.setLogoutController(logoutController);
-        return this;
-    }
+//    public AppBuilder addLogoutUseCase() {
+//        final LogoutOutputBoundary logoutOutputBoundary = new LogoutPresenter(viewManagerModel,
+//                loggedInViewModel, loginViewModel);
+//
+//        final LogoutInputBoundary logoutInteractor =
+//                new LogoutInteractor(userDataAccessObject, logoutOutputBoundary);
+//
+//        final LogoutController logoutController = new LogoutController(logoutInteractor);
+//        loggedInView.setLogoutController(logoutController);
+//        return this;
+//    }
 
     /**
      * Creates the JFrame for the application and initially sets the SignupView to be displayed.
