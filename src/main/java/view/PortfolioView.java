@@ -6,7 +6,7 @@ import entity.Transaction;
 import interface_adapter.transaction.TransactionController;
 
 import javax.swing.*;
-import javax.swing.table.AbstractTableModel;
+import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -16,15 +16,34 @@ import java.util.List;
 public class PortfolioView extends JPanel {
     private final PortfolioViewModel viewModel;
     private final JTable portfolioTable;
+    private final PortfolioTableModel tableModel;
     private TransactionController transactionController; // Nullable initially
 
     public PortfolioView(PortfolioViewModel viewModel) {
         this.viewModel = viewModel;
         this.setLayout(new BorderLayout());
 
+        // Add instruction label at the top
+        JLabel sortingInstructions = new JLabel("Click on a column header to sort the table.", JLabel.RIGHT);
+        sortingInstructions.setFont(new Font("Arial", Font.PLAIN, 12));
+        sortingInstructions.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        this.add(sortingInstructions, BorderLayout.NORTH);
+
         // Initialize table for displaying assets
         portfolioTable = new JTable();
-        portfolioTable.setModel(new PortfolioTableModel());
+        tableModel = new PortfolioTableModel();
+        portfolioTable.setModel(tableModel);
+
+        // sorting feature and tooltips
+        TableRowSorter<PortfolioTableModel> sorter = new TableRowSorter<>(tableModel);
+        portfolioTable.setRowSorter(sorter);
+        JTableHeader header = portfolioTable.getTableHeader();
+        header.setToolTipText("Click on a column header to sort");
+        header.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        // Set special renderer for the Daily Gain column
+        portfolioTable.getColumnModel().getColumn(3).setCellRenderer(new DailyGainCellRenderer());
+
         this.add(new JScrollPane(portfolioTable), BorderLayout.CENTER);
 
         // Add a click listener for the table rows
@@ -50,6 +69,31 @@ public class PortfolioView extends JPanel {
         List<Asset> assets = viewModel.getAssets();
         PortfolioTableModel tableModel = (PortfolioTableModel) portfolioTable.getModel();
         tableModel.updateData(assets);
+    }
+
+    /**
+     * Custom cell renderer for coloring the Daily Gain column.
+     */
+    private static class DailyGainCellRenderer extends DefaultTableCellRenderer {
+        @Override
+        protected void setValue(Object value) {
+            super.setValue(value);
+            if (value instanceof String) {
+                String[] parts = ((String) value).split(" ");
+                try {
+                    double gain = Double.parseDouble(parts[0]);
+                    if (gain > 0) {
+                        setForeground(Color.GREEN);
+                    } else if (gain < 0) {
+                        setForeground(Color.RED);
+                    } else {
+                        setForeground(Color.RED);
+                    }
+                } catch (NumberFormatException ignored) {
+                    setForeground(Color.BLACK);
+                }
+            }
+        }
     }
 
     /**
@@ -157,4 +201,5 @@ public class PortfolioView extends JPanel {
             return assets.get(rowIndex);
         }
     }
+
 }
