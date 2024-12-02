@@ -39,7 +39,7 @@ This project was designed to provide users with a robust and intuitive tool for 
 ### Why was it made?
 ### What problem does it solve?
 ### User Stories:
-
+investor
     1. Olivia - As someone who actively manages my own financial investments, I want to have a detailed history of all 
     the transactions that I have made in my portfolio. I want to be able to track my investment activity, ensure my
     transactions are accurate, and monitor the gains and losses. This is helpful to view when I want to see my most
@@ -56,7 +56,9 @@ This project was designed to provide users with a robust and intuitive tool for 
     different assets in a pie chart. This is helpful so that I can make better foward looking "next steps" decisions 
     when I (re)allocate my capital.
 
-    4. Ruizhen -
+    4. Ruizhen - As someone who's just entered stock market, I want to explore different investment option. I want to be able 
+    to search up for assets that I could be interested in, and record any purchase I make from the search results. This 
+    feature makes it convenient for me to explore different investment options and optimise my investment portfolio. 
 
     5. Team - 
 
