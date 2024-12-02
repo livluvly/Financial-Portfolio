@@ -63,7 +63,7 @@ public class StatsInteractor implements StatsInputBoundary {
     private Double retrieveTotalBalance() {
         double totalBalance = 0.0;
         for (Asset asset : assets) {
-            double totalValue = asset.getPrice() * asset.getQuantity();
+            double totalValue = asset.getValuePerUnit() * asset.getQuantity();
             totalBalance += totalValue;
         }
         return totalBalance;
