@@ -46,7 +46,10 @@ This project was designed to provide users with a robust and intuitive tool for 
     most recent transaction and ensure that the transaction was as I intended, and to optimize my investment strategy by
     identifying successful patterns in my transactions.
 
-    2. Areesha -
+    2. Areesha - As someone managing investments, I want the flexibility to tailor how I view my portfolio to suit my 
+    preferences. This includes sorting my holdings by various criteria, such as quantity or total value . 
+    Having this option allows me to organize my assets in a specific order, making it easier to analyze trends, track 
+    progress, and focus on what aligns with my financial objectives.
 
     3. Bradley - As an investor, I want to verify and check the aggregate performance of my portfoilo. This includes 
     checking the total statistics of my portfolio, and also visually understanding how are my capitals allocated in 
@@ -64,12 +67,13 @@ Login functionality to access personalized portfolio data.
 
 
 2. Portfolio Management:\
-View a detailed listing of assets in the user's portfolio, including real-time values updated using a financial API.\
+View a detailed and sortable listing of assets in the user's portfolio, including real-time values updated using a financial API.\
 Access performance statistics such as:
   - Total Balance 
   - Total Daily Gain 
   - Total Daily Percentage Gain 
   - Visualize portfolio composition through a pie chart
+
 
 3. Transaction Management:\
 Perform buy and sell operations for assets within the portfolio.\
@@ -92,5 +96,13 @@ Asset values are dynamically updated using a financial API, ensuring accurate po
 ## Usage Guide
 
 ## License
+MIT License
 
+Copyright (c) 2024 Ruizhen Liu, Bradley Lin, Olivia Ang, Areesha Abidi
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ## Feedback & Contribution
