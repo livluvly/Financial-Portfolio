@@ -8,24 +8,24 @@ public class Asset {
     private double dailyGain;
     private double dailyGainPercentage;
 
-    public Asset(String symbol, double quantity, double valuePerUnit, double totalValue, double dailyGain) {
-        this.symbol = symbol;
-        this.quantity = quantity;
-        this.valuePerUnit = valuePerUnit;
-        this.totalValue = totalValue;
-        this.dailyGain = dailyGain;
-        this.dailyGainPercentage = dailyGain/ valuePerUnit;
-    }
+//    public Asset(String symbol, double quantity, double valuePerUnit, double totalValue, double dailyGain) {
+//        this.symbol = symbol;
+//        this.quantity = quantity;
+//        this.valuePerUnit = valuePerUnit;
+//        this.totalValue = totalValue;
+//        this.dailyGain = dailyGain;
+//        this.dailyGainPercentage = dailyGain/ valuePerUnit;
+//    }
   
-    public Asset(String symbol, double quantity, double totalValue, double dailyGain, double dailyGainPercentage) {
+    public Asset(String symbol, double quantity, double valuePerUnit, double totalValue, double dailyGain, double dailyGainPercentage) {
         this.symbol = symbol;
         this.quantity = quantity;
         this.totalValue = totalValue;
-        this.valuePerUnit = totalValue/quantity
+        this.valuePerUnit = valuePerUnit;
         this.dailyGain = dailyGain;
         this.dailyGainPercentage = dailyGainPercentage;
     }
-  
+
     public Asset(String symbol, double quantity, double price, double dailyGain) {
         this.symbol = symbol;
         this.quantity = quantity;
@@ -43,19 +43,11 @@ public class Asset {
     public void setQuantity(double quantity) {
         this.quantity = quantity;
     }
-
     public double getValuePerUnit() {
-        return valuePerUnit;
-    }
-
-    public void setValuePerUnit(double valuePerUnit) {
-        this.valuePerUnit = valuePerUnit;
-    }
-    public double getPrice() {
         return this.valuePerUnit;
     }
 
-    public void setPrice(double price) {
+    public void setValuePerUnit(double price) {
         this.valuePerUnit = price;
     }
 

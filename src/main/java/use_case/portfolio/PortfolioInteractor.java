@@ -58,7 +58,13 @@ public class PortfolioInteractor implements PortfolioInputBoundary {
     @Override
     public void addTransaction(PortfolioInputData inputData) {
 
-        Asset newAsset = new Asset(inputData.getSymbol(), inputData.getQuantity(), inputData.getTotalValue(), inputData.getDailyGain(),0);
+        Asset newAsset = new Asset(
+                inputData.getSymbol(),
+                inputData.getQuantity(),
+                inputData.getValuePerUnit(),
+                inputData.getTotalValue(),
+                inputData.getDailyGain(),
+                0);
         dataAccess.addTransaction(inputData.getUsername(), newAsset);
     }
     
@@ -68,7 +74,11 @@ public class PortfolioInteractor implements PortfolioInputBoundary {
      */
     @Override
     public void updateAsset(PortfolioInputData inputData) {
-        Asset updatedAsset = new Asset(inputData.getSymbol(), inputData.getQuantity(), inputData.getTotalValue(), 0,0);
+        Asset updatedAsset = new Asset(inputData.getSymbol(),
+                inputData.getQuantity(),
+                inputData.getValuePerUnit(),
+                inputData.getTotalValue(),
+                inputData.getDailyGain(), 0);
         dataAccess.updateAsset(inputData.getUsername(), updatedAsset);
     }
 

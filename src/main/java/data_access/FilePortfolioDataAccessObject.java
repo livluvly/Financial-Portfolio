@@ -39,6 +39,7 @@ public class FilePortfolioDataAccessObject implements PortfolioDataAccessInterfa
                             columns[1], // symbol
                             Double.parseDouble(columns[2]), // quantity
                             Double.parseDouble(columns[3]), // totalValue
+                            Double.parseDouble(columns[3])/Double.parseDouble(columns[2]), //valuePerUnit
                             Double.parseDouble(columns[4]),  // dailyGain
                             Double.parseDouble(columns[5]) // dailyGainPercentage
                     ));

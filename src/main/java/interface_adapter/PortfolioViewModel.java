@@ -22,7 +22,7 @@ public class PortfolioViewModel extends ViewModel<PortfolioState> {
         for (Asset asset : assets) {
             double[] dailyData = AlphaVantageAssetPriceDataAccessObject.getLatestPrices(asset.getSymbol());
             if (dailyData[0] != -1 && dailyData[1] != -1) {
-                asset.setPrice(dailyData[0]);
+                asset.setValuePerUnit(dailyData[0]);
                 asset.setDailyGain(asset.getQuantity()*(dailyData[0]-dailyData[1]));
                 asset.setDailyGainPercentage(
                         (dailyData[0]-dailyData[1])*100/dailyData[1]

@@ -4,7 +4,6 @@ import interface_adapter.PortfolioViewModel;
 import entity.Asset;
 import entity.Transaction;
 import interface_adapter.transaction.TransactionController;
-import data_access.AlphaVantageAssetPriceDataAccessObject;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -80,7 +79,7 @@ public class PortfolioView extends JPanel {
 //            return;
 //        }
 
-        Double quantityToSell = TransactionPopup.promptForQuantity(asset.getSymbol(),asset.getPrice(),"SELL");
+        Double quantityToSell = TransactionPopup.promptForQuantity(asset.getSymbol(),asset.getValuePerUnit(),"SELL");
         if (quantityToSell != null && quantityToSell > 0) {
             if (quantityToSell > asset.getQuantity()) {
                 JOptionPane.showMessageDialog(
@@ -97,7 +96,7 @@ public class PortfolioView extends JPanel {
             today.set(Calendar.HOUR_OF_DAY,0);
             Transaction transaction = new Transaction(asset.getSymbol(),
                     quantityToSell, today.getTime(),
-                    asset.getPrice()*quantityToSell,
+                    asset.getValuePerUnit()*quantityToSell,
                     "SELL");
             
             transactionController.addTransaction(
