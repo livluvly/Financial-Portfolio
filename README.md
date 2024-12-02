@@ -39,7 +39,6 @@ This project was designed to provide users with a robust and intuitive tool for 
 ### Why was it made?
 ### What problem does it solve?
 ### User Stories:
-investor
     1. Olivia - As someone who actively manages my own financial investments, I want to have a detailed history of all 
     the transactions that I have made in my portfolio. I want to be able to track my investment activity, ensure my
     transactions are accurate, and monitor the gains and losses. This is helpful to view when I want to see my most
