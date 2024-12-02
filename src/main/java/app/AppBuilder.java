@@ -1,10 +1,13 @@
 package app;
 
 import java.awt.*;
+import java.io.IOException;
 
 import javax.swing.*;
 
 import data_access.AlphaVantageSearchDataAccessObject;
+import data_access.FilePortfolioDataAccessObject;
+import data_access.FileUserDataAccessObject;
 import data_access.InMemoryUserDataAccessObject;
 import entity.CommonUserFactory;
 import entity.UserFactory;
@@ -20,12 +23,13 @@ import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
+import interface_adapter.portfolio.PortfolioController;
+import interface_adapter.portfolio.PortfolioPresenter;
 import interface_adapter.search.SearchAssetController;
 import interface_adapter.search.SearchAssetPresenter;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
-import interface_adapter.statistics.StatsController;
 import interface_adapter.transaction.TransactionController;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
@@ -36,6 +40,10 @@ import use_case.login.LoginOutputBoundary;
 import use_case.logout.LogoutInputBoundary;
 import use_case.logout.LogoutInteractor;
 import use_case.logout.LogoutOutputBoundary;
+import use_case.logout.LogoutUserDataAccessInterface;
+import use_case.portfolio.PortfolioDataAccessInterface;
+import use_case.portfolio.PortfolioInteractor;
+import use_case.portfolio.PortfolioOutputBoundary;
 import use_case.search.SearchAssetInteractor;
 import use_case.search.SearchAssetOutputBoundary;
 import use_case.signup.SignupInputBoundary;
@@ -63,7 +71,7 @@ public class AppBuilder {
     private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
     // thought question: is the hard dependency below a problem?
-    private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
+    private final FileUserDataAccessObject userDataAccessObject;;
     private AlphaVantageSearchDataAccessObject searchDataAccessObject;
     private PortfolioView portfolioView;
     private PortfolioViewModel portfolioViewModel;
@@ -79,9 +87,16 @@ public class AppBuilder {
     private LoggedInView loggedInView;
     private LoginView loginView;
     private TransactionController transactionController;
+    private PortfolioController portfolioController;
+    private PortfolioPresenter portfolioPresenter;
+    private FilePortfolioDataAccessObject portfolioDAO;
 
-    public AppBuilder() {
+    public AppBuilder() throws IOException {
         cardPanel.setLayout(cardLayout);
+
+        // Initialize FileUserDataAccessObject
+        String userDataFilePath = "users.csv";
+        userDataAccessObject = new FileUserDataAccessObject(userDataFilePath, userFactory);
     }
 
     /**
@@ -89,8 +104,11 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addPortfolioView() {
-        portfolioViewModel = new PortfolioViewModel();
+        if (portfolioController == null) {
+            throw new IllegalStateException("PortfolioController must be initialized before adding the Portfolio View!");
+        }
         portfolioView = new PortfolioView(portfolioViewModel);
+        portfolioView.setTransactionController(transactionController);
         cardPanel.add(portfolioView, portfolioViewModel.getViewName());
         return this;
     }
@@ -106,7 +124,7 @@ public class AppBuilder {
         return this;
     }
 
-    public AppBuilder addTransactionController() {
+    public AppBuilder addTransactionUseCase() {
         transactionController = new TransactionController(portfolioViewModel);
         if (transactionsView != null) {
             transactionsView.setTransactionController(transactionController);
@@ -129,6 +147,21 @@ public class AppBuilder {
         transactionsView = new SearchAssetView(transactionsViewModel);
         transactionsView.setTransactionController(transactionController);
         cardPanel.add(transactionsView, transactionsViewModel.getViewName());
+        return this;
+    }
+
+    /**
+     * Adds the Portfolio Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addPortfolioUseCase() throws IOException {
+        portfolioDAO = new FilePortfolioDataAccessObject("portfolio.csv");
+        portfolioViewModel = new PortfolioViewModel();
+        portfolioPresenter = new PortfolioPresenter(portfolioViewModel);
+        PortfolioInteractor portfolioInteractor = new PortfolioInteractor(portfolioDAO, portfolioPresenter);
+        portfolioController = new PortfolioController(portfolioInteractor);
+        portfolioViewModel.setController(portfolioController);
+//      PortfolioInteractor portfolioInteractor = new PortfolioInteractor(portfolioPresenter);
         return this;
     }
 
@@ -198,8 +231,11 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addLoginUseCase() {
+        if (portfolioController == null) {
+            throw new IllegalStateException("PortfolioController must be initialized before adding the Login Use Case!");
+        }
         final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
-                loggedInViewModel, loginViewModel);
+                loggedInViewModel, loginViewModel,portfolioController);
         final LoginInputBoundary loginInteractor = new LoginInteractor(
                 userDataAccessObject, loginOutputBoundary);
 
@@ -229,17 +265,17 @@ public class AppBuilder {
      * Adds the Logout Use Case to the application.
      * @return this builder
      */
-    public AppBuilder addLogoutUseCase() {
-        final LogoutOutputBoundary logoutOutputBoundary = new LogoutPresenter(viewManagerModel,
-                loggedInViewModel, loginViewModel);
-
-        final LogoutInputBoundary logoutInteractor =
-                new LogoutInteractor(userDataAccessObject, logoutOutputBoundary);
-
-        final LogoutController logoutController = new LogoutController(logoutInteractor);
-        loggedInView.setLogoutController(logoutController);
-        return this;
-    }
+//    public AppBuilder addLogoutUseCase() {
+//        final LogoutOutputBoundary logoutOutputBoundary = new LogoutPresenter(viewManagerModel,
+//                loggedInViewModel, loginViewModel);
+//
+//        final LogoutInputBoundary logoutInteractor =
+//                new LogoutInteractor(userDataAccessObject, logoutOutputBoundary);
+//
+//        final LogoutController logoutController = new LogoutController(logoutInteractor);
+//        loggedInView.setLogoutController(logoutController);
+//        return this;
+//    }
 
     /**
      * Creates the JFrame for the application and initially sets the SignupView to be displayed.
@@ -252,6 +288,7 @@ public class AppBuilder {
         // Create navigation buttons
         JPanel buttonPanel = new JPanel();
         JButton loginButton = new JButton("Login");
+        JButton signupButton = new JButton("Sign up");
         JButton portfolioButton = new JButton("Portfolio");
         JButton transactionsButton = new JButton("Transactions");
         JButton statsButton = new JButton("Statistics");
@@ -259,15 +296,18 @@ public class AppBuilder {
         // Switch views when buttons are clicked
         loginButton.addActionListener(e -> {viewManagerModel.setState(loginViewModel.getViewName());
             viewManagerModel.firePropertyChanged();});
+        signupButton.addActionListener(e -> {viewManagerModel.setState(signupViewModel.getViewName());
+            viewManagerModel.firePropertyChanged();});
         portfolioButton.addActionListener(e -> {viewManagerModel.setState(portfolioViewModel.getViewName());
             viewManagerModel.firePropertyChanged();});
         statsButton.addActionListener(e -> {viewManagerModel.setState(statsViewModel.getViewName());
-            System.out.println("switching to view: " + statsViewModel.getViewName());
+//            System.out.println("switching to view: " + statsViewModel.getViewName());
             viewManagerModel.firePropertyChanged();});
         transactionsButton.addActionListener(e -> {viewManagerModel.setState(transactionsViewModel.getViewName());
             viewManagerModel.firePropertyChanged();});
 
         buttonPanel.add(loginButton);
+        buttonPanel.add(signupButton);
         buttonPanel.add(portfolioButton);
         buttonPanel.add(statsButton);
         buttonPanel.add(transactionsButton);

@@ -16,14 +16,25 @@ public class Asset {
         this.dailyGain = dailyGain;
         this.dailyGainPercentage = dailyGain/ valuePerUnit;
     }
-
-    public Asset(String symbol, double quantity, double valuePerUnit, double dailyGain) {
+  
+    public Asset(String symbol, double quantity, double totalValue, double dailyGain, double dailyGainPercentage) {
         this.symbol = symbol;
         this.quantity = quantity;
-        this.valuePerUnit = valuePerUnit;
+        this.totalValue = totalValue;
+        this.valuePerUnit = totalValue/quantity
         this.dailyGain = dailyGain;
-        this.dailyGainPercentage = dailyGain/ valuePerUnit;
+        this.dailyGainPercentage = dailyGainPercentage;
     }
+  
+    public Asset(String symbol, double quantity, double price, double dailyGain) {
+        this.symbol = symbol;
+        this.quantity = quantity;
+        this.totalValue = price*quantity;
+        this.dailyGain = dailyGain;
+        this.dailyGainPercentage = 0;
+        this.valuePerUnit = price;
+    }
+
 
     public double getQuantity() {
         return quantity;
@@ -39,6 +50,13 @@ public class Asset {
 
     public void setValuePerUnit(double valuePerUnit) {
         this.valuePerUnit = valuePerUnit;
+    }
+    public double getPrice() {
+        return this.valuePerUnit;
+    }
+
+    public void setPrice(double price) {
+        this.valuePerUnit = price;
     }
 
     public double getDailyGain() {
@@ -64,7 +82,7 @@ public class Asset {
     public void setSymbol(String symbol) {
         this.symbol = symbol;
     }
-
+  
     public double getTotalValue() {
         return totalValue;
     }
