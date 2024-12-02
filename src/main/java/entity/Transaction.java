@@ -21,7 +21,7 @@ public class Transaction {
         this.date = date;
         this.symbol = symbol;
         this.quantity = quantity;
-        this.totalCost = totalValue;
+        this.totalCost = totalCost;
         this.type = type; // "BUY" or "SELL"
     }
 

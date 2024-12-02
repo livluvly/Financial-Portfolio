@@ -36,11 +36,11 @@ public class Asset {
     }
 
     public double getPrice() {
-        return price;
+        return this.valuePerUnit;
     }
 
     public void setPrice(double price) {
-        this.price = price;
+        this.valuePerUnit = price;
     }
 
     public double getDailyGain() {
@@ -68,4 +68,12 @@ public class Asset {
     }
 
     public double getValuePerUnit() {return 1;}
+
+    public double getTotalValue() {
+        return totalValue;
+    }
+
+    public void setTotalValue(double totalValue) {
+        this.totalValue = totalValue;
+    }
 }
