@@ -5,6 +5,7 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
+
         SwingUtilities.invokeLater(() -> {
             // Initialize the AppBuilder
             AppBuilder appBuilder = null;
@@ -13,7 +14,6 @@ public class Main {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-
             // Add all views and use cases
             // warning: portfolioController needs to go first
             try {
