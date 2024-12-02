@@ -31,8 +31,8 @@ public class PortfolioView extends JPanel {
 
         // Add instruction label at the top
         JLabel sortingInstructions = new JLabel("Click on a column header to sort the table.", JLabel.RIGHT);
-        sortingInstructions.setFont(new Font("Arial", Font.PLAIN, 12));
-        sortingInstructions.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        sortingInstructions.setFont(new Font("Arial", Font.ITALIC, 12));
+        sortingInstructions.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
 
         // Control panels
         currencySelector = new JComboBox<>(new String[] {"USD", "EUR", "GBP", "JPY"});
@@ -45,6 +45,7 @@ public class PortfolioView extends JPanel {
         controlPanel.add(new JLabel("Select Currency: "), BorderLayout.WEST);
         controlPanel.add(currencySelector, BorderLayout.CENTER);
         controlPanel.add(exchangeRateLabel, BorderLayout.EAST);
+        controlPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 10, 10)); // Add gap around the control panel
 
         // both instructions and controls go to a single panel
         JPanel northPanel = new JPanel(new BorderLayout());

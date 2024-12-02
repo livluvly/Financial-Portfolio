@@ -287,17 +287,22 @@ public class AppBuilder {
 
         // Create navigation buttons
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 15, 10));
         JButton loginButton = new JButton("Login");
         JButton signupButton = new JButton("Sign up");
         JButton portfolioButton = new JButton("Portfolio");
         JButton transactionsButton = new JButton("Transactions");
         JButton statsButton = new JButton("Statistics");
+//        JButton changePasswordButton = new JButton("Change Password");
+
 
         // Switch views when buttons are clicked
         loginButton.addActionListener(e -> {viewManagerModel.setState(loginViewModel.getViewName());
             viewManagerModel.firePropertyChanged();});
         signupButton.addActionListener(e -> {viewManagerModel.setState(signupViewModel.getViewName());
             viewManagerModel.firePropertyChanged();});
+//        changePasswordButton.addActionListener(e -> {viewManagerModel.setState(changePassword.getViewName());
+//            viewManagerModel.firePropertyChanged();});
         portfolioButton.addActionListener(e -> {viewManagerModel.setState(portfolioViewModel.getViewName());
             viewManagerModel.firePropertyChanged();});
         statsButton.addActionListener(e -> {viewManagerModel.setState(statsViewModel.getViewName());
@@ -311,6 +316,7 @@ public class AppBuilder {
         buttonPanel.add(portfolioButton);
         buttonPanel.add(statsButton);
         buttonPanel.add(transactionsButton);
+
 
         // Add panels to the frame
         application.setLayout(new BorderLayout());
