@@ -6,15 +6,13 @@ import java.io.IOException;
 import javax.swing.*;
 
 import data_access.AlphaVantageSearchDataAccessObject;
+import data_access.InMemoryTransactionHistoryDataAccessObject;
 import data_access.FilePortfolioDataAccessObject;
 import data_access.FileUserDataAccessObject;
 import data_access.InMemoryUserDataAccessObject;
 import entity.CommonUserFactory;
 import entity.UserFactory;
-import interface_adapter.PortfolioViewModel;
-import interface_adapter.SearchAssetViewModel;
-import interface_adapter.StatsViewModel;
-import interface_adapter.ViewManagerModel;
+import interface_adapter.*;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.change_password.LoggedInViewModel;
@@ -31,6 +29,8 @@ import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
 import interface_adapter.transaction.TransactionController;
+import interface_adapter.transaction_history.TransactionHistoryController;
+import interface_adapter.transaction_history.TransactionHistoryPresenter;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
@@ -49,6 +49,10 @@ import use_case.search.SearchAssetOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
+import use_case.transaction_history.TransactionHistoryDataAccessInterface;
+import use_case.transaction_history.TransactionHistoryInputBoundary;
+import use_case.transaction_history.TransactionHistoryInteractor;
+import use_case.transaction_history.TransactionHistoryOutputBoundary;
 import view.*;
 
 /**
@@ -71,6 +75,8 @@ public class AppBuilder {
     private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
     // thought question: is the hard dependency below a problem?
+    private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
+//    private AlphaVantageSearchDataAccessObject searchDataAccessObject;
     private final FileUserDataAccessObject userDataAccessObject;;
     private final AlphaVantageSearchDataAccessObject searchDataAccessObject;
     private PortfolioView portfolioView;
@@ -91,7 +97,14 @@ public class AppBuilder {
     private PortfolioPresenter portfolioPresenter;
     private FilePortfolioDataAccessObject portfolioDAO;
 
+    private TransactionHistoryController transactionHistoryController;
+    private TransactionHistoryViewModel transactionHistoryViewModel;
+    private TransactionHistoryView transactionHistoryView;
+    private InMemoryTransactionHistoryDataAccessObject transactionHistoryDataAccessObject;
+
+
     public AppBuilder() throws IOException {
+
         cardPanel.setLayout(cardLayout);
 
         // Initialize FileUserDataAccessObject
@@ -111,6 +124,31 @@ public class AppBuilder {
         portfolioView = new PortfolioView(portfolioViewModel);
         portfolioView.setTransactionController(transactionController);
         cardPanel.add(portfolioView, portfolioViewModel.getViewName());
+        return this;
+    }
+
+    /**
+     * Adds Transaction History View to the application.
+     * @return this builder.
+     */
+    public AppBuilder addTransactionHistoryView() {
+        transactionHistoryViewModel = new TransactionHistoryViewModel();
+        transactionHistoryView = new TransactionHistoryView(transactionHistoryViewModel);
+        cardPanel.add(transactionHistoryView, transactionHistoryViewModel.getViewName());
+        return this;
+    }
+
+    /**
+     * Adds Transaction History Use CAse to this application.
+     * @return this builder.
+     */
+    public AppBuilder addTransactionHistoryUseCase() {
+        TransactionHistoryOutputBoundary presenter = new TransactionHistoryPresenter(transactionHistoryViewModel);
+        transactionHistoryDataAccessObject = new InMemoryTransactionHistoryDataAccessObject();
+        // FIX !
+        TransactionHistoryInputBoundary interactor = new TransactionHistoryInteractor(presenter, (TransactionHistoryDataAccessInterface) transactionHistoryDataAccessObject);
+        TransactionHistoryController transactionHistoryController = new TransactionHistoryController(interactor);
+        transactionHistoryView.setController(transactionHistoryController);
         return this;
     }
 
@@ -293,6 +331,7 @@ public class AppBuilder {
         JButton portfolioButton = new JButton("Portfolio");
         JButton transactionsButton = new JButton("Transactions");
         JButton statsButton = new JButton("Statistics");
+        JButton HistoryButton = new JButton("History");
 
 
         // Switch views when buttons are clicked
@@ -307,12 +346,16 @@ public class AppBuilder {
             viewManagerModel.firePropertyChanged();});
         transactionsButton.addActionListener(e -> {viewManagerModel.setState(transactionsViewModel.getViewName());
             viewManagerModel.firePropertyChanged();});
+        HistoryButton.addActionListener(e -> {viewManagerModel.setState(transactionHistoryViewModel.getViewName());
+            viewManagerModel.firePropertyChanged(); });
+
 
         buttonPanel.add(loginButton);
         buttonPanel.add(signupButton);
         buttonPanel.add(portfolioButton);
         buttonPanel.add(statsButton);
         buttonPanel.add(transactionsButton);
+        buttonPanel.add(HistoryButton);
 
 
         // Add panels to the frame
