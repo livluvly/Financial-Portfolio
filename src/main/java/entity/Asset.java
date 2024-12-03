@@ -4,7 +4,7 @@ public class Asset {
     private String symbol;
     private double quantity;
     private double valuePerUnit;
-    private double totalValue;
+    protected double totalValue;
     private double dailyGain;
     private double dailyGainPercentage;
   
@@ -34,6 +34,7 @@ public class Asset {
     public void setQuantity(double quantity) {
         this.quantity = quantity;
     }
+
     public double getValuePerUnit() {
         return this.valuePerUnit;
     }
@@ -67,7 +68,7 @@ public class Asset {
     }
   
     public double getTotalValue() {
-        return this.getValuePerUnit()*this.getQuantity();
+        return this.totalValue;
     }
 
     public void setTotalValue(double totalValue) {
