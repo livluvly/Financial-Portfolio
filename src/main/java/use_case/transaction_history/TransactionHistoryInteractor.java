@@ -40,4 +40,13 @@ public class TransactionHistoryInteractor implements TransactionHistoryInputBoun
     public void addTransaction(String username, Transaction transaction) {
 
     }
+
+    /**
+     * @param username
+     * @param transaction
+     */
+    @Override
+    public void addTransaction(String username, Transaction transaction) {
+
+    }
 }
