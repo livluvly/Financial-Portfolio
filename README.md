@@ -39,12 +39,12 @@ This project was designed to provide users with a robust and intuitive tool for 
 ### Why was it made?
 ### What problem does it solve?
 ### User Stories:
-investor
+
     1. Olivia - As someone who actively manages my own financial investments, I want to have a detailed history of all 
-    the transactions that I have made in my portfolio. I want to be able to track my investment activity, ensure my
-    transactions are accurate, and monitor the gains and losses. This is helpful to view when I want to see my most
-    most recent transaction and ensure that the transaction was as I intended, and to optimize my investment strategy by
-    identifying successful patterns in my transactions.
+    the transactions that I have made in my portfolio and be able to sort transactions to view transactions easier. 
+    I want to be able to track my investment activity, ensure my transactions are accurate, and monitor the gains and 
+    losses. This is helpful to view when I want to see my most recent transaction and ensure that the transaction was as
+    I intended, and to optimize my investment strategy by identifying successful patterns in my transactions.
 
     2. Areesha - As someone managing investments, I want the flexibility to tailor how I view my portfolio to suit my 
     preferences. This includes sorting my holdings by various criteria, such as quantity or total value . 
@@ -108,3 +108,28 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ## Feedback & Contribution
+We value your input and are committed to enhancing Financial Portfolio App to its fullest potential. To ensure that your
+feedback is constructive and actionable, please provide specific details about your experience, focusing on the app’s 
+functionality, features, usability, or performance. Please avoid general or irrelevant comments and maintain a 
+respectful tone in your responses. Once submitted, your feedback will be reviewed by our team to identify areas for 
+improvement. While we may not implement every suggestion immediately, your input will directly influence future updates.
+If you choose to include your contact information, we may reach out for additional details or to follow up on your 
+submission. Thank you for your contribution to enhancing Financial Portfolio App!
+<br>
+Please submit your feedback [here](https://forms.gle/Kz13TQGAN2feM1Gs6).
+<br>
+<br>
+We welcome contributions and appreciate your interest in improving the project! 
+Please follow the guidelines below to contribute effectively.
+<br>
+<br>
+- Found a bug or have a feature suggestion? Create an issue on our[GitHub Issues Page](https://github.com/livluvly/Financial-Portfolio/issues). 
+- Share your ideas for new features or improvements by submitting a detailed feature request on the [feedback form](https://forms.gle/Kz13TQGAN2feM1Gs6).
+
+### How to contribute:
+1. Navigate to the [Github Repository](https://github.com/livluvly/Financial-Portfolio.git).
+2. Click the **Fork** button in the top-right corner to create a personal copy of the repository.
+3. Clone the forked repository to your local machine.
+4. Create a new branch for your changes.
+5. Submit a pull request to be reviewed by collaborators.
+6. Once the pull request has been reviewed and approved, a collaborator will merge it into the main branch.

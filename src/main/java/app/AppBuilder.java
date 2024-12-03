@@ -5,11 +5,7 @@ import java.io.IOException;
 
 import javax.swing.*;
 
-import data_access.AlphaVantageSearchDataAccessObject;
-import data_access.InMemoryTransactionHistoryDataAccessObject;
-import data_access.FilePortfolioDataAccessObject;
-import data_access.FileUserDataAccessObject;
-import data_access.InMemoryUserDataAccessObject;
+import data_access.*;
 import entity.CommonUserFactory;
 import entity.UserFactory;
 import interface_adapter.*;
@@ -42,22 +38,18 @@ import use_case.login.LoginOutputBoundary;
 import use_case.logout.LogoutInputBoundary;
 import use_case.logout.LogoutInteractor;
 import use_case.logout.LogoutOutputBoundary;
-import use_case.logout.LogoutUserDataAccessInterface;
-import use_case.portfolio.PortfolioDataAccessInterface;
 import use_case.portfolio.PortfolioInteractor;
-import use_case.portfolio.PortfolioOutputBoundary;
 import use_case.search.SearchAssetInteractor;
 import use_case.search.SearchAssetOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
+
 import use_case.statistics.StatsInputBoundary;
 import use_case.statistics.StatsInteractor;
 import use_case.statistics.StatsOutputBoundary;
 import use_case.transaction_history.TransactionHistoryDataAccessInterface;
 import use_case.transaction_history.TransactionHistoryInputBoundary;
-import use_case.transaction_history.TransactionHistoryInteractor;
-import use_case.transaction_history.TransactionHistoryOutputBoundary;
 import view.*;
 
 /**
@@ -83,6 +75,8 @@ public class AppBuilder {
 //    private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
     private final FileUserDataAccessObject userDataAccessObject;;
     private final AlphaVantageSearchDataAccessObject searchDataAccessObject;
+    private final AlphaVantageExchangeRateDataAccessObject currencyDataAccessObject;
+    private final AlphaVantageAssetPriceDataAccessObject assetPriceDataAccessObject;
     private PortfolioView portfolioView;
     private PortfolioViewModel portfolioViewModel;
     private StatsView statsView;
@@ -105,7 +99,7 @@ public class AppBuilder {
     private TransactionHistoryController transactionHistoryController;
     private TransactionHistoryViewModel transactionHistoryViewModel;
     private TransactionHistoryView transactionHistoryView;
-    private InMemoryTransactionHistoryDataAccessObject transactionHistoryDataAccessObject;
+    private FileTransactionHistoryDataAccessObject transactionHistoryDataAccessObject;
 
 
     public AppBuilder() throws IOException {
@@ -116,6 +110,8 @@ public class AppBuilder {
         String userDataFilePath = "users.csv";
         userDataAccessObject = new FileUserDataAccessObject(userDataFilePath, userFactory);
         searchDataAccessObject = new AlphaVantageSearchDataAccessObject();
+        assetPriceDataAccessObject = new AlphaVantageAssetPriceDataAccessObject();
+        currencyDataAccessObject = new AlphaVantageExchangeRateDataAccessObject();
     }
 
     /**
@@ -137,7 +133,6 @@ public class AppBuilder {
      * @return this builder.
      */
     public AppBuilder addTransactionHistoryView() {
-        transactionHistoryViewModel = new TransactionHistoryViewModel();
         transactionHistoryView = new TransactionHistoryView(transactionHistoryViewModel);
         cardPanel.add(transactionHistoryView, transactionHistoryViewModel.getViewName());
         return this;
@@ -147,13 +142,15 @@ public class AppBuilder {
      * Adds Transaction History Use CAse to this application.
      * @return this builder.
      */
-    public AppBuilder addTransactionHistoryUseCase() {
-        TransactionHistoryOutputBoundary presenter = new TransactionHistoryPresenter(transactionHistoryViewModel);
-        transactionHistoryDataAccessObject = new InMemoryTransactionHistoryDataAccessObject();
-        // FIX !
-        TransactionHistoryInputBoundary interactor = new TransactionHistoryInteractor(presenter, (TransactionHistoryDataAccessInterface) transactionHistoryDataAccessObject);
-        TransactionHistoryController transactionHistoryController = new TransactionHistoryController(interactor);
-        transactionHistoryView.setController(transactionHistoryController);
+    public AppBuilder addTransactionHistoryUseCase() throws IOException {
+        transactionHistoryDataAccessObject = new FileTransactionHistoryDataAccessObject("history.csv");
+        transactionHistoryViewModel = new TransactionHistoryViewModel();
+        TransactionHistoryPresenter presenter = new TransactionHistoryPresenter(transactionHistoryViewModel);
+        TransactionHistoryInteractor interactor = new TransactionHistoryInteractor(
+                presenter,
+                transactionHistoryDataAccessObject);
+        transactionHistoryController = new TransactionHistoryController(interactor);
+        transactionHistoryViewModel.setController(transactionHistoryController);
         return this;
     }
 
@@ -168,7 +165,8 @@ public class AppBuilder {
     }
 
     public AppBuilder addTransactionUseCase() {
-        transactionController = new TransactionController(portfolioViewModel);
+        transactionController = new TransactionController(portfolioViewModel,
+                transactionHistoryViewModel);
         if (transactionsView != null) {
             transactionsView.setTransactionController(transactionController);
         }
@@ -199,7 +197,10 @@ public class AppBuilder {
      */
     public AppBuilder addPortfolioUseCase() throws IOException {
         portfolioDAO = new FilePortfolioDataAccessObject("portfolio.csv");
-        portfolioViewModel = new PortfolioViewModel(userDataAccessObject.getCurrentUsername());
+        portfolioViewModel = new PortfolioViewModel(
+                userDataAccessObject.getCurrentUsername(),
+                assetPriceDataAccessObject,
+                currencyDataAccessObject);
         portfolioPresenter = new PortfolioPresenter(portfolioViewModel);
         PortfolioInteractor portfolioInteractor = new PortfolioInteractor(portfolioDAO, portfolioPresenter);
         portfolioController = new PortfolioController(portfolioInteractor);
@@ -290,7 +291,8 @@ public class AppBuilder {
             throw new IllegalStateException("PortfolioController must be initialized before adding the Login Use Case!");
         }
         final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
-                loggedInViewModel, loginViewModel,portfolioController,statsController);
+                loggedInViewModel, loginViewModel,portfolioController, statsController,transactionHistoryController);
+
         final LoginInputBoundary loginInteractor = new LoginInteractor(
                 userDataAccessObject, loginOutputBoundary);
 
@@ -352,7 +354,8 @@ public class AppBuilder {
 
 
         // Switch views when buttons are clicked
-        loginButton.addActionListener(e -> {viewManagerModel.setState(loginViewModel.getViewName());
+        loginButton.addActionListener(
+                e -> {viewManagerModel.setState(loginViewModel.getViewName());
             viewManagerModel.firePropertyChanged();});
         signupButton.addActionListener(e -> {viewManagerModel.setState(signupViewModel.getViewName());
             viewManagerModel.firePropertyChanged();});

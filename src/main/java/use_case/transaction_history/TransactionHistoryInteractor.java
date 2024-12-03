@@ -10,7 +10,8 @@ import entity.Transaction;
  */
 
 public class TransactionHistoryInteractor implements TransactionHistoryInputBoundary {
-    private final use_case.transaction_history.TransactionHistoryDataAccessInterface transactionHistoryDataAccessInterface;
+    private final use_case.transaction_history
+            .TransactionHistoryDataAccessInterface transactionHistoryDataAccessInterface;
     private final TransactionHistoryOutputBoundary transactionHistoryOutputBoundary;
 
     public TransactionHistoryInteractor(
@@ -26,13 +27,19 @@ public class TransactionHistoryInteractor implements TransactionHistoryInputBoun
      */
     @Override
     public void fetchTransactionHistory(String userId) {
-        try {
-            List<Transaction> transactions = transactionHistoryDataAccessInterface.getTransactionHistory(userId);
-            TransactionHistoryOutputData outputData = new TransactionHistoryOutputData(transactions);
-            transactionHistoryOutputBoundary.prepareSuccessView(outputData);
-        } catch (Exception e) {
-            transactionHistoryOutputBoundary.prepareFailView(
-                    "Failed to retrieve transaction history: " + e.getMessage());
-        }
+        List<Transaction> transactions = transactionHistoryDataAccessInterface.getTransactionHistory(userId);
+        TransactionHistoryOutputData outputData = new TransactionHistoryOutputData(transactions);
+        transactionHistoryOutputBoundary.prepareSuccessView(outputData);
     }
+
+    /**
+     * @param username
+     * @param transaction
+     */
+    @Override
+    public void addTransaction(String username, Transaction transaction) {
+            this.transactionHistoryDataAccessInterface.addTransaction(username, transaction);
+            System.out.println("writing");
+    }
+
 }
