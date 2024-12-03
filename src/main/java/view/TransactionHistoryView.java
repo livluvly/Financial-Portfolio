@@ -5,18 +5,14 @@ import java.awt.FlowLayout;
 import java.util.Comparator;
 import java.util.List;
 
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import entity.Transaction;
 import interface_adapter.TransactionHistoryViewModel;
-import interface_adapter.transaction_history.TransactionHistoryController;
+import interface_adapter.transaction.TransactionController;
 
 /**
  * TransactionHistoryView shows a page of the past transactions made. Users can sort transactions based on the following
@@ -30,7 +26,6 @@ public class TransactionHistoryView extends JPanel {
     private final TransactionHistoryViewModel viewModel;
     private final JTable transactionHistoryTable;
     private final DefaultTableModel tableModel;
-    private TransactionHistoryController transactionHistoryController;
 
     /**
      * Constructor for the TransactionHistoryView.
@@ -40,7 +35,7 @@ public class TransactionHistoryView extends JPanel {
     public TransactionHistoryView(TransactionHistoryViewModel viewModel) {
         this.viewModel = viewModel;
         this.setLayout(new BorderLayout());
-        String[] columnNames = {"Date", "Symbol", "Quantity", "Total Cost", "Type"};
+        String[] columnNames = {"Date", "Quantity", "Total Cost", "Type"};
         tableModel = new DefaultTableModel(columnNames, 0) {
 
             // Prevents editing of table cells
@@ -62,15 +57,19 @@ public class TransactionHistoryView extends JPanel {
 
         JPanel sortingPanel = createSortingPanel();
         this.add(sortingPanel, BorderLayout.NORTH);
+
+        viewModel.addPropertyChangeListener(evt -> {
+                populateTable(); // Update the table
+        });
     }
 
     private void populateTable() {
+        System.out.println("populated table");
         tableModel.setRowCount(0);
         List<Transaction> transactions = viewModel.getTransactionHistory();
         for (Transaction transaction : transactions) {
             tableModel.addRow(new Object[]{
                     transaction.getDate(),
-                    transaction.getSymbol(),
                     transaction.getQuantity(),
                     transaction.getTotalCost(),
                     transaction.getType(),
@@ -84,14 +83,12 @@ public class TransactionHistoryView extends JPanel {
 
         // Date column
         sorter.setComparator(0, Comparator.comparing(date -> (Comparable<Object>) date));
-        // Symbol column
-        sorter.setComparator(0, Comparator.comparing(symbol -> (String) symbol));
         // Quantity column
-        sorter.setComparator(1, Comparator.comparingDouble(quantity -> (Integer) quantity));
+//        sorter.setComparator(1, Comparator.comparingDouble(quantity -> (Integer) quantity));
         // Total Cost column
-        sorter.setComparator(2, Comparator.comparingDouble(totalCost -> (Double) totalCost));
+//        sorter.setComparator(2, Comparator.comparingDouble(totalCost -> (Double) totalCost));
         // Type column
-        sorter.setComparator(3, Comparator.comparing(type -> (String) type));
+//        sorter.setComparator(3, Comparator.comparing(type -> (String) type));
     }
 
     private JPanel createSortingPanel() {
@@ -100,93 +97,27 @@ public class TransactionHistoryView extends JPanel {
 
         JLabel sortLabel = new JLabel("Sort By: ");
         String[] options = {
-            "Date (Most Recent)",
-            "Symbol (A-Z)",
-            "Symbol (Z-A)",
-            "Quantity (Largest)",
-            "Quantity (Smallest)",
-            "Total Cost (Largest)",
-            "Total Cost (Smallest)",
-            "Type (BUY First)",
-            "Type (SELL First)",
+                "Date (Most Recent)",
+                "Quantity (Largest)",
+                "Quantity (Smallest)",
+                "Total Cost (Largest)",
+                "Total Cost (Smallest)",
         };
         JComboBox<String> sortOptions = new JComboBox<>(options);
 
         sortOptions.addActionListener(e -> {
             String selectedOption = (String) sortOptions.getSelectedItem();
-            List<Transaction> sortedTransactions = switch (selectedOption) {
-                case "Date (Most Recent)" -> (List<Transaction>) viewModel.getTransactionHistory()
-                        .stream()
-                        .sorted(Comparator.comparing(Transaction::getDate).reversed())
-                        .toList();
-                case "Symbol (A-Z)" -> viewModel.getTransactionHistory()
-                        .stream()
-                        .sorted(Comparator.comparing(Transaction::getSymbol))
-                        .toList();
-                case "Symbol (Z-A)" -> viewModel.getTransactionHistory()
-                        .stream()
-                        .sorted(Comparator.comparing(Transaction::getSymbol).reversed())
-                        .toList();
-                case "Quantity (Largest)" -> viewModel.getTransactionHistory()
-                        .stream()
-                        .sorted(Comparator.comparingDouble(Transaction::getQuantity).reversed())
-                        .toList();
-                case "Quantity (Smallest)" -> viewModel.getTransactionHistory()
-                        .stream()
-                        .sorted(Comparator.comparingDouble(Transaction::getQuantity))
-                        .toList();
-                case "Total Cost (Largest)" -> viewModel.getTransactionHistory()
-                        .stream()
-                        .sorted(Comparator.comparing(Transaction::getTotalCost).reversed())
-                        .toList();
-                case "Total Cost (Smallest)" -> viewModel.getTransactionHistory()
-                        .stream()
-                        .sorted(Comparator.comparing(Transaction::getTotalCost))
-                        .toList();
-                case "Type (BUY First)" -> viewModel.getTransactionHistory()
-                        .stream()
-                        .sorted(Comparator.comparing(Transaction::getType))
-                        .toList();
-                case "Type (SELL First)" -> viewModel.getTransactionHistory()
-                        .stream()
-                        .sorted(Comparator.comparing(Transaction::getType).reversed())
-                        .toList();
-                default -> viewModel.getTransactionHistory();
-            };
-            updateTableData(sortedTransactions);
+            switch (selectedOption) {
+                case "Date (Most Recent)" -> transactionHistoryTable.getRowSorter().toggleSortOrder(0);
+                case "Quantity (Largest)" -> transactionHistoryTable.getRowSorter().toggleSortOrder(1);
+                case "Quantity (Smallest)" -> transactionHistoryTable.getRowSorter().toggleSortOrder(1);
+                case "Total Cost (Largest)" -> transactionHistoryTable.getRowSorter().toggleSortOrder(2);
+                case "Total Cost (Smallest)" -> transactionHistoryTable.getRowSorter().toggleSortOrder(2);
+            }
         });
 
         jPanel.add(sortLabel);
         jPanel.add(sortOptions);
         return jPanel;
-    }
-
-    private void updateTableData(List<Transaction> transactions) {
-        tableModel.setRowCount(0);
-        for (Transaction transaction : transactions) {
-            tableModel.addRow(new Object[]{
-                    transaction.getDate(),
-                    transaction.getSymbol(),
-                    transaction.getQuantity(),
-                    transaction.getTotalCost(),
-                    transaction.getType(),
-            });
-        }
-    }
-
-    /**
-     * Sets the controller for handling user interaction with the transaction history.
-     *
-     * @param controller The controller for the Transaction History use case.
-     */
-    public void setController(TransactionHistoryController controller) {
-        this.transactionHistoryController = controller;
-    }
-
-    /**
-     * Refreshes view with repopoulating the transaction history table with latest data.
-     */
-    public void refreshView() {
-        populateTable();
     }
 }

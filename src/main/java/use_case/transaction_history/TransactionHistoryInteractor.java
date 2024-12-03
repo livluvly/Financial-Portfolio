@@ -31,4 +31,13 @@ public class TransactionHistoryInteractor implements TransactionHistoryInputBoun
         TransactionHistoryOutputData outputData = new TransactionHistoryOutputData(transactions);
         transactionHistoryOutputBoundary.prepareSuccessView(outputData);
     }
+
+    /**
+     * @param username
+     * @param transaction
+     */
+    @Override
+    public void addTransaction(String username, Transaction transaction) {
+
+    }
 }

@@ -5,11 +5,7 @@ import java.io.IOException;
 
 import javax.swing.*;
 
-import data_access.AlphaVantageSearchDataAccessObject;
-import data_access.InMemoryTransactionHistoryDataAccessObject;
-import data_access.FilePortfolioDataAccessObject;
-import data_access.FileUserDataAccessObject;
-import data_access.InMemoryUserDataAccessObject;
+import data_access.*;
 import entity.CommonUserFactory;
 import entity.UserFactory;
 import interface_adapter.*;
@@ -99,7 +95,7 @@ public class AppBuilder {
     private TransactionHistoryController transactionHistoryController;
     private TransactionHistoryViewModel transactionHistoryViewModel;
     private TransactionHistoryView transactionHistoryView;
-    private InMemoryTransactionHistoryDataAccessObject transactionHistoryDataAccessObject;
+    private FileTransactionHistoryDataAccessObject transactionHistoryDataAccessObject;
 
 
     public AppBuilder() throws IOException {
@@ -131,7 +127,6 @@ public class AppBuilder {
      * @return this builder.
      */
     public AppBuilder addTransactionHistoryView() {
-        transactionHistoryViewModel = new TransactionHistoryViewModel();
         transactionHistoryView = new TransactionHistoryView(transactionHistoryViewModel);
         cardPanel.add(transactionHistoryView, transactionHistoryViewModel.getViewName());
         return this;
@@ -141,15 +136,15 @@ public class AppBuilder {
      * Adds Transaction History Use CAse to this application.
      * @return this builder.
      */
-    public AppBuilder addTransactionHistoryUseCase() {
-        TransactionHistoryOutputBoundary presenter = new TransactionHistoryPresenter(transactionHistoryViewModel);
-        transactionHistoryDataAccessObject = new InMemoryTransactionHistoryDataAccessObject();
-        TransactionHistoryInputBoundary interactor = new TransactionHistoryInteractor(presenter, transactionHistoryDataAccessObject);
+    public AppBuilder addTransactionHistoryUseCase() throws IOException {
+        transactionHistoryDataAccessObject = new FileTransactionHistoryDataAccessObject("history.csv");
+        transactionHistoryViewModel = new TransactionHistoryViewModel();
+        TransactionHistoryPresenter presenter = new TransactionHistoryPresenter(transactionHistoryViewModel);
+        TransactionHistoryInteractor interactor = new TransactionHistoryInteractor(
+                presenter,
+                transactionHistoryDataAccessObject);
         transactionHistoryController = new TransactionHistoryController(interactor);
-        transactionHistoryView.setController(transactionHistoryController);
-        transactionHistoryController.fetchTransactionHistory(userDataAccessObject.getCurrentUsername());
-//        transactionHistoryController.fetchTransactionHistory("alice"); // test mock data
-        transactionHistoryView.refreshView();
+        transactionHistoryViewModel.setController(transactionHistoryController);
         return this;
     }
 
@@ -165,7 +160,8 @@ public class AppBuilder {
     }
 
     public AppBuilder addTransactionUseCase() {
-        transactionController = new TransactionController(portfolioViewModel);
+        transactionController = new TransactionController(portfolioViewModel,
+                transactionHistoryViewModel);
         if (transactionsView != null) {
             transactionsView.setTransactionController(transactionController);
         }
@@ -336,7 +332,8 @@ public class AppBuilder {
 
 
         // Switch views when buttons are clicked
-        loginButton.addActionListener(e -> {viewManagerModel.setState(loginViewModel.getViewName());
+        loginButton.addActionListener(
+                e -> {viewManagerModel.setState(loginViewModel.getViewName());
             viewManagerModel.firePropertyChanged();});
         signupButton.addActionListener(e -> {viewManagerModel.setState(signupViewModel.getViewName());
             viewManagerModel.firePropertyChanged();});

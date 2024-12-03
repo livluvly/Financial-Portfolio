@@ -1,5 +1,6 @@
 package interface_adapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import entity.Transaction;
@@ -7,12 +8,10 @@ import interface_adapter.transaction_history.TransactionHistoryController;
 import interface_adapter.transaction_history.TransactionHistoryState;
 
 public class TransactionHistoryViewModel extends ViewModel<TransactionHistoryState> {
-    private List<Transaction> transactionHistory;
     private TransactionHistoryController transactionHistoryController;
 
     public TransactionHistoryViewModel() {
         super("Transaction History");
-        this.transactionHistory = transactionHistory;
         this.setState(new TransactionHistoryState(List.of()));
     }
 
@@ -26,11 +25,21 @@ public class TransactionHistoryViewModel extends ViewModel<TransactionHistorySta
         this.firePropertyChanged();
     }
 
+    public void addTransaction(String username, Transaction transaction) {
+        transactionHistoryController.addTransaction(username, transaction);
+        List<Transaction> newHistory = new ArrayList<>(this.getState().getTransactionHistory());
+        newHistory.add(transaction);
+        updateTransactionHistory(newHistory);
+    }
     /**
      * Retrieves the current transaction history from the state.
      * @return a list of transactions.
      */
     public List<Transaction> getTransactionHistory() {
         return this.getState().getTransactionHistory();
+    }
+
+    public void setController(TransactionHistoryController transactionHistoryController) {
+        this.transactionHistoryController=transactionHistoryController;
     }
 }

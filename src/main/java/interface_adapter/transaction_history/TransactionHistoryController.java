@@ -1,8 +1,6 @@
 package interface_adapter.transaction_history;
 
-import entity.Transaction;
 import use_case.transaction_history.TransactionHistoryInputBoundary;
-import use_case.transaction_history.TransactionHistoryInputData;
 
 public class TransactionHistoryController {
 
@@ -22,5 +20,8 @@ public class TransactionHistoryController {
      */
     public void fetchTransactionHistory(String userId) {
         transactionHistoryInputBoundary.fetchTransactionHistory(userId);
+    }
+    public void addTransaction(String username, Transaction transaction) {
+        transactionHistoryInputBoundary.addTransaction(username, transaction);
     }
 }

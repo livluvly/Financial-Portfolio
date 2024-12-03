@@ -3,16 +3,19 @@ package interface_adapter.transaction;
 import entity.Asset;
 import entity.Transaction;
 import interface_adapter.PortfolioViewModel;
-import use_case.portfolio.PortfolioDataAccessInterface;
+import interface_adapter.TransactionHistoryViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TransactionController {
     private final PortfolioViewModel portfolioViewModel;
+    private final TransactionHistoryViewModel historyViewModel;
 
-    public TransactionController(PortfolioViewModel portfolioViewModel) {
+    public TransactionController(PortfolioViewModel portfolioViewModel,
+                                 TransactionHistoryViewModel historyViewModel) {
         this.portfolioViewModel = portfolioViewModel;
+        this.historyViewModel = historyViewModel;
     }
 
     public void addTransaction(String username, Transaction transaction) {
@@ -58,5 +61,9 @@ public class TransactionController {
 
         // Update the portfolio view model
         portfolioViewModel.updatePortfolio(assets);
+
+        List<Transaction> histories = new ArrayList<>(historyViewModel.getTransactionHistory());
+        histories.add(transaction);
+        historyViewModel.updateTransactionHistory(histories);
     }
 }
