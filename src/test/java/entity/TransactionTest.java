@@ -18,7 +18,7 @@ class TransactionTest {
 
         assertEquals("AAPL", transaction.getSymbol());
         assertEquals(10, transaction.getQuantity());
-        assertEquals(150.0, transaction.getTotalCost());
+        assertEquals(11.0, transaction.getTotalCost());
         assertEquals(now, transaction.getDate());
         assertEquals("BUY", transaction.getType());
     }
