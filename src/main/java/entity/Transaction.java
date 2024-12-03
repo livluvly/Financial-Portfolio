@@ -18,6 +18,22 @@ public class Transaction {
      * @param type The type of transaction: "BUY" or "SELL".
      */
     public Transaction(String symbol, double quantity, Date date, double totalCost, String type) {
+        if (symbol == null || symbol.isBlank()) {
+            throw new IllegalArgumentException("Asset symbol cannot be null or blank.");
+        }
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("Quantity must be greater than zero.");
+        }
+        if (totalCost <= 0) {
+            throw new IllegalArgumentException("Transaction totalCost must be greater than zero.");
+        }
+        if (date == null) {
+            throw new IllegalArgumentException("Date cannot be null.");
+        }
+        if (type == null) {
+            throw new IllegalArgumentException("Transaction type cannot be null.");
+        }
+
         this.date = date;
         this.symbol = symbol;
         this.quantity = quantity;

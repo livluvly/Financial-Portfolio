@@ -55,9 +55,8 @@ public class FilePortfolioDataAccessObject implements PortfolioDataAccessInterfa
 
     @Override
     public boolean existsByName(String userId) {
-        return false;
+        return this.getAssetsForUser(userId).size() > 0;
     }
-
 
     /**
      * @param username
