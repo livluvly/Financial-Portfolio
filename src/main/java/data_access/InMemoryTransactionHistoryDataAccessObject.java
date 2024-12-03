@@ -37,31 +37,35 @@ public class InMemoryTransactionHistoryDataAccessObject implements TransactionHi
 
     public InMemoryTransactionHistoryDataAccessObject() {
         // test data
-        database.put("alice", List.of(
+        database.put("alice", new ArrayList<>(List.of(
                 new Transaction(STOCK_TSLA, QUANTITY_TSLA, createDate(YEAR_2024, MONTH_NOVEMBER, DAY_15),
                         COST_TSLA, TRANSACTION_SELL),
                 new Transaction(STOCK_AMD, QUANTITY_AMD, createDate(YEAR_2024, MONTH_NOVEMBER, DAY_20),
                         COST_AMD, TRANSACTION_BUY),
                 new Transaction(STOCK_NVDA, QUANTITY_NVDA, createDate(YEAR_2024, MONTH_NOVEMBER, DAY_23),
                         COST_NVDA, TRANSACTION_BUY)
-        ));
+        )));
     }
 
     @Override
     public List<Transaction> getTransactionHistory(String userId) {
-        return database.getOrDefault(userId, Collections.emptyList());
+        return database.getOrDefault(userId, new ArrayList<>());
     }
 
     @Override
     public void addTransaction(String userId, Transaction transaction) {
+        if (userId == null || transaction == null) {
+            throw new IllegalArgumentException("User ID and transaction must not be null.");
+        }
         database.computeIfAbsent(userId, key -> new ArrayList<>()).add(transaction);
     }
 
     /**
      * Creates a Date object for the specified year, month, and day.
-     * @param year The year.
+     *
+     * @param year  The year.
      * @param month The month.
-     * @param day The day of the month.
+     * @param day   The day of the month.
      * @return A Date object representing the specified date.
      */
     private Date createDate(int year, int month, int day) {
@@ -69,4 +73,3 @@ public class InMemoryTransactionHistoryDataAccessObject implements TransactionHi
         return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 }
-
