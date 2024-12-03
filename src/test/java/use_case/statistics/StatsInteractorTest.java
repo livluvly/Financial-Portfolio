@@ -20,7 +20,7 @@ class StatsInteractorTest {
         List<Asset> assets = new ArrayList<>();
         assets.add(new Asset("AAPL", 10, 150.0, 5.0));
         assets.add(new Asset("GOOGL", 5, 140.0, 7.0));
-        statsRepository.saveAssetsForUser("alice", assets);
+        statsRepository.savePortfolio("alice", assets);
 
         StatsOutputBoundary successPresenter = new StatsOutputBoundary() {
             @Override
@@ -69,7 +69,7 @@ class StatsInteractorTest {
         StatsDataAccessInterface statsRepository = new InMemoryStatsDataAccessObject();
 
         // Save an empty asset list for the user.
-        statsRepository.saveAssetsForUser("EmptyUser", new ArrayList<>());
+        statsRepository.savePortfolio("EmptyUser", new ArrayList<>());
 
         StatsOutputBoundary successPresenter = new StatsOutputBoundary() {
             @Override
