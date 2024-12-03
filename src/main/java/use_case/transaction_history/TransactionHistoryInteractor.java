@@ -28,7 +28,13 @@ public class TransactionHistoryInteractor implements TransactionHistoryInputBoun
     @Override
     public void fetchTransactionHistory(String userId) {
         List<Transaction> transactions = transactionHistoryDataAccessInterface.getTransactionHistory(userId);
-        TransactionHistoryOutputData outputData = new TransactionHistoryOutputData(transactions);
-        transactionHistoryOutputBoundary.prepareSuccessView(outputData);
+        if (transactions == null || transactions.isEmpty()) {
+            transactionHistoryOutputBoundary.prepareFailView(
+                    "Failed to retrieve transaction history: No data found for user " + userId
+            );
+        } else {
+            TransactionHistoryOutputData outputData = new TransactionHistoryOutputData(transactions);
+            transactionHistoryOutputBoundary.prepareSuccessView(outputData);
+        }
     }
 }
