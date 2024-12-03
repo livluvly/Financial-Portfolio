@@ -1,66 +1,168 @@
 package view;
 
 import entity.Asset;
-import interface_adapter.StatsViewModel;
+import interface_adapter.PortfolioViewModel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.general.DefaultPieDataset;
 
 import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.util.List;
 
 public class StatsView extends JPanel {
-    private final StatsViewModel statsViewModel;
+    private final PortfolioViewModel portfolioViewModel;
+    private final JTable statsTable;
+    private final StatsTableModel statsTableModel;
+    private final StatsPieChartModel statsPieChartModel;
 
-    public StatsView(StatsViewModel statsViewModel) {
-        this.statsViewModel = statsViewModel;
+    public StatsView(PortfolioViewModel portfolioViewModel) {
+        this.portfolioViewModel = portfolioViewModel;
 
-        // create a table with overall statistics
-        String[] columnNames = {"Total Balance", "Total Daily Gain", "%"};
-        Object[][] data = new Object[1][3];
-        data[0][0] = statsViewModel.getStatsData().getTotalBalance();
-        data[0][1] = statsViewModel.getStatsData().getTotalDailyGain();
-        data[0][2] = statsViewModel.getStatsData().getTotalDailyPercentageGain();
-        JTable statsTable = new JTable(data, columnNames);
-        JScrollPane statsScrollPane = new JScrollPane(statsTable);
-        statsScrollPane.setPreferredSize(new Dimension(500, 100));
+        // Initialize table for displaying stats
+        statsTableModel = new StatsTableModel(portfolioViewModel.getAssets());
+        statsTable = new JTable(statsTableModel);
+        statsTable.setRowHeight(25);
 
-        // assets in the portfolio for the pie chart
-        List<Asset> assets = statsViewModel.getStatsData().getAssets();
+        JScrollPane tableScrollPane = new JScrollPane(statsTable);
+        tableScrollPane.setPreferredSize(new Dimension(400, 50)); // Limit table height
 
-        // add table and pie chart to stats view (JPanel)
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.add(statsScrollPane, BorderLayout.NORTH);
-        this.add(createPieChartPanel(assets));
+        // Initialize pie chart for displaying asset allocation
+        statsPieChartModel = new StatsPieChartModel(portfolioViewModel.getAssets());
 
-        // Update view when the state changes
-        statsViewModel.addPropertyChangeListener(evt -> updateView());
+        // Layout components
+        setLayout(new BorderLayout());
+
+        // Add table in a fixed-height panel
+        JPanel tablePanel = new JPanel(new BorderLayout());
+        tablePanel.add(tableScrollPane, BorderLayout.CENTER);
+        tablePanel.setPreferredSize(new Dimension(400, 50));
+        add(tablePanel, BorderLayout.NORTH);
+
+        // Add pie chart
+        add(statsPieChartModel.getChartPanel(), BorderLayout.CENTER);
+
+        // Register listener to update table and pie chart on data changes
+        portfolioViewModel.addPropertyChangeListener(evt -> {
+            statsTableModel.updateStatsData(portfolioViewModel.getAssets());
+            statsPieChartModel.updatePieChart(portfolioViewModel.getAssets());
+        });
     }
 
-    private void updateView() {
-        // Update the stats data & pie chart
-    }
+    /**
+     * Inner Table class for managing stats table data.
+     */
+    private static class StatsTableModel extends AbstractTableModel {
+        private final String[] columnNames = {"Total Balance", "Total Daily Gain", "% Daily Gain"};
+        private double totalBalance;
+        private double totalDailyGain;
+        private double totalDailyPercentageGain;
 
-    private static JPanel createPieChartPanel(List<Asset> assets) {
-        // Create the dataset with mock data
-        DefaultPieDataset dataset = new DefaultPieDataset();
-        for (Asset asset: assets) {
-            dataset.setValue(asset.getSymbol(), asset.getQuantity());
+        public StatsTableModel(List<Asset> assets) {
+            updateStatsData(assets);
         }
 
-        // Create the pie chart using dataset
-        JFreeChart chart = ChartFactory.createPieChart(
-                "Portfolio Asset Allocation", // Chart title
-                dataset,            // Data
-                true,               // Include legend
-                true,               // Tooltips
-                false               // URLs
-        );
+        @Override
+        public String getColumnName(int column) {
+            return columnNames[column];
+        }
 
-        // Create a panel to display the chart
-        return new ChartPanel(chart);
+        @Override
+        public int getRowCount() {
+            return 1; // Single-row table for aggregate stats
+        }
+
+        @Override
+        public int getColumnCount() {
+            return columnNames.length;
+        }
+
+        @Override
+        public Object getValueAt(int rowIndex, int columnIndex) {
+            switch (columnIndex) {
+                case 0: return totalBalance;
+                case 1: return totalDailyGain;
+                case 2: return totalDailyPercentageGain * 100; // Display percentage
+                default: return null;
+            }
+        }
+
+        public void updateStatsData(List<Asset> assets) {
+            totalBalance = retrieveTotalBalance(assets);
+            totalDailyGain = retrieveTotalDailyGain(assets);
+            totalDailyPercentageGain = retrieveTotalPercentageGain(assets);
+            fireTableDataChanged();
+        }
+
+        private double retrieveTotalBalance(List<Asset> assets) {
+            double totalBalance = 0.0;
+            for (Asset asset : assets) {
+                double totalValue = asset.getValuePerUnit() * asset.getQuantity();
+                totalBalance += totalValue;
+            }
+            return totalBalance;
+        }
+
+        private double retrieveTotalDailyGain(List<Asset> assets) {
+            double totalDailyGain = 0.0;
+            for (Asset asset : assets) {
+                double totalGain = asset.getDailyGain() * asset.getQuantity();
+                totalDailyGain += totalGain;
+            }
+            return totalDailyGain;
+        }
+
+        private double retrieveTotalPercentageGain(List<Asset> assets) {
+            if (assets.isEmpty()) {
+                return 0.0;
+            }
+            return totalDailyGain / totalBalance;
+        }
     }
 
+    /**
+     * Inner Pie Chart class for managing stats pie chart data.
+     */
+    private static class StatsPieChartModel {
+        private DefaultPieDataset dataset;
+        private final ChartPanel chartPanel;
+
+        public StatsPieChartModel(List<Asset> assets) {
+            dataset = createPieDataset(assets);
+            chartPanel = createChartPanel();
+        }
+
+        private DefaultPieDataset createPieDataset(List<Asset> assets) {
+            DefaultPieDataset dataset = new DefaultPieDataset();
+            for (Asset asset : assets) {
+                dataset.setValue(asset.getSymbol(), asset.getQuantity());
+            }
+            return dataset;
+        }
+
+        public ChartPanel createChartPanel() {
+            JFreeChart chart = ChartFactory.createPieChart(
+                    "Portfolio Asset Allocation",
+                    dataset,
+                    true, // Include legend
+                    true, // Tooltips
+                    false // URLs
+            );
+            return new ChartPanel(chart);
+        }
+
+        public ChartPanel getChartPanel() {
+            return chartPanel;
+        }
+
+        public void updatePieChart(List<Asset> assets) {
+            dataset.clear();
+            for (Asset asset : assets) {
+                dataset.setValue(asset.getSymbol(), asset.getQuantity());
+            }
+            chartPanel.repaint();
+        }
+    }
 }

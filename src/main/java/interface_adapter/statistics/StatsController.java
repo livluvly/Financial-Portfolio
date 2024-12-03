@@ -2,6 +2,7 @@ package interface_adapter.statistics;
 
 import use_case.statistics.StatsInputBoundary;
 import use_case.statistics.StatsInputData;
+import use_case.statistics.StatsOutputData;
 
 public class StatsController {
     private final StatsInputBoundary statsInteractor;
@@ -14,10 +15,5 @@ public class StatsController {
         final StatsInputData statsInputData = new StatsInputData(username);
         statsInteractor.execute(statsInputData);
     }
-
-//    public StatsOutputData fetchAssets(String userId) {
-//        StatsInputData inputData = new StatsInputData(userId);
-//        return statsInputBoundary.getAssets(inputData);
-//    }
 
 }

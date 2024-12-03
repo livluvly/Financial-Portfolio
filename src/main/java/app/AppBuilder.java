@@ -24,6 +24,8 @@ import interface_adapter.search.SearchAssetPresenter;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
+import interface_adapter.statistics.StatsController;
+import interface_adapter.statistics.StatsPresenter;
 import interface_adapter.transaction.TransactionController;
 import interface_adapter.transaction_history.TransactionHistoryController;
 import interface_adapter.transaction_history.TransactionHistoryPresenter;
@@ -42,6 +44,12 @@ import use_case.search.SearchAssetOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
+
+import use_case.statistics.StatsInputBoundary;
+import use_case.statistics.StatsInteractor;
+import use_case.statistics.StatsOutputBoundary;
+import use_case.transaction_history.TransactionHistoryDataAccessInterface;
+import use_case.transaction_history.TransactionHistoryInputBoundary;
 import use_case.transaction_history.TransactionHistoryInteractor;
 import view.*;
 
@@ -86,6 +94,7 @@ public class AppBuilder {
     private TransactionController transactionController;
     private PortfolioController portfolioController;
     private PortfolioPresenter portfolioPresenter;
+    private StatsController statsController;
     private FilePortfolioDataAccessObject portfolioDAO;
 
     private TransactionHistoryController transactionHistoryController;
@@ -151,8 +160,7 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addStatsView() {
-        statsViewModel = new StatsViewModel();
-        statsView = new StatsView(statsViewModel);
+        statsView = new StatsView(portfolioViewModel);
         cardPanel.add(statsView, statsViewModel.getViewName());
         return this;
     }
@@ -198,9 +206,22 @@ public class AppBuilder {
         PortfolioInteractor portfolioInteractor = new PortfolioInteractor(portfolioDAO, portfolioPresenter);
         portfolioController = new PortfolioController(portfolioInteractor);
         portfolioViewModel.setController(portfolioController);
-//      PortfolioInteractor portfolioInteractor = new PortfolioInteractor(portfolioPresenter);
         return this;
     }
+
+
+    /**
+     * Adds the Statsitics Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addStatsUseCase() throws IOException {
+        statsViewModel  = new StatsViewModel();
+        final StatsOutputBoundary statsOutputBoundary = new StatsPresenter(statsViewModel);
+        final StatsInputBoundary statsInteractor = new StatsInteractor(portfolioDAO, statsOutputBoundary);
+        statsController = new StatsController(statsInteractor);
+        return this;
+    }
+
 
     /**
      * Adds the Search Case to the application.
@@ -271,7 +292,8 @@ public class AppBuilder {
             throw new IllegalStateException("PortfolioController must be initialized before adding the Login Use Case!");
         }
         final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
-                loggedInViewModel, loginViewModel,portfolioController, transactionHistoryController);
+                loggedInViewModel, loginViewModel,portfolioController, statsController,transactionHistoryController);
+
         final LoginInputBoundary loginInteractor = new LoginInteractor(
                 userDataAccessObject, loginOutputBoundary);
 
