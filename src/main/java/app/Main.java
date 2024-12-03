@@ -32,7 +32,7 @@ public class Main {
                         .addSearchAssetUseCase()
                         .addTransactionsView()
                         .addTransactionHistoryView()
-                        .addStatsView();  // Add the StatisticsView (if implemented)
+                        .addStatsView();// Add the StatisticsView (if implemented)
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -47,4 +47,5 @@ public class Main {
             }
         });
     }
+
 }
