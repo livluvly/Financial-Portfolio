@@ -6,9 +6,7 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.JPanel;
 
-import interface_adapter.PortfolioViewModel;
-import interface_adapter.SearchAssetViewModel;
-import interface_adapter.ViewManagerModel;
+import interfaceAdapter.ViewManagerModel;
 
 /**
  * The View Manager for the program. It listens for property change events

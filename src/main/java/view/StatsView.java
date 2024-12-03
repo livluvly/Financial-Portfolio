@@ -1,7 +1,7 @@
 package view;
 
 import entity.Asset;
-import interface_adapter.PortfolioViewModel;
+import interfaceAdapter.PortfolioViewModel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;

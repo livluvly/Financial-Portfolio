@@ -37,6 +37,7 @@ This project is a financial portfolio management application built using the pri
 This project was designed to provide users with a robust and intuitive tool for managing investment portfolios while showcasing the application of Clean Architecture principles. By separating the core domain logic, application services, and user interfaces, the system ensures maintainability and extensibility, allowing future enhancements like additional asset types or advanced analytics with minimal impact on existing code.
 
 ### Why was it made?
+
 ### What problem does it solve?
 ### User Stories:
 
@@ -125,7 +126,7 @@ We welcome contributions and appreciate your interest in improving the project!
 Please follow the guidelines below to contribute effectively.
 <br>
 <br>
-- Found a bug or have a feature suggestion? Create an issue on our[GitHub Issues Page](https://github.com/livluvly/Financial-Portfolio/issues). 
+- Found a bug or have a feature suggestion? Create an issue on our [GitHub Issues Page](https://github.com/livluvly/Financial-Portfolio/issues). 
 - Share your ideas for new features or improvements by submitting a detailed feature request on the [feedback form](https://forms.gle/Kz13TQGAN2feM1Gs6).
 
 ### How to contribute:

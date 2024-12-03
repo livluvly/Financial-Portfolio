@@ -1,7 +1,7 @@
 package data_access;
 
 import entity.Transaction;
-import use_case.transaction_history.TransactionHistoryDataAccessInterface;
+import useCase.transactionHistory.TransactionHistoryDataAccessInterface;
 
 import java.io.*;
 import java.util.*;
