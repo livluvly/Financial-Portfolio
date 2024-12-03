@@ -11,5 +11,7 @@ public interface TransactionHistoryInputBoundary {
      * @param userId The ID of the user whose transaction history is being fetched.
      */
     void fetchTransactionHistory(String userId);
+
+
 }
 

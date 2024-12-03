@@ -40,7 +40,7 @@ public class TransactionHistoryView extends JPanel {
     public TransactionHistoryView(TransactionHistoryViewModel viewModel) {
         this.viewModel = viewModel;
         this.setLayout(new BorderLayout());
-        String[] columnNames = {"Date", "Quantity", "Total Cost", "Type"};
+        String[] columnNames = {"Date", "Symbol", "Quantity", "Total Cost", "Type"};
         tableModel = new DefaultTableModel(columnNames, 0) {
 
             // Prevents editing of table cells
@@ -70,6 +70,7 @@ public class TransactionHistoryView extends JPanel {
         for (Transaction transaction : transactions) {
             tableModel.addRow(new Object[]{
                     transaction.getDate(),
+                    transaction.getSymbol(),
                     transaction.getQuantity(),
                     transaction.getTotalCost(),
                     transaction.getType(),
@@ -83,6 +84,8 @@ public class TransactionHistoryView extends JPanel {
 
         // Date column
         sorter.setComparator(0, Comparator.comparing(date -> (Comparable<Object>) date));
+        // Symbol column
+        sorter.setComparator(0, Comparator.comparing(symbol -> (String) symbol));
         // Quantity column
         sorter.setComparator(1, Comparator.comparingDouble(quantity -> (Integer) quantity));
         // Total Cost column
@@ -97,13 +100,15 @@ public class TransactionHistoryView extends JPanel {
 
         JLabel sortLabel = new JLabel("Sort By: ");
         String[] options = {
-                "Date (Most Recent)",
-                "Quantity (Largest)",
-                "Quantity (Smallest)",
-                "Total Cost (Largest)",
-                "Total Cost (Smallest)",
-                "Type (BUY First)",
-                "Type (SELL First)",
+            "Date (Most Recent)",
+            "Symbol (A-Z)",
+            "Symbol (Z-A)",
+            "Quantity (Largest)",
+            "Quantity (Smallest)",
+            "Total Cost (Largest)",
+            "Total Cost (Smallest)",
+            "Type (BUY First)",
+            "Type (SELL First)",
         };
         JComboBox<String> sortOptions = new JComboBox<>(options);
 
@@ -113,6 +118,14 @@ public class TransactionHistoryView extends JPanel {
                 case "Date (Most Recent)" -> (List<Transaction>) viewModel.getTransactionHistory()
                         .stream()
                         .sorted(Comparator.comparing(Transaction::getDate).reversed())
+                        .toList();
+                case "Symbol (A-Z)" -> viewModel.getTransactionHistory()
+                        .stream()
+                        .sorted(Comparator.comparing(Transaction::getSymbol))
+                        .toList();
+                case "Symbol (Z-A)" -> viewModel.getTransactionHistory()
+                        .stream()
+                        .sorted(Comparator.comparing(Transaction::getSymbol).reversed())
                         .toList();
                 case "Quantity (Largest)" -> viewModel.getTransactionHistory()
                         .stream()
@@ -153,6 +166,7 @@ public class TransactionHistoryView extends JPanel {
         for (Transaction transaction : transactions) {
             tableModel.addRow(new Object[]{
                     transaction.getDate(),
+                    transaction.getSymbol(),
                     transaction.getQuantity(),
                     transaction.getTotalCost(),
                     transaction.getType(),
@@ -162,10 +176,17 @@ public class TransactionHistoryView extends JPanel {
 
     /**
      * Sets the controller for handling user interaction with the transaction history.
+     *
      * @param controller The controller for the Transaction History use case.
      */
     public void setController(TransactionHistoryController controller) {
         this.transactionHistoryController = controller;
+    }
+
+    /**
+     * Refreshes view with repopoulating the transaction history table with latest data.
+     */
+    public void refreshView() {
         populateTable();
     }
 }

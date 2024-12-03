@@ -144,10 +144,12 @@ public class AppBuilder {
     public AppBuilder addTransactionHistoryUseCase() {
         TransactionHistoryOutputBoundary presenter = new TransactionHistoryPresenter(transactionHistoryViewModel);
         transactionHistoryDataAccessObject = new InMemoryTransactionHistoryDataAccessObject();
-        // FIX !
-        TransactionHistoryInputBoundary interactor = new TransactionHistoryInteractor(presenter, (TransactionHistoryDataAccessInterface) transactionHistoryDataAccessObject);
-        TransactionHistoryController transactionHistoryController = new TransactionHistoryController(interactor);
+        TransactionHistoryInputBoundary interactor = new TransactionHistoryInteractor(presenter, transactionHistoryDataAccessObject);
+        transactionHistoryController = new TransactionHistoryController(interactor);
         transactionHistoryView.setController(transactionHistoryController);
+        transactionHistoryController.fetchTransactionHistory(userDataAccessObject.getCurrentUsername());
+//        transactionHistoryController.fetchTransactionHistory("alice"); // test mock data
+        transactionHistoryView.refreshView();
         return this;
     }
 

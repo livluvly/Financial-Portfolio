@@ -3,10 +3,12 @@ package interface_adapter;
 import java.util.List;
 
 import entity.Transaction;
+import interface_adapter.transaction_history.TransactionHistoryController;
 import interface_adapter.transaction_history.TransactionHistoryState;
 
 public class TransactionHistoryViewModel extends ViewModel<TransactionHistoryState> {
     private List<Transaction> transactionHistory;
+    private TransactionHistoryController transactionHistoryController;
 
     public TransactionHistoryViewModel() {
         super("Transaction History");
