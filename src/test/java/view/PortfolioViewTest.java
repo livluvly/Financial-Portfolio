@@ -4,16 +4,12 @@ import entity.Asset;
 import interface_adapter.PortfolioViewModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import view.PortfolioView;
 
 import javax.swing.*;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 class PortfolioViewTest {
     private PortfolioViewModel mockViewModel;
@@ -21,7 +17,7 @@ class PortfolioViewTest {
 
     @BeforeEach
     void setUp() throws IOException {
-        mockViewModel = new TestProfolioViewModel();
+        mockViewModel = new TestPortfolioViewModel();
         portfolioView = new PortfolioView(mockViewModel);
     }
 
