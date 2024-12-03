@@ -28,6 +28,8 @@ import interface_adapter.search.SearchAssetPresenter;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
+import interface_adapter.statistics.StatsController;
+import interface_adapter.statistics.StatsPresenter;
 import interface_adapter.transaction.TransactionController;
 import interface_adapter.transaction_history.TransactionHistoryController;
 import interface_adapter.transaction_history.TransactionHistoryPresenter;
@@ -49,6 +51,9 @@ import use_case.search.SearchAssetOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
+import use_case.statistics.StatsInputBoundary;
+import use_case.statistics.StatsInteractor;
+import use_case.statistics.StatsOutputBoundary;
 import use_case.transaction_history.TransactionHistoryDataAccessInterface;
 import use_case.transaction_history.TransactionHistoryInputBoundary;
 import use_case.transaction_history.TransactionHistoryInteractor;
@@ -157,7 +162,7 @@ public class AppBuilder {
      */
     public AppBuilder addStatsView() {
         statsViewModel = new StatsViewModel();
-        statsView = new StatsView(statsViewModel);
+        statsView = new StatsView(statsViewModel, portfolioViewModel);
         cardPanel.add(statsView, statsViewModel.getViewName());
         return this;
     }
@@ -202,6 +207,28 @@ public class AppBuilder {
 //      PortfolioInteractor portfolioInteractor = new PortfolioInteractor(portfolioPresenter);
         return this;
     }
+
+
+    /**
+     * Adds the Statsitics Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addStatsUseCase() throws IOException {
+        final StatsOutputBoundary statsOutputBoundary = new StatsPresenter(statsViewModel);
+        final StatsInputBoundary statsInteractor = new StatsInteractor(portfolioDAO, statsOutputBoundary);
+        final StatsController statsController = new StatsController(statsInteractor);
+        statsView.setStatsController(statsController);
+        return this;
+
+//        portfolioDAO = new FilePortfolioDataAccessObject("portfolio.csv");
+//        statsView = new StatsView(statsViewModel, portfolioViewModel);
+//        statsPresenter = new StatsPresenter(statsViewModel);
+//        StatsInteractor statsInteractor = new StatsInteractor(portfolioDAO, statsPresenter);
+//        statsController = new StatsController(statsInteractor);
+//        statsViewModel.setStatsController(statsController);
+//        return this;
+    }
+
 
     /**
      * Adds the Search Case to the application.
