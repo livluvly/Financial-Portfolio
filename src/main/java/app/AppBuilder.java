@@ -68,6 +68,8 @@ public class AppBuilder {
 //    private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
     private final FileUserDataAccessObject userDataAccessObject;;
     private final AlphaVantageSearchDataAccessObject searchDataAccessObject;
+    private final AlphaVantageExchangeRateDataAccessObject currencyDataAccessObject;
+    private final AlphaVantageAssetPriceDataAccessObject assetPriceDataAccessObject;
     private PortfolioView portfolioView;
     private PortfolioViewModel portfolioViewModel;
     private StatsView statsView;
@@ -100,6 +102,8 @@ public class AppBuilder {
         String userDataFilePath = "users.csv";
         userDataAccessObject = new FileUserDataAccessObject(userDataFilePath, userFactory);
         searchDataAccessObject = new AlphaVantageSearchDataAccessObject();
+        assetPriceDataAccessObject = new AlphaVantageAssetPriceDataAccessObject();
+        currencyDataAccessObject = new AlphaVantageExchangeRateDataAccessObject();
     }
 
     /**
@@ -186,7 +190,10 @@ public class AppBuilder {
      */
     public AppBuilder addPortfolioUseCase() throws IOException {
         portfolioDAO = new FilePortfolioDataAccessObject("portfolio.csv");
-        portfolioViewModel = new PortfolioViewModel(userDataAccessObject.getCurrentUsername());
+        portfolioViewModel = new PortfolioViewModel(
+                userDataAccessObject.getCurrentUsername(),
+                assetPriceDataAccessObject,
+                currencyDataAccessObject);
         portfolioPresenter = new PortfolioPresenter(portfolioViewModel);
         PortfolioInteractor portfolioInteractor = new PortfolioInteractor(portfolioDAO, portfolioPresenter);
         portfolioController = new PortfolioController(portfolioInteractor);
