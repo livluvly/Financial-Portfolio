@@ -18,5 +18,5 @@ public interface StatsDataAccessInterface {
      */
     boolean existsByName(String userId);
 
-    void saveAssetsForUser(String userId, List<Asset> assets);
+    void savePortfolio(String userId, List<Asset> assets);
 }

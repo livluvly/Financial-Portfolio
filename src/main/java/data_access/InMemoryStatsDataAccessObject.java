@@ -24,7 +24,7 @@ public class InMemoryStatsDataAccessObject implements StatsDataAccessInterface {
         return database.containsKey(userId);
     }
 
-    public void saveAssetsForUser(String userId, List<Asset> assets) {
+    public void savePortfolio(String userId, List<Asset> assets) {
         database.put(userId, assets);
     }
 
