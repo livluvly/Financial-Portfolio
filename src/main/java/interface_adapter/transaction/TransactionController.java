@@ -62,8 +62,6 @@ public class TransactionController {
         // Update the portfolio view model
         portfolioViewModel.updatePortfolio(assets);
 
-        List<Transaction> histories = new ArrayList<>(historyViewModel.getTransactionHistory());
-        histories.add(transaction);
-        historyViewModel.updateTransactionHistory(histories);
+        historyViewModel.addTransaction("foobar",transaction);
     }
 }

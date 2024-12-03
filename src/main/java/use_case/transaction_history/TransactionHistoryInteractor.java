@@ -38,15 +38,8 @@ public class TransactionHistoryInteractor implements TransactionHistoryInputBoun
      */
     @Override
     public void addTransaction(String username, Transaction transaction) {
-
+            this.transactionHistoryDataAccessInterface.addTransaction(username, transaction);
+            System.out.println("writing");
     }
 
-    /**
-     * @param username
-     * @param transaction
-     */
-    @Override
-    public void addTransaction(String username, Transaction transaction) {
-
-    }
 }

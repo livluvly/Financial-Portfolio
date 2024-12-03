@@ -54,19 +54,10 @@ public class FileTransactionHistoryDataAccessObject implements TransactionHistor
      */
     @Override
     public void addTransaction(String userId, Transaction transaction) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(csvFile))) {
-            String row = String.format("%s,%s,%.2f,%s,%.2f,%s",
-                    userId,
-                    transaction.getSymbol(),
-                    transaction.getQuantity(),
-                    transaction.getDate().toString(),
-                    transaction.getTotalCost(),
-                    transaction.getType());
-            writer.write(row);
-            writer.newLine();
-        } catch (IOException e) {
-            throw new RuntimeException("Error saving history file.", e);
-        }
+        List<Transaction> transactions = getTransactionHistory(userId);
+        transactions.add(transaction);
+        saveHistory(userId, transactions);
+
     }
 
     public void saveHistory(String username, List<Transaction> transactions) {
@@ -83,6 +74,7 @@ public class FileTransactionHistoryDataAccessObject implements TransactionHistor
                     transaction.getType()));
         }
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(csvFile))) {
+            writer.write(HEADER);
           for (String row : rows) {
                 writer.write(row);
                 writer.newLine();

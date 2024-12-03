@@ -32,7 +32,6 @@ public class Main {
                         .addSearchAssetUseCase()
                         .addTransactionsView()
                         .addTransactionHistoryView()
-                        .addTransactionHistoryUseCase()
                         .addStatsView();  // Add the StatisticsView (if implemented)
             } catch (IOException e) {
                 throw new RuntimeException(e);

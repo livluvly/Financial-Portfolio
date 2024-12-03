@@ -36,19 +36,13 @@ import use_case.login.LoginOutputBoundary;
 import use_case.logout.LogoutInputBoundary;
 import use_case.logout.LogoutInteractor;
 import use_case.logout.LogoutOutputBoundary;
-import use_case.logout.LogoutUserDataAccessInterface;
-import use_case.portfolio.PortfolioDataAccessInterface;
 import use_case.portfolio.PortfolioInteractor;
-import use_case.portfolio.PortfolioOutputBoundary;
 import use_case.search.SearchAssetInteractor;
 import use_case.search.SearchAssetOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
-import use_case.transaction_history.TransactionHistoryDataAccessInterface;
-import use_case.transaction_history.TransactionHistoryInputBoundary;
 import use_case.transaction_history.TransactionHistoryInteractor;
-import use_case.transaction_history.TransactionHistoryOutputBoundary;
 import view.*;
 
 /**
@@ -270,7 +264,7 @@ public class AppBuilder {
             throw new IllegalStateException("PortfolioController must be initialized before adding the Login Use Case!");
         }
         final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
-                loggedInViewModel, loginViewModel,portfolioController);
+                loggedInViewModel, loginViewModel,portfolioController, transactionHistoryController);
         final LoginInputBoundary loginInteractor = new LoginInteractor(
                 userDataAccessObject, loginOutputBoundary);
 

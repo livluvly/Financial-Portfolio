@@ -35,10 +35,9 @@ public class TransactionHistoryView extends JPanel {
     public TransactionHistoryView(TransactionHistoryViewModel viewModel) {
         this.viewModel = viewModel;
         this.setLayout(new BorderLayout());
-        String[] columnNames = {"Date", "Quantity", "Total Cost", "Type"};
+        String[] columnNames = {"Date", "Symbol" ,"Quantity", "Total Cost", "Type"};
         tableModel = new DefaultTableModel(columnNames, 0) {
 
-            // Prevents editing of table cells
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -64,12 +63,12 @@ public class TransactionHistoryView extends JPanel {
     }
 
     private void populateTable() {
-        System.out.println("populated table");
         tableModel.setRowCount(0);
         List<Transaction> transactions = viewModel.getTransactionHistory();
         for (Transaction transaction : transactions) {
             tableModel.addRow(new Object[]{
                     transaction.getDate(),
+                    transaction.getSymbol(),
                     transaction.getQuantity(),
                     transaction.getTotalCost(),
                     transaction.getType(),
@@ -98,6 +97,7 @@ public class TransactionHistoryView extends JPanel {
         JLabel sortLabel = new JLabel("Sort By: ");
         String[] options = {
                 "Date (Most Recent)",
+                "Symbol",
                 "Quantity (Largest)",
                 "Quantity (Smallest)",
                 "Total Cost (Largest)",
@@ -108,7 +108,8 @@ public class TransactionHistoryView extends JPanel {
         sortOptions.addActionListener(e -> {
             String selectedOption = (String) sortOptions.getSelectedItem();
             switch (selectedOption) {
-                case "Date (Most Recent)" -> transactionHistoryTable.getRowSorter().toggleSortOrder(0);
+                case "Date (Newest)" -> transactionHistoryTable.getRowSorter().toggleSortOrder(0);
+                case "Date (Oldest)" -> transactionHistoryTable.getRowSorter().toggleSortOrder(0);
                 case "Quantity (Largest)" -> transactionHistoryTable.getRowSorter().toggleSortOrder(1);
                 case "Quantity (Smallest)" -> transactionHistoryTable.getRowSorter().toggleSortOrder(1);
                 case "Total Cost (Largest)" -> transactionHistoryTable.getRowSorter().toggleSortOrder(2);

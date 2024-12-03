@@ -17,6 +17,5 @@ public interface StatsDataAccessInterface {
      * @return true if a user with the given username exists; false otherwise
      */
     boolean existsByName(String userId);
-
-    void saveAssetsForUser(String userId, List<Asset> assets);
+    void savePortfolio(String userId, List<Asset> assets);
 }
