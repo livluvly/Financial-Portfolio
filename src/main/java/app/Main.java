@@ -29,7 +29,6 @@ public class Main {
                         .addLogoutUseCase()
                         .addChangePasswordUseCase()
                         .addSearchAssetUseCase()
-                        .addPortfolioUseCase()
                         .addTransactionsView()
                         .addTransactionHistoryView()
                         .addTransactionHistoryUseCase()
