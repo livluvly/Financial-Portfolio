@@ -47,7 +47,7 @@ public class LoginPresenter implements LoginOutputBoundary {
 
         // fetch stats
         statsController.execute(response.getUsername());
-`       
+
         // fetch history
         historyController.fetchTransactionHistory(response.getUsername());
 

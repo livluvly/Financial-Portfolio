@@ -50,6 +50,7 @@ import use_case.statistics.StatsInteractor;
 import use_case.statistics.StatsOutputBoundary;
 import use_case.transaction_history.TransactionHistoryDataAccessInterface;
 import use_case.transaction_history.TransactionHistoryInputBoundary;
+import use_case.transaction_history.TransactionHistoryInteractor;
 import view.*;
 
 /**
