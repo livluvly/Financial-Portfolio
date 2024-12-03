@@ -4,6 +4,7 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.LoggedInState;
 import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.portfolio.PortfolioController;
+import interface_adapter.statistics.StatsController;
 import use_case.login.LoginOutputBoundary;
 import use_case.login.LoginOutputData;
 
@@ -16,14 +17,17 @@ public class LoginPresenter implements LoginOutputBoundary {
     private final LoggedInViewModel loggedInViewModel;
     private final ViewManagerModel viewManagerModel;
     private final PortfolioController portfolioController;
+    private final StatsController statsController;
 
     public LoginPresenter(ViewManagerModel viewManagerModel,
                           LoggedInViewModel loggedInViewModel,
-                          LoginViewModel loginViewModel, PortfolioController portfolioController) {
+                          LoginViewModel loginViewModel, PortfolioController portfolioController,
+                          StatsController statsController) {
         this.viewManagerModel = viewManagerModel;
         this.loggedInViewModel = loggedInViewModel;
         this.loginViewModel = loginViewModel;
         this.portfolioController = portfolioController;
+        this.statsController = statsController;
     }
 
     @Override
@@ -37,6 +41,8 @@ public class LoginPresenter implements LoginOutputBoundary {
 
         // fetch portfolio
         portfolioController.fetchAssets(response.getUsername());
+        // fetch stats
+        statsController.execute(response.getUsername());
 
         this.viewManagerModel.setState(loggedInViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();

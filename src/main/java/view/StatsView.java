@@ -2,8 +2,6 @@ package view;
 
 import entity.Asset;
 import interface_adapter.PortfolioViewModel;
-import interface_adapter.StatsViewModel;
-import interface_adapter.statistics.StatsController;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -15,64 +13,55 @@ import java.awt.*;
 import java.util.List;
 
 public class StatsView extends JPanel {
-    private final StatsViewModel statsViewModel;
     private final PortfolioViewModel portfolioViewModel;
-    private StatsController statsController;
     private final JTable statsTable;
     private final StatsTableModel statsTableModel;
-    private final JPanel statsPieChartPanel;
     private final StatsPieChartModel statsPieChartModel;
 
-    public StatsView(StatsViewModel statsViewModel, PortfolioViewModel portfolioViewModel) {
-        this.statsViewModel = statsViewModel;
+    public StatsView(PortfolioViewModel portfolioViewModel) {
         this.portfolioViewModel = portfolioViewModel;
 
         // Initialize table for displaying stats
-        statsTable = new JTable();
-        statsTableModel = new StatsTableModel(statsViewModel);
-        statsTable.setModel(statsTableModel);
+        statsTableModel = new StatsTableModel(portfolioViewModel.getAssets());
+        statsTable = new JTable(statsTableModel);
+        statsTable.setRowHeight(25);
+
+        JScrollPane tableScrollPane = new JScrollPane(statsTable);
+        tableScrollPane.setPreferredSize(new Dimension(400, 50)); // Limit table height
 
         // Initialize pie chart for displaying asset allocation
-        statsPieChartModel = new StatsPieChartModel(statsViewModel.getStatsData().getAssets());
-        statsPieChartPanel = statsPieChartModel.getChartPanel();
+        statsPieChartModel = new StatsPieChartModel(portfolioViewModel.getAssets());
 
-        // add table and pie chart to stats view (JPanel)
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.add(statsTable, BorderLayout.NORTH);
-        this.add(statsPieChartPanel, BorderLayout.CENTER);
+        // Layout components
+        setLayout(new BorderLayout());
 
-        // Update view when the state changes
-        statsViewModel.addPropertyChangeListener(evt -> updateView());
+        // Add table in a fixed-height panel
+        JPanel tablePanel = new JPanel(new BorderLayout());
+        tablePanel.add(tableScrollPane, BorderLayout.CENTER);
+        tablePanel.setPreferredSize(new Dimension(400, 50));
+        add(tablePanel, BorderLayout.NORTH);
+
+        // Add pie chart
+        add(statsPieChartModel.getChartPanel(), BorderLayout.CENTER);
+
+        // Register listener to update table and pie chart on data changes
+        portfolioViewModel.addPropertyChangeListener(evt -> {
+            statsTableModel.updateStatsData(portfolioViewModel.getAssets());
+            statsPieChartModel.updatePieChart(portfolioViewModel.getAssets());
+        });
     }
-
-
-    private void updateView() {
-        // Update the stats data & pie chart
-        statsTableModel.updateStatsData(statsViewModel);
-        statsPieChartModel.updatePieChart(statsViewModel.getStatsData().getAssets());
-    }
-
-
-    public void setStatsController(StatsController statsController) {
-        this.statsController = statsController;
-    }
-
 
     /**
      * Inner Table class for managing stats table data.
      */
     private static class StatsTableModel extends AbstractTableModel {
-        private final StatsViewModel statsViewModel;
-        private final String[] columnNames = {"Total Balance", "Total Daily Gain", "%"};
+        private final String[] columnNames = {"Total Balance", "Total Daily Gain", "% Daily Gain"};
         private double totalBalance;
         private double totalDailyGain;
         private double totalDailyPercentageGain;
 
-        private StatsTableModel(StatsViewModel statsViewModel) {
-            this.statsViewModel = statsViewModel;
-            this.totalBalance = statsViewModel.getStatsData().getTotalBalance();
-            this.totalDailyGain = statsViewModel.getStatsData().getTotalDailyGain();
-            this.totalDailyPercentageGain = statsViewModel.getStatsData().getTotalDailyPercentageGain();
+        public StatsTableModel(List<Asset> assets) {
+            updateStatsData(assets);
         }
 
         @Override
@@ -82,47 +71,72 @@ public class StatsView extends JPanel {
 
         @Override
         public int getRowCount() {
-            return 1;
+            return 1; // Single-row table for aggregate stats
         }
 
         @Override
         public int getColumnCount() {
-            return 3;
+            return columnNames.length;
         }
 
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
             switch (columnIndex) {
-                case 0: return statsViewModel.getStatsData().getTotalBalance();
-                case 1: return statsViewModel.getStatsData().getTotalDailyGain();
-                case 2: return statsViewModel.getStatsData().getTotalDailyPercentageGain();
-                default: return 0.0;
+                case 0: return totalBalance;
+                case 1: return totalDailyGain;
+                case 2: return totalDailyPercentageGain * 100; // Display percentage
+                default: return null;
             }
         }
 
-        public void updateStatsData(StatsViewModel statsViewModel) {
-            this.totalBalance = statsViewModel.getStatsData().getTotalBalance();
-            this.totalDailyGain = statsViewModel.getStatsData().getTotalDailyGain();
-            this.totalDailyPercentageGain = statsViewModel.getStatsData().getTotalDailyPercentageGain();
+        public void updateStatsData(List<Asset> assets) {
+            totalBalance = retrieveTotalBalance(assets);
+            totalDailyGain = retrieveTotalDailyGain(assets);
+            totalDailyPercentageGain = retrieveTotalPercentageGain(assets);
             fireTableDataChanged();
+        }
+
+        private double retrieveTotalBalance(List<Asset> assets) {
+            double totalBalance = 0.0;
+            for (Asset asset : assets) {
+                double totalValue = asset.getValuePerUnit() * asset.getQuantity();
+                totalBalance += totalValue;
+            }
+            return totalBalance;
+        }
+
+        private double retrieveTotalDailyGain(List<Asset> assets) {
+            double totalDailyGain = 0.0;
+            for (Asset asset : assets) {
+                double totalGain = asset.getDailyGain() * asset.getQuantity();
+                totalDailyGain += totalGain;
+            }
+            return totalDailyGain;
+        }
+
+        private double retrieveTotalPercentageGain(List<Asset> assets) {
+            if (assets.isEmpty()) {
+                return 0.0;
+            }
+            return totalDailyGain / totalBalance;
         }
     }
 
     /**
-     * Inner Pie Chart class for managing stats pie chart data
+     * Inner Pie Chart class for managing stats pie chart data.
      */
     private static class StatsPieChartModel {
         private DefaultPieDataset dataset;
-        private ChartPanel chartPanel;
+        private final ChartPanel chartPanel;
 
         public StatsPieChartModel(List<Asset> assets) {
-            this.dataset = new DefaultPieDataset();
-            this.chartPanel = createChartPanel();
+            dataset = createPieDataset(assets);
+            chartPanel = createChartPanel();
         }
 
         private DefaultPieDataset createPieDataset(List<Asset> assets) {
             DefaultPieDataset dataset = new DefaultPieDataset();
-            for (Asset asset: assets) {
+            for (Asset asset : assets) {
                 dataset.setValue(asset.getSymbol(), asset.getQuantity());
             }
             return dataset;
@@ -130,11 +144,11 @@ public class StatsView extends JPanel {
 
         public ChartPanel createChartPanel() {
             JFreeChart chart = ChartFactory.createPieChart(
-                    "Portfolio Asset Allocation", // Chart title
-                    dataset,            // Data
-                    true,               // Include legend
-                    true,               // Tooltips
-                    false               // URLs
+                    "Portfolio Asset Allocation",
+                    dataset,
+                    true, // Include legend
+                    true, // Tooltips
+                    false // URLs
             );
             return new ChartPanel(chart);
         }
@@ -145,11 +159,10 @@ public class StatsView extends JPanel {
 
         public void updatePieChart(List<Asset> assets) {
             dataset.clear();
-            for (Asset asset: assets) {
+            for (Asset asset : assets) {
                 dataset.setValue(asset.getSymbol(), asset.getQuantity());
             }
             chartPanel.repaint();
         }
     }
-
 }

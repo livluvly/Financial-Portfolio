@@ -19,19 +19,19 @@ public class Main {
             try {
                 appBuilder
                         .addPortfolioUseCase()
+                        .addStatsUseCase()
                         .addTransactionUseCase() // Ensures transaction handling is set up
                         .addSignupView()
                         .addLoginView()
                         .addLoggedInView()
-                        .addPortfolioView()
                         .addSignupUseCase()
                         .addLoginUseCase()
                         .addLogoutUseCase()
                         .addChangePasswordUseCase()
+                        .addPortfolioView()
                         .addSearchAssetUseCase()
                         .addTransactionsView()
                         .addTransactionHistoryView()
-                        .addStatsUseCase()
                         .addStatsView();  // Add the StatisticsView (if implemented)
             } catch (IOException e) {
                 throw new RuntimeException(e);

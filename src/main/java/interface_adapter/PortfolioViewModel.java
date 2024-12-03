@@ -19,6 +19,7 @@ public class PortfolioViewModel extends ViewModel<PortfolioState> {
     public void setController(PortfolioController controller) {
         this.controller = controller;
     }
+
     public void updatePortfolio(List<Asset> assets) {
         for (Asset asset : assets) {
             double[] dailyData = AlphaVantageAssetPriceDataAccessObject.getLatestPrices(asset.getSymbol());

@@ -99,6 +99,7 @@ public class AppBuilder {
     private TransactionController transactionController;
     private PortfolioController portfolioController;
     private PortfolioPresenter portfolioPresenter;
+    private StatsController statsController;
     private FilePortfolioDataAccessObject portfolioDAO;
 
     private TransactionHistoryController transactionHistoryController;
@@ -161,8 +162,7 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addStatsView() {
-        statsViewModel = new StatsViewModel();
-        statsView = new StatsView(statsViewModel, portfolioViewModel);
+        statsView = new StatsView(portfolioViewModel);
         cardPanel.add(statsView, statsViewModel.getViewName());
         return this;
     }
@@ -204,7 +204,6 @@ public class AppBuilder {
         PortfolioInteractor portfolioInteractor = new PortfolioInteractor(portfolioDAO, portfolioPresenter);
         portfolioController = new PortfolioController(portfolioInteractor);
         portfolioViewModel.setController(portfolioController);
-//      PortfolioInteractor portfolioInteractor = new PortfolioInteractor(portfolioPresenter);
         return this;
     }
 
@@ -214,19 +213,11 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addStatsUseCase() throws IOException {
+        statsViewModel  = new StatsViewModel();
         final StatsOutputBoundary statsOutputBoundary = new StatsPresenter(statsViewModel);
         final StatsInputBoundary statsInteractor = new StatsInteractor(portfolioDAO, statsOutputBoundary);
-        final StatsController statsController = new StatsController(statsInteractor);
-        statsView.setStatsController(statsController);
+        statsController = new StatsController(statsInteractor);
         return this;
-
-//        portfolioDAO = new FilePortfolioDataAccessObject("portfolio.csv");
-//        statsView = new StatsView(statsViewModel, portfolioViewModel);
-//        statsPresenter = new StatsPresenter(statsViewModel);
-//        StatsInteractor statsInteractor = new StatsInteractor(portfolioDAO, statsPresenter);
-//        statsController = new StatsController(statsInteractor);
-//        statsViewModel.setStatsController(statsController);
-//        return this;
     }
 
 
@@ -299,7 +290,7 @@ public class AppBuilder {
             throw new IllegalStateException("PortfolioController must be initialized before adding the Login Use Case!");
         }
         final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
-                loggedInViewModel, loginViewModel,portfolioController);
+                loggedInViewModel, loginViewModel,portfolioController,statsController);
         final LoginInputBoundary loginInteractor = new LoginInteractor(
                 userDataAccessObject, loginOutputBoundary);
 
