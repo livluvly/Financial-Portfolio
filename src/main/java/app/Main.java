@@ -19,6 +19,7 @@ public class Main {
             try {
                 appBuilder
                         .addPortfolioUseCase()
+                        .addTransactionHistoryUseCase()
                         .addTransactionUseCase() // Ensures transaction handling is set up
                         .addSignupView()
                         .addLoginView()

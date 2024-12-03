@@ -1,12 +1,14 @@
 package interface_adapter.portfolio;
 import java.util.List;
 import interface_adapter.PortfolioViewModel;
+import interface_adapter.TransactionHistoryViewModel;
 import use_case.portfolio.PortfolioOutputBoundary;
 import use_case.portfolio.PortfolioOutputData;
 
 public class PortfolioPresenter implements PortfolioOutputBoundary {
     private PortfolioViewModel portfolioViewModel;
-
+    private TransactionHistoryViewModel transactionHistoryViewModel;
+    
     public PortfolioPresenter(PortfolioViewModel portfolioViewModel) {
         this.portfolioViewModel = portfolioViewModel;
     }

@@ -35,4 +35,13 @@ public class TransactionHistoryInteractor implements TransactionHistoryInputBoun
                     "Failed to retrieve transaction history: " + e.getMessage());
         }
     }
+
+    /**
+     * @param username
+     * @param transaction
+     */
+    @Override
+    public void addTransaction(String username, Transaction transaction) {
+
+    }
 }
