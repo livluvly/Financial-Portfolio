@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import entity.Transaction;
-import interface_adapter.transactionHistory.TransactionHistoryController;
-import interface_adapter.transactionHistory.TransactionHistoryState;
+import interface_adapter.transaction_history.TransactionHistoryController;
+import interface_adapter.transaction_history.TransactionHistoryState;
 
 public class TransactionHistoryViewModel extends ViewModel<TransactionHistoryState> {
     private TransactionHistoryController transactionHistoryController;

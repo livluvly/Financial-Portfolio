@@ -1,4 +1,4 @@
-package interface_adapter.transactionHistory;
+package interface_adapter.transaction_history;
 
 import entity.Transaction;
 import use_case.transaction_history.TransactionHistoryInputBoundary;

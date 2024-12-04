@@ -7,9 +7,8 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.changePassword.LoggedInState;
 import interface_adapter.changePassword.LoggedInViewModel;
 import interface_adapter.portfolio.PortfolioController;
-import interface_adapter.portfolio.PortfolioState;
 import interface_adapter.statistics.StatsController;
-import interface_adapter.transactionHistory.TransactionHistoryController;
+import interface_adapter.transaction_history.TransactionHistoryController;
 import use_case.login.LoginOutputBoundary;
 import use_case.login.LoginOutputData;
 
