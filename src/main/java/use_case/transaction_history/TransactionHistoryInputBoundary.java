@@ -1,5 +1,7 @@
 package use_case.transaction_history;
 
+import entity.Transaction;
+
 /**
  * Input boundary interface for the Transaction History use case.
  * Defines methods for interacting with transaction history.
@@ -11,7 +13,6 @@ public interface TransactionHistoryInputBoundary {
      * @param userId The ID of the user whose transaction history is being fetched.
      */
     void fetchTransactionHistory(String userId);
-
-
+    void addTransaction(String username, Transaction transaction);
 }
 

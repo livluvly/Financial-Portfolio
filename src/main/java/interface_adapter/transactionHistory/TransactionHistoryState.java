@@ -1,4 +1,4 @@
-package interface_adapter.transaction_history;
+package interface_adapter.transactionHistory;
 
 import java.util.List;
 

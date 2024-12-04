@@ -1,4 +1,4 @@
-package interface_adapter.change_password;
+package interface_adapter.changePassword;
 
 /**
  * The State information representing the logged-in user.

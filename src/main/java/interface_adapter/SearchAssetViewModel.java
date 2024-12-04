@@ -2,7 +2,6 @@ package interface_adapter;
 
 import java.util.List;
 
-import entity.User;
 import interface_adapter.search.*;
 import entity.SearchResult;
 import interface_adapter.search.SearchAssetState;

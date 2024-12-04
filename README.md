@@ -37,6 +37,7 @@ This project is a financial portfolio management application built using the pri
 This project was designed to provide users with a robust and intuitive tool for managing investment portfolios while showcasing the application of Clean Architecture principles. By separating the core domain logic, application services, and user interfaces, the system ensures maintainability and extensibility, allowing future enhancements like additional asset types or advanced analytics with minimal impact on existing code.
 
 ### Why was it made?
+
 ### What problem does it solve?
 ### User Stories:
 
@@ -46,10 +47,8 @@ This project was designed to provide users with a robust and intuitive tool for 
     losses. This is helpful to view when I want to see my most recent transaction and ensure that the transaction was as
     I intended, and to optimize my investment strategy by identifying successful patterns in my transactions.
 
-    2. Areesha - As someone managing investments, I want the flexibility to tailor how I view my portfolio to suit my 
-    preferences. This includes sorting my holdings by various criteria, such as quantity or total value . 
-    Having this option allows me to organize my assets in a specific order, making it easier to analyze trends, track 
-    progress, and focus on what aligns with my financial objectives.
+    2. Areesha - Since I'm interested in managing my investments, I would like to have the option of securely managing 
+    multiple accounts. This means being able to login and logout of accounts that I can create anytime.
 
     3. Bradley - As an investor, I want to verify and check the aggregate performance of my portfoilo. This includes 
     checking the total statistics of my portfolio, and also visually understanding how are my capitals allocated in 
@@ -60,7 +59,11 @@ This project was designed to provide users with a robust and intuitive tool for 
     to search up for assets that I could be interested in, and record any purchase I make from the search results. This 
     feature makes it convenient for me to explore different investment options and optimise my investment portfolio. 
 
-    5. Team - 
+    5. Team - As someone managing investments, I want the flexibility to tailor how I view my portfolio to suit my 
+    preferences. This includes sorting my holdings by various criteria, such as quantity or total value  
+    Having this option allows me to organize my assets in a specific order. Furthermore, I want to be able to check the 
+    asset prices in different currencies. This use case makes it easier to analyze trends, track progress, and focus on 
+    what aligns with my financial objectives. 
 
 
 ## Features
@@ -123,7 +126,7 @@ We welcome contributions and appreciate your interest in improving the project!
 Please follow the guidelines below to contribute effectively.
 <br>
 <br>
-- Found a bug or have a feature suggestion? Create an issue on our[GitHub Issues Page](https://github.com/livluvly/Financial-Portfolio/issues). 
+- Found a bug or have a feature suggestion? Create an issue on our [GitHub Issues Page](https://github.com/livluvly/Financial-Portfolio/issues). 
 - Share your ideas for new features or improvements by submitting a detailed feature request on the [feedback form](https://forms.gle/Kz13TQGAN2feM1Gs6).
 
 ### How to contribute:

@@ -1,6 +1,5 @@
 package view;
 
-import data_access.AlphaVantageExchangeRateDataAccessObject;
 import interface_adapter.PortfolioViewModel;
 import entity.Asset;
 import entity.Transaction;
@@ -17,13 +16,13 @@ import java.util.HashMap;
 import java.util.List;
 
 public class PortfolioView extends JPanel {
-    private final PortfolioViewModel viewModel;
-    private final JTable portfolioTable;
+    private PortfolioViewModel viewModel;
+    final JTable portfolioTable;
     private final PortfolioTableModel tableModel;
-    private final JComboBox<String> currencySelector;
-    private final JLabel exchangeRateLabel;
+    final JComboBox<String> currencySelector;
+    final JLabel exchangeRateLabel;
     private final HashMap<Object, Object> exchangeRates;
-    private TransactionController transactionController; // Nullable initially
+    TransactionController transactionController; // Nullable initially
 
     public PortfolioView(PortfolioViewModel viewModel) {
         this.viewModel = viewModel;
@@ -39,7 +38,13 @@ public class PortfolioView extends JPanel {
         exchangeRateLabel = new JLabel("Exchange Rate: 1 USD = 1.0 USD");
         exchangeRates = new HashMap<>();
         exchangeRates.put("USD", 1.0);
-        currencySelector.addActionListener(e -> updateExchangeRate());
+        currencySelector.addActionListener(e -> {
+            try {
+                updateExchangeRate();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         JPanel controlPanel = new JPanel();
         controlPanel.setLayout(new BorderLayout());
         controlPanel.add(new JLabel("Select Currency: "), BorderLayout.WEST);
@@ -87,34 +92,30 @@ public class PortfolioView extends JPanel {
         viewModel.addPropertyChangeListener(evt -> updateView());
     }
 
-    private void updateExchangeRate() {
+    void updateExchangeRate() throws IOException {
         String selectedCurrency = (String) currencySelector.getSelectedItem();
         if (selectedCurrency != null && !selectedCurrency.equals("USD")) {
             // Fetch the exchange rate from AlphaVantage API
             Double rate = fetchExchangeRate(selectedCurrency);
-            if (rate != null) {
+            if (rate != 9) {
                 exchangeRates.put(selectedCurrency, rate);
                 exchangeRateLabel.setText(String.format("Exchange Rate: 1 USD = %.2f %s", rate, selectedCurrency));
             } else {
-                JOptionPane.showMessageDialog(this, "Failed to fetch exchange rate.", "Error", JOptionPane.ERROR_MESSAGE);
+                throw new RuntimeException("Failed to fetch exchange rate.");
+//                JOptionPane.showMessageDialog(this, "Failed to fetch exchange rate.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
         updateView();
     }
 
-    private Double fetchExchangeRate(String currency) {
-        try {
-            return AlphaVantageExchangeRateDataAccessObject.getExchangeRate("USD", currency); // Placeholder method
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+    private Double fetchExchangeRate(String currency) throws IOException {
+            return viewModel.getExchangeRate("USD", currency);
     }
 
     /**
      * Updates the table view when the portfolio changes.
      */
-    private void updateView() {
+    void updateView() {
         List<Asset> assets = viewModel.getAssets();
         PortfolioTableModel tableModel = (PortfolioTableModel) portfolioTable.getModel();
         String selectedCurrency = (String) currencySelector.getSelectedItem();
@@ -152,7 +153,7 @@ public class PortfolioView extends JPanel {
      *
      * @param asset the asset to sell
      */
-    private void handleAssetSell(Asset asset) {
+    void handleAssetSell(Asset asset) {
         if (transactionController == null) {
             JOptionPane.showMessageDialog(
                     this,
@@ -202,7 +203,7 @@ public class PortfolioView extends JPanel {
     /**
      * Inner class for managing table data.
      */
-    private static class PortfolioTableModel extends AbstractTableModel {
+    static class PortfolioTableModel extends AbstractTableModel {
         private final String[] columnNames = {"Symbol", "Quantity", "Total Value", "Daily Gain (%)"};
         private List<Asset> assets = List.of();
         private double exchangeRate = 1.0;

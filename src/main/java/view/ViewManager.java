@@ -6,8 +6,6 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.JPanel;
 
-import interface_adapter.PortfolioViewModel;
-import interface_adapter.SearchAssetViewModel;
 import interface_adapter.ViewManagerModel;
 
 /**

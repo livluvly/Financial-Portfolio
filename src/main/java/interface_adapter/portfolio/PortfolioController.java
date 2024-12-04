@@ -1,6 +1,5 @@
 package interface_adapter.portfolio;
 
-import entity.User;
 import use_case.portfolio.PortfolioInputBoundary;
 import use_case.portfolio.PortfolioInputData;
 import use_case.portfolio.PortfolioOutputData;

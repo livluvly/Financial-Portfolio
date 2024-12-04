@@ -2,10 +2,8 @@ package view;
 
 import entity.Transaction;
 import interface_adapter.SearchAssetViewModel;
-import interface_adapter.search.SearchAssetController;
 import entity.SearchResult;
 import interface_adapter.transaction.TransactionController;
-import data_access.AlphaVantageAssetPriceDataAccessObject;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -79,8 +77,8 @@ public class SearchAssetView extends JPanel {
                     String symbol = (String) resultTable.getValueAt(row, 0); // Assuming column 0 is the symbol
 
                     // Fetch the current price
-                    double pricePerUnit = AlphaVantageAssetPriceDataAccessObject.getLatestPrices(symbol)[0];
-//                    double pricePerUnit = 200;
+//                    double pricePerUnit = AlphaVantageAssetPriceDataAccessObject.getLatestPrices(symbol)[0];
+                    double pricePerUnit = 200;
                     if (pricePerUnit == -1) {
                         JOptionPane.showMessageDialog(
                                 null,

@@ -15,9 +15,4 @@ public class StatsController {
         statsInteractor.execute(statsInputData);
     }
 
-//    public StatsOutputData fetchAssets(String userId) {
-//        StatsInputData inputData = new StatsInputData(userId);
-//        return statsInputBoundary.getAssets(inputData);
-//    }
-
 }

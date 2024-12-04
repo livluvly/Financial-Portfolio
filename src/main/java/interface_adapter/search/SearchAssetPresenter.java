@@ -1,10 +1,7 @@
 package interface_adapter.search;
 
-import entity.SearchResult;
 import use_case.search.*;
 import interface_adapter.SearchAssetViewModel;
-
-import java.util.List;
 
 public class SearchAssetPresenter implements SearchAssetOutputBoundary {
     private final SearchAssetViewModel viewModel;

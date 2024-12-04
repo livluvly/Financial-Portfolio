@@ -1,4 +1,4 @@
-package use_case.change_password;
+package use_case.changePassword;
 
 import entity.User;
 import entity.UserFactory;

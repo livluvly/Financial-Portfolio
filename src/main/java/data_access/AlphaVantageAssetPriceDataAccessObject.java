@@ -3,19 +3,26 @@ package data_access;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import use_case.transaction.*;
 
-
-public class AlphaVantageAssetPriceDataAccessObject {
-    private static final String API_KEY = "demo";
+public class AlphaVantageAssetPriceDataAccessObject implements  priceDataAccessInterface{
+    private static final String API_KEY = "WIDFJSNJ4249RPKM";
     private static final String BASE_URL = "https://www.alphavantage.co/query";
 
-    public static double[] getLatestPrices(String symbol) {
+    @Override
+    public double getLatestPrice(String symbol) {
+        return getLatestPrices(symbol)[0];
+    }
+    
+    @Override
+    public double[] getLatestPrices(String symbol) {
         try {
             String urlStr = String.format("%s?function=TIME_SERIES_DAILY&symbol=%s&apikey=%s",
                     BASE_URL, symbol, API_KEY);
@@ -53,5 +60,16 @@ public class AlphaVantageAssetPriceDataAccessObject {
             e.printStackTrace();
             return new double[]{-1,-1}; // Return -1 to indicate an error
         }
+    }
+
+    /**
+     * @param fromCurrency 
+     * @param toCurrency
+     * @return
+     * @throws IOException
+     */
+    @Override
+    public double getExchangeRate(String fromCurrency, String toCurrency) throws IOException {
+        return 0.0;
     }
 }

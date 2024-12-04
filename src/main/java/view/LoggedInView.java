@@ -13,9 +13,9 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import interface_adapter.change_password.ChangePasswordController;
-import interface_adapter.change_password.LoggedInState;
-import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.changePassword.ChangePasswordController;
+import interface_adapter.changePassword.LoggedInState;
+import interface_adapter.changePassword.LoggedInViewModel;
 import interface_adapter.logout.LogoutController;
 
 /**

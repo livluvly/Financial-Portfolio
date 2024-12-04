@@ -1,7 +1,6 @@
 package use_case.portfolio;
 
 import entity.Asset;
-import entity.User;
 
 import java.util.List;
 

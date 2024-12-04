@@ -2,12 +2,13 @@ package data_access;
 
 import entity.Asset;
 import use_case.portfolio.PortfolioDataAccessInterface;
+import use_case.statistics.StatsDataAccessInterface;
 
 import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class FilePortfolioDataAccessObject implements PortfolioDataAccessInterface {
+public class FilePortfolioDataAccessObject implements PortfolioDataAccessInterface, StatsDataAccessInterface {
     /**
      * @param userId
      * @return
@@ -50,6 +51,11 @@ public class FilePortfolioDataAccessObject implements PortfolioDataAccessInterfa
         }
 
         return portfolio;
+    }
+
+    @Override
+    public boolean existsByName(String userId) {
+        return this.getAssetsForUser(userId).size() > 0;
     }
 
     /**

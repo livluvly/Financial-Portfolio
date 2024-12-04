@@ -12,15 +12,15 @@ import static org.junit.jupiter.api.Assertions.*;
 class StatsInteractorTest {
 
     @Test
-    void successTest() {
-        StatsInputData inputData = new StatsInputData("alice");
+    void successCalculationTest() {
+        StatsInputData statsInputData = new StatsInputData("alice");
         StatsDataAccessInterface statsRepository = new InMemoryStatsDataAccessObject();
 
-        // Populate the repository with assets for JohnDoe.
+        // For the success test, need to add assets to repository for alice.
         List<Asset> assets = new ArrayList<>();
         assets.add(new Asset("AAPL", 10, 150.0, 5.0));
         assets.add(new Asset("GOOGL", 5, 140.0, 7.0));
-        statsRepository.saveAssetsForUser("alice", assets);
+        statsRepository.savePortfolio("alice", assets);
 
         StatsOutputBoundary successPresenter = new StatsOutputBoundary() {
             @Override
@@ -37,14 +37,13 @@ class StatsInteractorTest {
                 fail("Use case failure is unexpected.");
             }
         };
-
         StatsInputBoundary interactor = new StatsInteractor(statsRepository, successPresenter);
-        interactor.execute(inputData);
+        interactor.execute(statsInputData);
     }
 
     @Test
     void failureUserDoesNotExistTest() {
-        StatsInputData inputData = new StatsInputData("UnknownUser");
+        StatsInputData statsInputData = new StatsInputData("NoUser");
         StatsDataAccessInterface statsRepository = new InMemoryStatsDataAccessObject();
 
         StatsOutputBoundary failurePresenter = new StatsOutputBoundary() {
@@ -55,21 +54,21 @@ class StatsInteractorTest {
 
             @Override
             public void prepareFailView(String error) {
-                assertEquals("UnknownUser: Account does not exist", error);
+                assertEquals("NoUser: Account does not exist", error);
             }
         };
 
         StatsInputBoundary interactor = new StatsInteractor(statsRepository, failurePresenter);
-        interactor.execute(inputData);
+        interactor.execute(statsInputData);
     }
 
     @Test
     void successNoAssetsTest() {
-        StatsInputData inputData = new StatsInputData("EmptyUser");
+        StatsInputData statsInputData = new StatsInputData("EmptyUser");
         StatsDataAccessInterface statsRepository = new InMemoryStatsDataAccessObject();
 
-        // Save an empty asset list for the user.
-        statsRepository.saveAssetsForUser("EmptyUser", new ArrayList<>());
+        // Save a list of empty assets for empty user.
+        statsRepository.savePortfolio("EmptyUser", new ArrayList<>());
 
         StatsOutputBoundary successPresenter = new StatsOutputBoundary() {
             @Override
@@ -88,7 +87,7 @@ class StatsInteractorTest {
         };
 
         StatsInputBoundary interactor = new StatsInteractor(statsRepository, successPresenter);
-        interactor.execute(inputData);
+        interactor.execute(statsInputData);
     }
 }
 

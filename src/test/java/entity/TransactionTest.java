@@ -2,52 +2,47 @@ package entity;
 
 import org.junit.jupiter.api.Test;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class TransactionTest {
 
+    final Date now = Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC));
+
     @Test
-    void getDate() {
-        Date date = new Date();
-        Transaction transaction = new Transaction("AAPL", 10, date, 1500.0, "BUY");
+    void testValidTransactionCreation() {
+        Transaction transaction = new Transaction("AAPL", 10, now, 11.0, "BUY");
 
-        assertEquals(date, transaction.getDate());
-
+        assertEquals("AAPL", transaction.getSymbol());
+        assertEquals(10, transaction.getQuantity());
+        assertEquals(11.0, transaction.getTotalCost());
+        assertEquals(now, transaction.getDate());
+        assertEquals("BUY", transaction.getType());
     }
 
     @Test
-    void getSymbol() {
-        String symbol = "AAPL";
-        Transaction transaction = new Transaction(symbol, 10, new Date(), 1500.0, "BUY");
-
-        assertEquals(symbol, transaction.getSymbol());
+    void testInvalidQuantityThrowsException() {
+        assertThrows(IllegalArgumentException.class, () ->
+                new Transaction("AAPL", -5, now,150.0,  "SELL")
+        );
     }
 
     @Test
-    void getQuantity() {
-        int quantity = 10;
-        Transaction transaction = new Transaction("AAPL", quantity, new Date(), 1500.0, "BUY");
-
-        assertEquals(quantity, transaction.getQuantity());
-
+    void testInvalidPriceThrowsException() {
+        assertThrows(IllegalArgumentException.class, () ->
+                new Transaction("AAPL", 10, now,-150.0,  "SELL")
+        );
     }
 
     @Test
-    void getTotalCost() {
-        double cost = 1500.0;
-        Transaction transaction = new Transaction("AAPL", 10, new Date(), cost, "BUY");
-
-        assertEquals(cost, transaction.getTotalCost());
+    void testNullAssetSymbolThrowsException() {
+        assertThrows(IllegalArgumentException.class, () ->
+                new Transaction(null, 10, now, 150.0, "BUY")
+        );
     }
-
-    @Test
-    void getType() {
-        String type = "BUY";
-        Transaction transaction = new Transaction("AAPL", 10, new Date(), 1500.0, type);
-
-        assertEquals(type, transaction.getType());
-    }
-
 }
