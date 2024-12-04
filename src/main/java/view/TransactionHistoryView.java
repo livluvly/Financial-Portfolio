@@ -11,8 +11,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import entity.Transaction;
-import interface_adapter.TransactionHistoryViewModel;
-import interface_adapter.transaction.TransactionController;
+import interfaceAdapter.TransactionHistoryViewModel;
 
 /**
  * TransactionHistoryView shows a page of the past transactions made. Users can sort transactions based on the following

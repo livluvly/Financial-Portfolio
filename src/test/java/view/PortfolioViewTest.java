@@ -1,7 +1,7 @@
 package view;
 
 import entity.Asset;
-import interface_adapter.PortfolioViewModel;
+import interfaceAdapter.PortfolioViewModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

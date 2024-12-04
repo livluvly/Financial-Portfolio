@@ -1,12 +1,14 @@
 package data_access;
 
 import entity.SearchResult;
+
 import use_case.search.ExternalSearchDataAccessInterface;
 
 import java.io.*;
 import java.net.*;
 import java.util.*;
 import org.json.*;
+
 
 public class AlphaVantageSearchDataAccessObject implements ExternalSearchDataAccessInterface {
     private static final String API_KEY = "demo";

@@ -1,7 +1,7 @@
 package data_access;
 
 import entity.Asset;
-import use_case.portfolio.PortfolioDataAccessInterface;
+import useCase.portfolio.PortfolioDataAccessInterface;
 
 import java.util.Collections;
 import java.util.HashMap;

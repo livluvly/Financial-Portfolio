@@ -8,41 +8,47 @@ import javax.swing.*;
 import data_access.*;
 import entity.CommonUserFactory;
 import entity.UserFactory;
-import interface_adapter.*;
-import interface_adapter.change_password.ChangePasswordController;
-import interface_adapter.change_password.ChangePasswordPresenter;
-import interface_adapter.change_password.LoggedInViewModel;
-import interface_adapter.login.LoginController;
-import interface_adapter.login.LoginPresenter;
-import interface_adapter.login.LoginViewModel;
-import interface_adapter.logout.LogoutController;
-import interface_adapter.logout.LogoutPresenter;
-import interface_adapter.portfolio.PortfolioController;
-import interface_adapter.portfolio.PortfolioPresenter;
-import interface_adapter.search.SearchAssetController;
-import interface_adapter.search.SearchAssetPresenter;
-import interface_adapter.signup.SignupController;
-import interface_adapter.signup.SignupPresenter;
-import interface_adapter.signup.SignupViewModel;
-import interface_adapter.transaction.TransactionController;
-import interface_adapter.transaction_history.TransactionHistoryController;
-import interface_adapter.transaction_history.TransactionHistoryPresenter;
-import use_case.change_password.ChangePasswordInputBoundary;
-import use_case.change_password.ChangePasswordInteractor;
-import use_case.change_password.ChangePasswordOutputBoundary;
-import use_case.login.LoginInputBoundary;
-import use_case.login.LoginInteractor;
-import use_case.login.LoginOutputBoundary;
-import use_case.logout.LogoutInputBoundary;
-import use_case.logout.LogoutInteractor;
-import use_case.logout.LogoutOutputBoundary;
-import use_case.portfolio.PortfolioInteractor;
-import use_case.search.SearchAssetInteractor;
-import use_case.search.SearchAssetOutputBoundary;
-import use_case.signup.SignupInputBoundary;
-import use_case.signup.SignupInteractor;
-import use_case.signup.SignupOutputBoundary;
-import use_case.transaction_history.TransactionHistoryInteractor;
+import interfaceAdapter.*;
+import interfaceAdapter.changePassword.ChangePasswordController;
+import interfaceAdapter.changePassword.ChangePasswordPresenter;
+import interfaceAdapter.changePassword.LoggedInViewModel;
+import interfaceAdapter.login.LoginController;
+import interfaceAdapter.login.LoginPresenter;
+import interfaceAdapter.login.LoginViewModel;
+import interfaceAdapter.logout.LogoutController;
+import interfaceAdapter.logout.LogoutPresenter;
+import interfaceAdapter.portfolio.PortfolioController;
+import interfaceAdapter.portfolio.PortfolioPresenter;
+import interfaceAdapter.search.SearchAssetController;
+import interfaceAdapter.search.SearchAssetPresenter;
+import interfaceAdapter.signup.SignupController;
+import interfaceAdapter.signup.SignupPresenter;
+import interfaceAdapter.signup.SignupViewModel;
+import interfaceAdapter.statistics.StatsController;
+import interfaceAdapter.statistics.StatsPresenter;
+import interfaceAdapter.transaction.TransactionController;
+import interfaceAdapter.transactionHistory.TransactionHistoryController;
+import interfaceAdapter.transactionHistory.TransactionHistoryPresenter;
+import useCase.changePassword.ChangePasswordInputBoundary;
+import useCase.changePassword.ChangePasswordInteractor;
+import useCase.changePassword.ChangePasswordOutputBoundary;
+import useCase.login.LoginInputBoundary;
+import useCase.login.LoginInteractor;
+import useCase.login.LoginOutputBoundary;
+import useCase.logout.LogoutInputBoundary;
+import useCase.logout.LogoutInteractor;
+import useCase.logout.LogoutOutputBoundary;
+import useCase.portfolio.PortfolioInteractor;
+import useCase.search.SearchAssetInteractor;
+import useCase.search.SearchAssetOutputBoundary;
+import useCase.signup.SignupInputBoundary;
+import useCase.signup.SignupInteractor;
+import useCase.signup.SignupOutputBoundary;
+
+import useCase.statistics.StatsInputBoundary;
+import useCase.statistics.StatsInteractor;
+import useCase.statistics.StatsOutputBoundary;
+import useCase.transactionHistory.TransactionHistoryInteractor;
 import view.*;
 
 /**
@@ -86,6 +92,7 @@ public class AppBuilder {
     private TransactionController transactionController;
     private PortfolioController portfolioController;
     private PortfolioPresenter portfolioPresenter;
+    private StatsController statsController;
     private FilePortfolioDataAccessObject portfolioDAO;
 
     private TransactionHistoryController transactionHistoryController;
@@ -151,8 +158,7 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addStatsView() {
-        statsViewModel = new StatsViewModel();
-        statsView = new StatsView(statsViewModel);
+        statsView = new StatsView(portfolioViewModel);
         cardPanel.add(statsView, statsViewModel.getViewName());
         return this;
     }
@@ -198,9 +204,22 @@ public class AppBuilder {
         PortfolioInteractor portfolioInteractor = new PortfolioInteractor(portfolioDAO, portfolioPresenter);
         portfolioController = new PortfolioController(portfolioInteractor);
         portfolioViewModel.setController(portfolioController);
-//      PortfolioInteractor portfolioInteractor = new PortfolioInteractor(portfolioPresenter);
         return this;
     }
+
+
+    /**
+     * Adds the Statsitics Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addStatsUseCase() throws IOException {
+        statsViewModel  = new StatsViewModel();
+        final StatsOutputBoundary statsOutputBoundary = new StatsPresenter(statsViewModel);
+        final StatsInputBoundary statsInteractor = new StatsInteractor(portfolioDAO, statsOutputBoundary);
+        statsController = new StatsController(statsInteractor);
+        return this;
+    }
+
 
     /**
      * Adds the Search Case to the application.
@@ -271,7 +290,8 @@ public class AppBuilder {
             throw new IllegalStateException("PortfolioController must be initialized before adding the Login Use Case!");
         }
         final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
-                loggedInViewModel, loginViewModel,portfolioController, transactionHistoryController);
+                loggedInViewModel, loginViewModel,portfolioController, statsController,transactionHistoryController);
+
         final LoginInputBoundary loginInteractor = new LoginInteractor(
                 userDataAccessObject, loginOutputBoundary);
 

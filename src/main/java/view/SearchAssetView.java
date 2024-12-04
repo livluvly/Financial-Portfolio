@@ -1,11 +1,9 @@
 package view;
 
 import entity.Transaction;
-import interface_adapter.SearchAssetViewModel;
-import interface_adapter.search.SearchAssetController;
+import interfaceAdapter.SearchAssetViewModel;
 import entity.SearchResult;
-import interface_adapter.transaction.TransactionController;
-import data_access.AlphaVantageAssetPriceDataAccessObject;
+import interfaceAdapter.transaction.TransactionController;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;

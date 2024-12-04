@@ -1,7 +1,7 @@
 package data_access;
 
 import org.json.JSONObject;
-import use_case.transaction.priceDataAccessInterface;
+import useCase.transaction.priceDataAccessInterface;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -9,7 +9,7 @@ import java.net.URL;
 
 
 public class AlphaVantageExchangeRateDataAccessObject implements priceDataAccessInterface {
-    private static final String API_KEY = "demo";
+    private static final String API_KEY = "WIDFJSNJ4249RPKM";
     private static final String BASE_URL = "https://www.alphavantage.co/query";
 
     /**
