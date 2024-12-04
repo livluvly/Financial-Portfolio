@@ -186,7 +186,7 @@ public class PortfolioView extends JPanel {
                     "SELL");
             
             transactionController.addTransaction(
-                    this.viewModel.getState().getUsername(),
+                    viewModel.getState().getUsername(),
                     transaction);
         }
     }

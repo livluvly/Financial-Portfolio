@@ -2,6 +2,8 @@ package interface_adapter;
 
 import java.util.List;
 
+import entity.User;
+import interface_adapter.portfolio.PortfolioState;
 import interface_adapter.search.*;
 import entity.SearchResult;
 import interface_adapter.search.SearchAssetState;
@@ -19,11 +21,13 @@ public class SearchAssetViewModel extends ViewModel<SearchAssetState> {
         this.setState(new SearchAssetState(List.of(), username));
         this.searchController = searchController;
     }
-
+    public SearchAssetViewModel(){
+        super("Transactions");
+        this.setState(new SearchAssetState(List.of(), null));
+    }
     public void setSearchController(SearchAssetController searchController) {
         this.searchController = searchController;
     }
-
     /**
      * Updates the list of search results in the view model.
      *

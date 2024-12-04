@@ -7,7 +7,7 @@ import java.io.*;
 import java.util.*;
 
 public class FileTransactionHistoryDataAccessObject implements TransactionHistoryDataAccessInterface {
-    private static final String HEADER = "username,date,symbol,quantity,totalValue" ;
+    private static final String HEADER = "username,date,symbol,quantity,totalValue,Type" ;
     private final File csvFile;
     private final List<String> header = Arrays.asList(HEADER.split(","));
 
@@ -20,6 +20,7 @@ public class FileTransactionHistoryDataAccessObject implements TransactionHistor
             }
         }
     }
+
     /**
      * @param userId The ID of the user whose transaction history is being retrieved.
      * @return
@@ -30,7 +31,7 @@ public class FileTransactionHistoryDataAccessObject implements TransactionHistor
 
         try (BufferedReader reader=new BufferedReader(new FileReader(csvFile))){
             String row;
-            while ((row=reader.readLine())!=null) {
+            while ((row = reader.readLine()) != null) {
                 String[] columns = row.split(",");
                 if (columns[0].equals(userId)){
                     transactions.add(new Transaction(
@@ -54,9 +55,19 @@ public class FileTransactionHistoryDataAccessObject implements TransactionHistor
      */
     @Override
     public void addTransaction(String userId, Transaction transaction) {
-        List<Transaction> transactions = getTransactionHistory(userId);
-        transactions.add(transaction);
-        saveHistory(userId, transactions);
+        String row = String.format("%s,%s,%.2f,%s,%.2f,%s",
+                userId,
+                transaction.getSymbol(),
+                transaction.getQuantity(),
+                transaction.getDate().toString(),
+                transaction.getTotalCost(),
+                transaction.getType());
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(csvFile,true))) {
+            writer.write(row);
+            writer.newLine();
+        } catch (IOException e) {
+            throw new RuntimeException("Error saving history file.", e);
+        }
 
     }
 
@@ -75,6 +86,7 @@ public class FileTransactionHistoryDataAccessObject implements TransactionHistor
         }
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(csvFile))) {
             writer.write(HEADER);
+            writer.newLine();
           for (String row : rows) {
                 writer.write(row);
                 writer.newLine();

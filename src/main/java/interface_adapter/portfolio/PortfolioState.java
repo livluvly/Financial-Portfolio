@@ -27,4 +27,7 @@ public class PortfolioState {
     }
 
 
+    public void setUsername(String name) {
+        this.username = name;
+    }
 }

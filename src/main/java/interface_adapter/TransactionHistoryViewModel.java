@@ -12,7 +12,7 @@ public class TransactionHistoryViewModel extends ViewModel<TransactionHistorySta
 
     public TransactionHistoryViewModel() {
         super("Transaction History");
-        this.setState(new TransactionHistoryState(List.of()));
+        this.setState(new TransactionHistoryState(List.of(), null));
     }
 
     /**
@@ -20,7 +20,7 @@ public class TransactionHistoryViewModel extends ViewModel<TransactionHistorySta
      * @param transactions The new list of transaction to update.
      */
     public void updateTransactionHistory(List<Transaction> transactions) {
-        TransactionHistoryState newState = new TransactionHistoryState(transactions);
+        TransactionHistoryState newState = new TransactionHistoryState(transactions, this.getState().getUsername());
         this.setState(newState);
         this.firePropertyChanged();
     }
@@ -31,6 +31,12 @@ public class TransactionHistoryViewModel extends ViewModel<TransactionHistorySta
         newHistory.add(transaction);
         updateTransactionHistory(newHistory);
     }
+    public void setName(String name){
+        TransactionHistoryState newState = this.getState();
+        newState.setUsername(name);
+        this.setState(newState);
+    }
+
     /**
      * Retrieves the current transaction history from the state.
      * @return a list of transactions.

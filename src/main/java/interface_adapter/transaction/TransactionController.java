@@ -61,9 +61,9 @@ public class TransactionController {
 
         // Update the portfolio view model
         portfolioViewModel.updatePortfolio(assets);
-
         historyViewModel.addTransaction(
                 portfolioViewModel.getState().getUsername()
                 ,transaction);
+
     }
 }

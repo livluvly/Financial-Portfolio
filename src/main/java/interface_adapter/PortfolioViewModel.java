@@ -5,14 +5,24 @@ import entity.Asset;
 import java.io.IOException;
 import java.util.List;
 
+import interface_adapter.transaction_history.TransactionHistoryState;
 import use_case.transaction.priceDataAccessInterface;
 import interface_adapter.portfolio.PortfolioController;
 import interface_adapter.portfolio.PortfolioState;
 
+import javax.sound.sampled.Port;
+
 public class PortfolioViewModel extends ViewModel<PortfolioState> {
     private priceDataAccessInterface priceDAO;
+
+
     private priceDataAccessInterface currencyDAO;
     private PortfolioController controller;
+
+    public PortfolioViewModel(){
+        super("Portfolio");
+        this.setState(new PortfolioState(List.of(), null));
+    }
 
     public PortfolioViewModel(String username,
                               priceDataAccessInterface priceDAO,
@@ -22,12 +32,25 @@ public class PortfolioViewModel extends ViewModel<PortfolioState> {
         this.currencyDAO = currencyDAO;
         this.setState(new PortfolioState(List.of(), username));
     }
-
+    public void setName(String name){
+        PortfolioState newState = this.getState();
+        newState.setUsername(name);
+        this.setState(newState);
+    }
 
     public void setController(PortfolioController controller) {
         this.controller = controller;
     }
 
+    public void setCurrencyDAO(priceDataAccessInterface currencyDAO) {
+
+        this.currencyDAO = currencyDAO;
+    }
+
+    public void setPriceDAO(priceDataAccessInterface priceDAO) {
+
+        this.priceDAO = priceDAO;
+    }
     public void updatePortfolio(List<Asset> assets) {
         for (Asset asset : assets) {
             double[] dailyData = priceDAO.getLatestPrices(asset.getSymbol());
@@ -51,6 +74,7 @@ public class PortfolioViewModel extends ViewModel<PortfolioState> {
         return currencyDAO.getExchangeRate(in,out);
     }
     public List<Asset> getAssets() {
+
         return this.getState().getAssets();
     }
 
