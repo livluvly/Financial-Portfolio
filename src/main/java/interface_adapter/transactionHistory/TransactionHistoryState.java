@@ -32,5 +32,4 @@ public class TransactionHistoryState {
     public void setUsername(String username) {
         this.username = username;
     }
-
 }

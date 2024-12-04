@@ -53,5 +53,6 @@ public class AlphaVantageExchangeRateDataAccessObject implements priceDataAccess
             return 1.0;
         }
     }
+
 }
 

@@ -7,7 +7,6 @@ import java.util.*;
 import org.json.*;
 import java.util.List;
 
-
 public class AlphaVantageSearchDataAccessObject  implements ExternalSearchDataAccessInterface {
     private static final String API_KEY = "OFZTKRAPDVNFE1PX";
     

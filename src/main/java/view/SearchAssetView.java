@@ -162,5 +162,4 @@ public class SearchAssetView extends JPanel {
             return columnNames[column];
         }
     }
-
 }

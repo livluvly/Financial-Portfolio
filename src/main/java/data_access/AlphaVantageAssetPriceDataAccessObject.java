@@ -73,4 +73,5 @@ public class AlphaVantageAssetPriceDataAccessObject implements  priceDataAccessI
     public double getExchangeRate(String fromCurrency, String toCurrency) throws IOException {
         return 0.0;
     }
+
 }
