@@ -18,22 +18,22 @@ public class Main {
             // warning: portfolioController needs to go first
             try {
                 appBuilder
-                        .addPortfolioUseCase()
-                        .addStatsUseCase()
-                        .addTransactionHistoryUseCase()
-                        .addTransactionUseCase() // Ensures transaction handling is set up
-                        .addSignupView()
                         .addLoginView()
+                        .addSignupView()
                         .addLoggedInView()
+                        .addPortfolioView()
+                        .addTransactionsView()
+                        .addTransactionHistoryView()
+                        .addStatsView()  // Add the StatisticsView (if implemented)
+                        .addChangePasswordUseCase()
+                        .addPortfolioUseCase()
+                        .addTransactionHistoryUseCase()
+                        .addStatsUseCase()
                         .addSignupUseCase()
                         .addLoginUseCase()
                         .addLogoutUseCase()
-                        .addChangePasswordUseCase()
-                        .addPortfolioView()
-                        .addSearchAssetUseCase()
-                        .addTransactionsView()
-                        .addTransactionHistoryView()
-                        .addStatsView();  // Add the StatisticsView (if implemented)
+                        .addTransactionUseCase() // Ensures transaction handling is set up
+                        .addSearchAssetUseCase();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

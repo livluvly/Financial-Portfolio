@@ -12,8 +12,9 @@ import java.util.Collections;
 import java.util.List;
 import use_case.transaction.*;
 
+
 public class AlphaVantageAssetPriceDataAccessObject implements  priceDataAccessInterface{
-    private static final String API_KEY = "WIDFJSNJ4249RPKM";
+    private static final String API_KEY = "OFZTKRAPDVNFE1PX";
     private static final String BASE_URL = "https://www.alphavantage.co/query";
 
     @Override
@@ -72,4 +73,5 @@ public class AlphaVantageAssetPriceDataAccessObject implements  priceDataAccessI
     public double getExchangeRate(String fromCurrency, String toCurrency) throws IOException {
         return 0.0;
     }
+
 }

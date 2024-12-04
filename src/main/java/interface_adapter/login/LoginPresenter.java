@@ -1,9 +1,13 @@
 package interface_adapter.login;
 
+import interface_adapter.PortfolioViewModel;
+import interface_adapter.StatsViewModel;
+import interface_adapter.TransactionHistoryViewModel;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.changePassword.LoggedInState;
 import interface_adapter.changePassword.LoggedInViewModel;
 import interface_adapter.portfolio.PortfolioController;
+import interface_adapter.portfolio.PortfolioState;
 import interface_adapter.statistics.StatsController;
 import interface_adapter.transactionHistory.TransactionHistoryController;
 import use_case.login.LoginOutputBoundary;
@@ -20,6 +24,9 @@ public class LoginPresenter implements LoginOutputBoundary {
     private final PortfolioController portfolioController;
     private final StatsController statsController;
     private final TransactionHistoryController historyController;
+    private TransactionHistoryViewModel transactionHistoryViewModel;
+    private StatsViewModel statsViewModel;
+    private PortfolioViewModel portfolioViewModel;
   
     public LoginPresenter(ViewManagerModel viewManagerModel,
                           LoggedInViewModel loggedInViewModel,
@@ -33,6 +40,19 @@ public class LoginPresenter implements LoginOutputBoundary {
         this.historyController = historyController;
     }
 
+    public void setTransactionHistoryViewModel(TransactionHistoryViewModel transactionHistoryViewModel) {
+        this.transactionHistoryViewModel = transactionHistoryViewModel;
+    }
+
+    public void setStatsViewModel(StatsViewModel statsViewModel) {
+        this.statsViewModel = statsViewModel;
+    }
+
+    public void setPortfolioViewModel(PortfolioViewModel portfolioViewModel) {
+        this.portfolioViewModel = portfolioViewModel;
+    }
+
+
     @Override
     public void prepareSuccessView(LoginOutputData response) {
         // On success, switch to the logged in view.
@@ -44,14 +64,13 @@ public class LoginPresenter implements LoginOutputBoundary {
 
         // fetch portfolio
         portfolioController.fetchAssets(response.getUsername());
-
+        portfolioViewModel.setName(response.getUsername());
         // fetch stats
         statsController.execute(response.getUsername());
 
         // fetch history
         historyController.fetchTransactionHistory(response.getUsername());
-
-
+        transactionHistoryViewModel.setName(response.getUsername());
         this.viewManagerModel.setState(loggedInViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
     }

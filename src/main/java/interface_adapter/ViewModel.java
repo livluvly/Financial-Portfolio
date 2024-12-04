@@ -1,7 +1,10 @@
 package interface_adapter;
 
+import interface_adapter.portfolio.PortfolioState;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.List;
 
 /**
  * The ViewModel for our CA implementation.

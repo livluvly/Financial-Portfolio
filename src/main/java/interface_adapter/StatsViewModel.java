@@ -1,5 +1,6 @@
 package interface_adapter;
 
+import interface_adapter.search.SearchAssetState;
 import interface_adapter.statistics.StatsState;
 import use_case.statistics.StatsOutputData;
 
@@ -22,6 +23,7 @@ public class StatsViewModel extends ViewModel<StatsState> {
     public StatsOutputData getStatsData() {
         return this.getState().getStatsOutputData();
     }
+
 
 }
 
