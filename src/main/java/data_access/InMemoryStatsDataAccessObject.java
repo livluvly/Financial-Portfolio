@@ -1,7 +1,7 @@
 package data_access;
 
 import entity.Asset;
-import useCase.statistics.StatsDataAccessInterface;
+import use_case.statistics.StatsDataAccessInterface;
 
 import java.util.HashMap;
 import java.util.List;

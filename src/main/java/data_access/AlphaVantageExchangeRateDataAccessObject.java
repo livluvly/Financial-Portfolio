@@ -1,7 +1,7 @@
 package data_access;
 
 import org.json.JSONObject;
-import useCase.transaction.priceDataAccessInterface;
+import use_case.transaction.priceDataAccessInterface;
 
 import java.io.*;
 import java.net.HttpURLConnection;

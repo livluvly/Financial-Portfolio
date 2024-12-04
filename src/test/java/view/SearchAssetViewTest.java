@@ -1,22 +1,13 @@
 package view;
 
 import entity.SearchResult;
-import entity.Transaction;
-import interfaceAdapter.PortfolioViewModel;
-import interfaceAdapter.SearchAssetViewModel;
-import interfaceAdapter.TransactionHistoryViewModel;
-import interfaceAdapter.portfolio.PortfolioController;
-import interfaceAdapter.search.SearchAssetController;
-import interfaceAdapter.transaction.TransactionController;
-import interfaceAdapter.transactionHistory.TransactionHistoryController;
-import org.junit.Before;
+import interface_adapter.SearchAssetViewModel;
+import interface_adapter.search.SearchAssetController;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 
 import javax.swing.*;
 import javax.swing.table.TableModel;
-import java.beans.PropertyChangeListener;
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;

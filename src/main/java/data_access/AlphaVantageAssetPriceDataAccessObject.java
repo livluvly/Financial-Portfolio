@@ -10,7 +10,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import useCase.transaction.*;
+import use_case.transaction.*;
 
 public class AlphaVantageAssetPriceDataAccessObject implements  priceDataAccessInterface{
     private static final String API_KEY = "WIDFJSNJ4249RPKM";

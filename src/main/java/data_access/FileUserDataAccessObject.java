@@ -12,10 +12,10 @@ import java.util.Map;
 
 import entity.User;
 import entity.UserFactory;
-import useCase.changePassword.ChangePasswordUserDataAccessInterface;
-import useCase.login.LoginUserDataAccessInterface;
-import useCase.logout.LogoutUserDataAccessInterface;
-import useCase.signup.SignupUserDataAccessInterface;
+import use_case.changePassword.ChangePasswordUserDataAccessInterface;
+import use_case.login.LoginUserDataAccessInterface;
+import use_case.logout.LogoutUserDataAccessInterface;
+import use_case.signup.SignupUserDataAccessInterface;
 
 /**
  * DAO for user data implemented using a File to persist the data.

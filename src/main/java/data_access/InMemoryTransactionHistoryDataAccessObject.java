@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import entity.Transaction;
-import useCase.transactionHistory.TransactionHistoryDataAccessInterface;
+import use_case.transaction_history.TransactionHistoryDataAccessInterface;
 
 public class InMemoryTransactionHistoryDataAccessObject implements TransactionHistoryDataAccessInterface {
     private static final String STOCK_TSLA = "TSLA";
