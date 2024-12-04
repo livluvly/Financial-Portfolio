@@ -1,7 +1,7 @@
 package view;
 
 import entity.Asset;
-import interfaceAdapter.PortfolioViewModel;
+import interface_adapter.PortfolioViewModel;
 
 import java.util.HashMap;
 import java.util.List;

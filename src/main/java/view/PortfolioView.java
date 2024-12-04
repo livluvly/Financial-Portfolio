@@ -1,9 +1,9 @@
 package view;
 
-import interfaceAdapter.PortfolioViewModel;
+import interface_adapter.PortfolioViewModel;
 import entity.Asset;
 import entity.Transaction;
-import interfaceAdapter.transaction.TransactionController;
+import interface_adapter.transaction.TransactionController;
 
 import javax.swing.*;
 import javax.swing.table.*;

@@ -1,8 +1,8 @@
 package data_access;
 
 import entity.Asset;
-import useCase.portfolio.PortfolioDataAccessInterface;
-import useCase.statistics.StatsDataAccessInterface;
+import use_case.portfolio.PortfolioDataAccessInterface;
+import use_case.statistics.StatsDataAccessInterface;
 
 import java.io.*;
 import java.util.*;

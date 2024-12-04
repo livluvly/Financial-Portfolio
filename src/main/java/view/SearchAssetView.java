@@ -1,9 +1,9 @@
 package view;
 
 import entity.Transaction;
-import interfaceAdapter.SearchAssetViewModel;
+import interface_adapter.SearchAssetViewModel;
 import entity.SearchResult;
-import interfaceAdapter.transaction.TransactionController;
+import interface_adapter.transaction.TransactionController;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;

@@ -13,10 +13,10 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import interfaceAdapter.changePassword.ChangePasswordController;
-import interfaceAdapter.changePassword.LoggedInState;
-import interfaceAdapter.changePassword.LoggedInViewModel;
-import interfaceAdapter.logout.LogoutController;
+import interface_adapter.changePassword.ChangePasswordController;
+import interface_adapter.changePassword.LoggedInState;
+import interface_adapter.changePassword.LoggedInViewModel;
+import interface_adapter.logout.LogoutController;
 
 /**
  * The View for when the user is logged into the program.

@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import entity.User;
-import useCase.changePassword.ChangePasswordUserDataAccessInterface;
-import useCase.login.LoginUserDataAccessInterface;
-import useCase.logout.LogoutUserDataAccessInterface;
-import useCase.signup.SignupUserDataAccessInterface;
+import use_case.changePassword.ChangePasswordUserDataAccessInterface;
+import use_case.login.LoginUserDataAccessInterface;
+import use_case.logout.LogoutUserDataAccessInterface;
+import use_case.signup.SignupUserDataAccessInterface;
 
 /**
  * In-memory implementation of the DAO for storing user data. This implementation does
