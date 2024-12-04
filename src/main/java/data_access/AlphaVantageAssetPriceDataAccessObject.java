@@ -13,7 +13,7 @@ import java.util.List;
 import use_case.transaction.*;
 
 public class AlphaVantageAssetPriceDataAccessObject implements  priceDataAccessInterface{
-    private static final String API_KEY = "demo";
+    private static final String API_KEY = "OFZTKRAPDVNFE1PX";
     private static final String BASE_URL = "https://www.alphavantage.co/query";
 
     @Override

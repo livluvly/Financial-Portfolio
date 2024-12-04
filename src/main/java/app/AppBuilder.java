@@ -109,6 +109,8 @@ public class AppBuilder {
 
         // Initialize FileUserDataAccessObject
         String userDataFilePath = "users.csv";
+        portfolioDAO = new FilePortfolioDataAccessObject("portfolio.csv");
+        transactionHistoryDataAccessObject = new FileTransactionHistoryDataAccessObject("history.csv");
         userDataAccessObject = new FileUserDataAccessObject(userDataFilePath, userFactory);
         searchDataAccessObject = new AlphaVantageSearchDataAccessObject();
         assetPriceDataAccessObject = new AlphaVantageAssetPriceDataAccessObject();
@@ -120,11 +122,8 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addPortfolioView() {
-        if (portfolioController == null) {
-            throw new IllegalStateException("PortfolioController must be initialized before adding the Portfolio View!");
-        }
+        portfolioViewModel = new PortfolioViewModel();
         portfolioView = new PortfolioView(portfolioViewModel);
-        portfolioView.setTransactionController(transactionController);
         cardPanel.add(portfolioView, portfolioViewModel.getViewName());
         return this;
     }
@@ -134,6 +133,7 @@ public class AppBuilder {
      * @return this builder.
      */
     public AppBuilder addTransactionHistoryView() {
+        transactionHistoryViewModel = new TransactionHistoryViewModel();
         transactionHistoryView = new TransactionHistoryView(transactionHistoryViewModel);
         cardPanel.add(transactionHistoryView, transactionHistoryViewModel.getViewName());
         return this;
@@ -144,8 +144,6 @@ public class AppBuilder {
      * @return this builder.
      */
     public AppBuilder addTransactionHistoryUseCase() throws IOException {
-        transactionHistoryDataAccessObject = new FileTransactionHistoryDataAccessObject("history.csv");
-        transactionHistoryViewModel = new TransactionHistoryViewModel();
         TransactionHistoryPresenter presenter = new TransactionHistoryPresenter(transactionHistoryViewModel);
         TransactionHistoryInteractor interactor = new TransactionHistoryInteractor(
                 presenter,
@@ -160,17 +158,9 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addStatsView() {
+        statsViewModel = new StatsViewModel();
         statsView = new StatsView(portfolioViewModel);
         cardPanel.add(statsView, statsViewModel.getViewName());
-        return this;
-    }
-
-    public AppBuilder addTransactionUseCase() {
-        transactionController = new TransactionController(portfolioViewModel,
-                transactionHistoryViewModel);
-        if (transactionsView != null) {
-            transactionsView.setTransactionController(transactionController);
-        }
         return this;
     }
 
@@ -179,16 +169,18 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addTransactionsView() {
-        if (searchController == null) {
-            throw new IllegalStateException("SearchAssetController must be initialized before adding TransactionsView!");
-        }
-        if (transactionController == null) {
-            throw new IllegalStateException("TransactionController must be initialized before adding TransactionsView!");
-        }
+        transactionsViewModel = new SearchAssetViewModel();
         transactionsView = new SearchAssetView(transactionsViewModel);
-        transactionsViewModel.setSearchController(searchController);
-        transactionsView.setTransactionController(transactionController);
         cardPanel.add(transactionsView, transactionsViewModel.getViewName());
+        return this;
+    }
+
+    public AppBuilder addTransactionUseCase() {
+        transactionController = new TransactionController(portfolioViewModel,
+                transactionHistoryViewModel);
+        transactionsView.setTransactionController(transactionController);
+        portfolioView.setTransactionController(transactionController);
+        transactionsViewModel.setSearchController(searchController);
         return this;
     }
 
@@ -197,25 +189,22 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addPortfolioUseCase() throws IOException {
-        portfolioDAO = new FilePortfolioDataAccessObject("portfolio.csv");
-        portfolioViewModel = new PortfolioViewModel(
-                userDataAccessObject.getCurrentUsername(),
-                assetPriceDataAccessObject,
-                currencyDataAccessObject);
         portfolioPresenter = new PortfolioPresenter(portfolioViewModel);
-        PortfolioInteractor portfolioInteractor = new PortfolioInteractor(portfolioDAO, portfolioPresenter);
+        final PortfolioInteractor portfolioInteractor = new PortfolioInteractor(portfolioDAO, portfolioPresenter);
         portfolioController = new PortfolioController(portfolioInteractor);
         portfolioViewModel.setController(portfolioController);
+        portfolioViewModel.setCurrencyDAO(currencyDataAccessObject);
+        portfolioViewModel.setPriceDAO(assetPriceDataAccessObject);
         return this;
     }
 
+//        transactionsViewModel = new SearchAssetViewModel(searchController,userDataAccessObject.getCurrentUsername());
 
     /**
      * Adds the Statsitics Use Case to the application.
      * @return this builder
      */
     public AppBuilder addStatsUseCase() throws IOException {
-        statsViewModel  = new StatsViewModel();
         final StatsOutputBoundary statsOutputBoundary = new StatsPresenter(statsViewModel);
         final StatsInputBoundary statsInteractor = new StatsInteractor(portfolioDAO, statsOutputBoundary);
         statsController = new StatsController(statsInteractor);
@@ -228,10 +217,10 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addSearchAssetUseCase() {
-        transactionsViewModel = new SearchAssetViewModel(searchController,userDataAccessObject.getCurrentUsername());
         SearchAssetOutputBoundary searchPresenter = new SearchAssetPresenter(transactionsViewModel);
         SearchAssetInteractor searchInteractor = new SearchAssetInteractor(searchDataAccessObject, searchPresenter);
         searchController = new SearchAssetController(searchInteractor);
+        transactionsViewModel.setSearchController(searchController);
         return this;
     }
 
@@ -291,13 +280,16 @@ public class AppBuilder {
         if (portfolioController == null) {
             throw new IllegalStateException("PortfolioController must be initialized before adding the Login Use Case!");
         }
-        final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
+        final LoginPresenter loginOutputBoundary = new LoginPresenter(viewManagerModel,
                 loggedInViewModel, loginViewModel,portfolioController, statsController,transactionHistoryController);
 
         final LoginInputBoundary loginInteractor = new LoginInteractor(
                 userDataAccessObject, loginOutputBoundary);
 
         final LoginController loginController = new LoginController(loginInteractor);
+        loginOutputBoundary.setPortfolioViewModel(portfolioViewModel);
+        loginOutputBoundary.setStatsViewModel(statsViewModel);
+        loginOutputBoundary.setTransactionHistoryViewModel(transactionHistoryViewModel);
         loginView.setLoginController(loginController);
         return this;
     }

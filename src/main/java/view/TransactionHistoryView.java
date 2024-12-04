@@ -81,7 +81,7 @@ public class TransactionHistoryView extends JPanel {
         transactionHistoryTable.setRowSorter(sorter);
 
         // Date column
-        sorter.setComparator(0, Comparator.comparing(date -> (Comparable<Object>) date));
+//        sorter.setComparator(0, Comparator.comparing(date -> (Comparable<Object>) date));
         // Quantity column
 //        sorter.setComparator(1, Comparator.comparingDouble(quantity -> (Integer) quantity));
         // Total Cost column
@@ -110,10 +110,12 @@ public class TransactionHistoryView extends JPanel {
             switch (selectedOption) {
                 case "Date (Newest)" -> transactionHistoryTable.getRowSorter().toggleSortOrder(0);
                 case "Date (Oldest)" -> transactionHistoryTable.getRowSorter().toggleSortOrder(0);
-                case "Quantity (Largest)" -> transactionHistoryTable.getRowSorter().toggleSortOrder(1);
-                case "Quantity (Smallest)" -> transactionHistoryTable.getRowSorter().toggleSortOrder(1);
-                case "Total Cost (Largest)" -> transactionHistoryTable.getRowSorter().toggleSortOrder(2);
-                case "Total Cost (Smallest)" -> transactionHistoryTable.getRowSorter().toggleSortOrder(2);
+                case "Symbol (A-Z)" -> transactionHistoryTable.getRowSorter().toggleSortOrder(1);
+                case "Symbol (Z-A)" -> transactionHistoryTable.getRowSorter().toggleSortOrder(1);
+                case "Quantity (Largest)" -> transactionHistoryTable.getRowSorter().toggleSortOrder(2);
+                case "Quantity (Smallest)" -> transactionHistoryTable.getRowSorter().toggleSortOrder(3);
+                case "Total Cost (Largest)" -> transactionHistoryTable.getRowSorter().toggleSortOrder(3);
+                case "Total Cost (Smallest)" -> transactionHistoryTable.getRowSorter().toggleSortOrder(3);
             }
         });
 
