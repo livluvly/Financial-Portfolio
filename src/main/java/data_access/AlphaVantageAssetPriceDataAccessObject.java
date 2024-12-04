@@ -10,10 +10,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import use_case.transaction.*;
+import useCase.transaction.*;
 
 public class AlphaVantageAssetPriceDataAccessObject implements  priceDataAccessInterface{
-    private static final String API_KEY = "demo";
+    private static final String API_KEY = "WIDFJSNJ4249RPKM";
     private static final String BASE_URL = "https://www.alphavantage.co/query";
 
     @Override

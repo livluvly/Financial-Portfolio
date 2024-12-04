@@ -1,6 +1,6 @@
 package data_access;
 import entity.SearchResult;
-import use_case.search.ExternalSearchDataAccessInterface;
+import useCase.search.ExternalSearchDataAccessInterface;
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -8,7 +8,7 @@ import org.json.*;
 import java.util.List;
 
 public class AlphaVantageSearchDataAccessObject  implements ExternalSearchDataAccessInterface {
-    private static final String API_KEY = "demo";
+    private static final String API_KEY = "WIDFJSNJ4249RPKM";
     
     /**
      * @param keyword 
