@@ -7,7 +7,6 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-
 public class AlphaVantageExchangeRateDataAccessObject implements priceDataAccessInterface {
     private static final String API_KEY = "OFZTKRAPDVNFE1PX";
     private static final String BASE_URL = "https://www.alphavantage.co/query";
