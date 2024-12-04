@@ -5,11 +5,13 @@ import org.junit.jupiter.api.Test;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class TransactionTest {
+
     final Date now = Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC));
 
     @Test
